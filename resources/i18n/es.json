@@ -61,7 +61,7 @@
     "focus_near_label": "Enfocar cerca (15 cm)",
     "focus_far_label": "Enfocar lejos (>6 m)",
     "default_tip": "Descansa la vista y respira con calma.",
-    "cli_description": "Asistente multiplataforma de descanso y salud visual.\n\nComandos:\n  uninstall           Desinstala ProtectEye completamente del sistema",
+    "cli_description": "Asistente multiplataforma de descanso y salud visual.\n\nComandos:\n  update              Comprueba y actualiza ProtectEye a la última versión\n  uninstall           Desinstala ProtectEye completamente del sistema",
     "cli_cmd_uninstall": "Comando opcional: 'uninstall' para desinstalar ProtectEye",
     "cli_opt_test_break": "Activa una ventana de descanso de prueba inmediatamente al iniciar",
     "cli_opt_test_warning": "Activa una notificación de aviso previo de prueba inmediatamente al iniciar",
@@ -79,7 +79,12 @@
     "tab_schedules": "Horarios",
     "tab_smart_features": "Funciones",
     "tab_general": "General y Actualizaciones",
-    "group_updates": "Actualizaciones de Software"
+    "group_updates": "Actualizaciones de Software",
+    "cli_cmd_update": "Comando opcional: 'update' para actualizar ProtectEye a la última versión",
+    "update_running": "Comprobando y actualizando ProtectEye a la última versión...",
+    "update_win_hint": "Descargando el instalador para Windows e iniciando la actualización...",
+    "update_success": "¡ProtectEye se ha actualizado correctamente a v%1!",
+    "update_no_package": "No se encontró un paquete adecuado para la arquitectura de su sistema."
   },
   "short_tips": [
     "Regla 20-20-20: Mira a un punto a al menos 6 metros (20 pies) durante 20 segundos.",

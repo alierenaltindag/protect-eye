@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     auto& loc = Localization::instance();
     QApplication::setApplicationDisplayName(loc.trayTooltip());
 
-    // Handle "protecteye uninstall" before Qt argument parsing
+    // Handle "protecteye uninstall" and "protecteye update" before Qt argument parsing
     if (argc >= 2 && QString::fromUtf8(argv[1]) == QStringLiteral("uninstall")) {
 #ifdef Q_OS_WIN
         QString uninstPath = QCoreApplication::applicationDirPath() + QStringLiteral("/unins000.exe");
@@ -76,20 +76,26 @@ int main(int argc, char* argv[]) {
 #endif
     }
 
+    if (argc >= 2 && (QString::fromUtf8(argv[1]) == QStringLiteral("update") ||
+                      QString::fromUtf8(argv[1]) == QStringLiteral("--update"))) {
+        return UpdateChecker::runCliUpdate(argc, argv);
+    }
+
     QCommandLineParser parser;
     parser.setApplicationDescription(
         loc.get(
             QStringLiteral("cli_description"),
             QStringLiteral("Cross-platform eye health and break assistant.\n\n"
                            "Commands:\n"
+                           "  update              Checks and automatically updates ProtectEye to the latest version\n"
                            "  uninstall           Completely uninstalls ProtectEye from your system")
         )
     );
     parser.addPositionalArgument(
         QStringLiteral("command"),
         loc.get(
-            QStringLiteral("cli_cmd_uninstall"),
-            QStringLiteral("Optional command: 'uninstall' to remove ProtectEye")
+            QStringLiteral("cli_cmd_update"),
+            QStringLiteral("Optional command: 'update' to update, or 'uninstall' to remove ProtectEye")
         ),
         QStringLiteral("[command]")
     );

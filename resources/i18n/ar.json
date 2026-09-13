@@ -61,7 +61,7 @@
     "focus_near_label": "تركيز قريب (15 سم)",
     "focus_far_label": "تركيز بعيد (>6 أمتار)",
     "default_tip": "أرح عينيك وخذ نفساً عميقاً وهادئاً.",
-    "cli_description": "مساعد متعدد المنصات لصحة العين وتنظيم الاستراحات.\n\nالأوامر:\n  uninstall           إلغاء تثبيت ProtectEye تماماً من نظامك",
+    "cli_description": "مساعد متعدد المنصات لصحة العين وفترات الراحة.\n\nالأوامر:\n  update              التحقق من التحديثات وترقية ProtectEye تلقائيًا إلى أحدث إصدار\n  uninstall           إلغاء تثبيت ProtectEye بالكامل من نظامك",
     "cli_cmd_uninstall": "أمر اختياري: 'uninstall' لإزالة ProtectEye",
     "cli_opt_test_break": "تشغيل نافذة استراحة تجريبية فوراً عند بدء التشغيل",
     "cli_opt_test_warning": "تشغيل إشعار تحذيري تجريبي مسبق للاستراحة عند بدء التشغيل",
@@ -79,7 +79,12 @@
     "tab_schedules": "المواعيد",
     "tab_smart_features": "الميزات",
     "tab_general": "عام والتحديثات",
-    "group_updates": "تحديثات البرامج"
+    "group_updates": "تحديثات البرامج",
+    "cli_cmd_update": "أمر اختياري: 'update' لتحديث ProtectEye تلقائيًا إلى أحدث إصدار",
+    "update_running": "جارٍ التحقق وتحديث ProtectEye إلى أحدث إصدار...",
+    "update_win_hint": "جارٍ تنزيل برنامج تثبيت Windows وبدء التحديث...",
+    "update_success": "تم تحديث ProtectEye بنجاح إلى v%1!",
+    "update_no_package": "لم يتم العثور على حزمة مناسبة لبنية نظامك."
   },
   "short_tips": [
     "قاعدة 20-20-20: انظر إلى شيء يبعد 6 أمتار (20 قدماً) على الأقل لمدة 20 ثانية.",

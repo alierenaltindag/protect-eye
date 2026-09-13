@@ -74,12 +74,17 @@
     "focus_near_label": "Yakına Odaklan (15 cm)",
     "focus_far_label": "Uzağa Odaklan (>6 m)",
     "default_tip": "Gözlerinizi dinlendirin ve derin bir nefes alın.",
-    "cli_description": "Çapraz platform göz sağlığı ve mola asistanı.\n\nKomutlar:\n  uninstall           ProtectEye'ı sisteminizden tamamen kaldırır",
-    "cli_cmd_uninstall": "İsteğe bağlı komut: ProtectEye'ı kaldırmak için 'uninstall'",
+    "cli_description": "Çapraz platform göz sağlığı ve mola asistanı.\n\nKomutlar:\n  update              ProtectEye'ı en güncel sürüme otomatik olarak günceller\n  uninstall           ProtectEye'ı sisteminizden tamamen kaldırır",
+    "cli_cmd_update": "İsteğe bağlı komut: ProtectEye'ı en son sürüme güncellemek için 'update'",
+    "cli_cmd_uninstall": "İsteğe bağlı komut: ProtectEye'ı sistemden kaldırmak için 'uninstall'",
     "cli_opt_test_break": "Başlangıçta hemen bir test mola penceresi tetikler",
     "cli_opt_test_warning": "Başlangıçta hemen bir test mola öncesi uyarı bildirimi tetikler",
     "uninstall_running": "ProtectEye kaldırma sihirbazı çalıştırılıyor...",
-    "uninstall_win_hint": "Windows üzerinde Ayarlar > Yüklü Uygulamalar veya Başlat Menüsü üzerinden kaldırabilirsiniz."
+    "uninstall_win_hint": "Windows'ta, Ayarlar > Yüklü Uygulamalar veya Başlat Menüsü üzerinden kaldırın.",
+    "update_running": "ProtectEye en güncel sürüme denetleniyor ve güncelleniyor...",
+    "update_win_hint": "En güncel Windows kurulum paketi indiriliyor ve güncelleme başlatılıyor...",
+    "update_success": "ProtectEye başarıyla v%1 sürümüne güncellendi!",
+    "update_no_package": "Sistem mimariniz için uygun paket bulunamadı."
   },
   "short_tips": [
     "20-20-20 Kuralı: En az 6 metre (20 feet) uzaktaki bir noktaya 20 saniye boyunca bakın.",

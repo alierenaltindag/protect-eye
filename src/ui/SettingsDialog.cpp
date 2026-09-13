@@ -9,6 +9,7 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QIcon>
+#include <QListView>
 
 SettingsDialog::SettingsDialog(QWidget* parent)
     : QDialog(parent) {
@@ -183,6 +184,10 @@ void SettingsDialog::setupUi() {
     m_langCombo = new QComboBox(m_langGroup);
     m_langCombo->setCursor(Qt::PointingHandCursor);
     m_langCombo->setMinimumWidth(220);
+
+    auto* langListView = new QListView(m_langCombo);
+    langListView->setObjectName(QStringLiteral("langComboView"));
+    m_langCombo->setView(langListView);
 
     m_langCombo->addItem(Localization::instance().langAuto(), QStringLiteral("auto"));
     for (const auto& lang : Localization::instance().availableLanguages()) {
@@ -417,6 +422,9 @@ void SettingsDialog::applyStyles() {
             font-size: 13px;
             font-weight: 500;
         }
+        QComboBox:hover {
+            border: 1px solid #64748b;
+        }
         QComboBox:focus {
             border: 1px solid #38bdf8;
             background-color: #243047;
@@ -432,13 +440,34 @@ void SettingsDialog::applyStyles() {
             width: 10px;
             height: 7px;
         }
-        QComboBox QAbstractItemView {
-            background-color: #0f172a;
+        QComboBox QAbstractItemView,
+        QComboBox QListView {
+            background-color: #1e293b;
             color: #f8fafc;
             border: 1px solid #334155;
-            selection-background-color: #1e293b;
-            selection-color: #38bdf8;
-            padding: 6px;
+            border-radius: 8px;
+            selection-background-color: #0284c7;
+            selection-color: #ffffff;
+            outline: none;
+            padding: 4px;
+        }
+        QComboBox QAbstractItemView::item,
+        QComboBox QListView::item {
+            min-height: 28px;
+            padding: 4px 10px;
+            color: #f8fafc;
+            background-color: #1e293b;
+            border-radius: 4px;
+        }
+        QComboBox QAbstractItemView::item:hover,
+        QComboBox QListView::item:hover {
+            background-color: #334155;
+            color: #38bdf8;
+        }
+        QComboBox QAbstractItemView::item:selected,
+        QComboBox QListView::item:selected {
+            background-color: #0284c7;
+            color: #ffffff;
         }
 
         /* QSpinBox */
@@ -559,6 +588,49 @@ void SettingsDialog::applyStyles() {
             height: 0px;
         }
     )").arg(groupTitleSide, groupTitleOffset, dropDownSide, dropDownBorder, spinPadding, spinUpPos, spinRadiusUp, spinDownPos, spinRadiusDown, tabMargin));
+
+    if (m_langCombo && m_langCombo->view()) {
+        QPalette viewPalette = m_langCombo->view()->palette();
+        viewPalette.setColor(QPalette::Base, QColor(0x1e, 0x29, 0x3b));
+        viewPalette.setColor(QPalette::Window, QColor(0x1e, 0x29, 0x3b));
+        viewPalette.setColor(QPalette::Text, QColor(0xf8, 0xfa, 0xfc));
+        viewPalette.setColor(QPalette::Highlight, QColor(0x02, 0x84, 0xc7));
+        viewPalette.setColor(QPalette::HighlightedText, QColor(0xff, 0xff, 0xff));
+        m_langCombo->view()->setPalette(viewPalette);
+
+        if (m_langCombo->view()->parentWidget()) {
+            m_langCombo->view()->parentWidget()->setPalette(viewPalette);
+            m_langCombo->view()->parentWidget()->setStyleSheet(QStringLiteral(
+                "background-color: #1e293b; border: 1px solid #334155; border-radius: 8px;"
+            ));
+        }
+
+        m_langCombo->view()->setStyleSheet(QStringLiteral(
+            "QListView {"
+            "    background-color: #1e293b;"
+            "    color: #f8fafc;"
+            "    border: 1px solid #334155;"
+            "    border-radius: 8px;"
+            "    padding: 4px;"
+            "    outline: none;"
+            "}"
+            "QListView::item {"
+            "    min-height: 28px;"
+            "    padding: 4px 10px;"
+            "    color: #f8fafc;"
+            "    background-color: #1e293b;"
+            "    border-radius: 4px;"
+            "}"
+            "QListView::item:hover {"
+            "    background-color: #334155;"
+            "    color: #38bdf8;"
+            "}"
+            "QListView::item:selected {"
+            "    background-color: #0284c7;"
+            "    color: #ffffff;"
+            "}"
+        ));
+    }
 }
 
 void SettingsDialog::loadValues() {

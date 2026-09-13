@@ -130,6 +130,9 @@ if (UNIX AND NOT APPLE)
     install(FILES io.github.alierenaltindag.protecteye.metainfo.xml
         DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo
     )
+    install(PROGRAMS update.sh uninstall.sh
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/protecteye
+    )
 endif()
 
 # CPack Packaging Configuration

@@ -16,6 +16,7 @@ public:
 
     static int compareVersions(const QString& v1, const QString& v2);
     static QString currentVersion();
+    static int runCliUpdate(int argc, char* argv[]);
 
     void startBackgroundChecks();
     void checkForUpdates(bool manual = false);

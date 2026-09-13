@@ -34,6 +34,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.0.7" date="2026-09-13">
+      <description>
+        <p>Added 'protecteye update' CLI command for automatic GitHub release updates across Linux distributions (Arch, Debian, Fedora) and Windows. Fixed Interface Language dropdown popup styling to ensure consistent dark theme and high readability across all desktop environments.</p>
+      </description>
+    </release>
     <release version="1.0.6" date="2026-09-13">
       <description>
         <p>Reorganized Preferences dialog into a compact, modern 3-tab layout (Schedules, Smart Features, General &amp; Updates) with scroll area guarantees, perfectly optimized for laptops and smaller screens. Configured Clangd compilation database export for IDE support.</p>

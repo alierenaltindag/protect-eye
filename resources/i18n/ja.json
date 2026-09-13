@@ -61,7 +61,7 @@
     "focus_near_label": "近くにピントを合わせる (15 cm)",
     "focus_far_label": "遠くにピントを合わせる (>6 m)",
     "default_tip": "画面から目を離し、ゆっくりと深呼吸しましょう。",
-    "cli_description": "クロスプラットフォーム対応の目の健康＆休憩リマインダー。\n\nコマンド:\n  uninstall           ProtectEye をシステムから完全にアンインストールします",
+    "cli_description": "クロスプラットフォーム目の健康＆休憩アシスタント。\n\nコマンド:\n  update              ProtectEyeを最新バージョンに自動更新します\n  uninstall           ProtectEyeをシステムから完全にアンインストールします",
     "cli_cmd_uninstall": "オプションコマンド: 'uninstall' で ProtectEye を削除",
     "cli_opt_test_break": "起動時にテスト用休憩画面を即座に表示します",
     "cli_opt_test_warning": "起動時に休憩前の事前テスト通知を即座に表示します",
@@ -79,7 +79,12 @@
     "tab_schedules": "休憩設定",
     "tab_smart_features": "スマート機能",
     "tab_general": "一般と更新",
-    "group_updates": "ソフトウェアの更新"
+    "group_updates": "ソフトウェアの更新",
+    "cli_cmd_update": "オプションコマンド: 'update' ProtectEyeを最新バージョンに更新",
+    "update_running": "ProtectEyeの更新を確認し、最新版にアップデートしています...",
+    "update_win_hint": "Windowsインストーラーをダウンロードして更新を開始しています...",
+    "update_success": "ProtectEye は正常に v%1 に更新されました！",
+    "update_no_package": "お使いのシステムアーキテクチャに適したパッケージが見つかりませんでした。"
   },
   "short_tips": [
     "20-20-20ルール: 20秒間、少なくとも6メートル（20フィート）離れた遠くを見つめましょう。",

@@ -11,6 +11,7 @@
 #include "ui/OverlayWindow.h"
 #include "ui/OverlayManager.h"
 #include "ui/SettingsDialog.h"
+#include <QAbstractItemView>
 #include <QLabel>
 #include <QPushButton>
 #include <QTabWidget>
@@ -695,6 +696,17 @@ private slots:
         qApp->processEvents();
         QPixmap p2 = dlg.grab();
         p2.save(QStringLiteral("/home/aa-linux/.gemini/antigravity/brain/0c4ec0a9-540e-45d4-9649-6f38da9ba228/settings_tab3_general.png"));
+
+        // Test and capture ComboBox popup
+        auto* langCombo = dlg.findChild<QComboBox*>();
+        QVERIFY(langCombo != nullptr);
+        langCombo->showPopup();
+        qApp->processEvents();
+        if (langCombo->view() && langCombo->view()->window()) {
+            QPixmap pPopup = langCombo->view()->window()->grab();
+            pPopup.save(QStringLiteral("/home/aa-linux/.gemini/antigravity/brain/0c4ec0a9-540e-45d4-9649-6f38da9ba228/settings_lang_dropdown.png"));
+        }
+        langCombo->hidePopup();
     }
 };
 

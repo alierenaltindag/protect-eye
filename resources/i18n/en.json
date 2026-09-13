@@ -74,12 +74,17 @@
     "focus_near_label": "Focus Near (6 in)",
     "focus_far_label": "Focus Far (>20 ft)",
     "default_tip": "Rest your eyes and take a calm breath.",
-    "cli_description": "Cross-platform eye health and break assistant.\n\nCommands:\n  uninstall           Completely uninstalls ProtectEye from your system",
+    "cli_description": "Cross-platform eye health and break assistant.\n\nCommands:\n  update              Checks and automatically updates ProtectEye to the latest version\n  uninstall           Completely uninstalls ProtectEye from your system",
+    "cli_cmd_update": "Optional command: 'update' to automatically update ProtectEye to the latest version",
     "cli_cmd_uninstall": "Optional command: 'uninstall' to remove ProtectEye",
     "cli_opt_test_break": "Triggers a test break overlay immediately on startup",
     "cli_opt_test_warning": "Triggers a test pre-break warning notification immediately on startup",
     "uninstall_running": "Running ProtectEye uninstaller...",
-    "uninstall_win_hint": "On Windows, uninstall via Settings > Installed Apps or Start Menu shortcut."
+    "uninstall_win_hint": "On Windows, uninstall via Settings > Installed Apps or Start Menu shortcut.",
+    "update_running": "Checking and updating ProtectEye to the latest version...",
+    "update_win_hint": "Downloading latest Windows installer and launching update...",
+    "update_success": "ProtectEye successfully updated to v%1!",
+    "update_no_package": "No suitable package found for your system architecture."
   },
   "short_tips": [
     "20-20-20 Rule: Look at an object at least 20 feet (6 meters) away for 20 seconds.",

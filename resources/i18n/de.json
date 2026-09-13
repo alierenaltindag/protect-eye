@@ -61,7 +61,7 @@
     "focus_near_label": "Nah fokussieren (15 cm)",
     "focus_far_label": "In die Ferne blicken (>6 m)",
     "default_tip": "Gönnen Sie Ihren Augen eine Pause und atmen Sie ruhig durch.",
-    "cli_description": "Plattformübergreifender Augengesundheits- und Pausen-Assistent.\n\nBefehle:\n  uninstall           Deinstalliert ProtectEye vollständig von Ihrem System",
+    "cli_description": "Plattformübergreifender Augengesundheits- und Pausen-Assistent.\n\nBefehle:\n  update              Prüft und aktualisiert ProtectEye automatisch auf die neueste Version\n  uninstall           Deinstalliert ProtectEye vollständig von Ihrem System",
     "cli_cmd_uninstall": "Optionaler Befehl: 'uninstall' zum Entfernen von ProtectEye",
     "cli_opt_test_break": "Löst beim Start sofort ein Test-Pausenfenster aus",
     "cli_opt_test_warning": "Löst beim Start sofort eine Test-Vorwarnbenachrichtigung aus",
@@ -79,7 +79,12 @@
     "tab_schedules": "Pausen",
     "tab_smart_features": "Funktionen",
     "tab_general": "Allgemein & Updates",
-    "group_updates": "Software-Updates"
+    "group_updates": "Software-Updates",
+    "cli_cmd_update": "Optionaler Befehl: 'update' zum Aktualisieren von ProtectEye auf die neueste Version",
+    "update_running": "ProtectEye wird auf die neueste Version geprüft und aktualisiert...",
+    "update_win_hint": "Das Windows-Installationsprogramm wird heruntergeladen und das Update gestartet...",
+    "update_success": "ProtectEye wurde erfolgreich auf v%1 aktualisiert!",
+    "update_no_package": "Kein passendes Paket für Ihre Systemarchitektur gefunden."
   },
   "short_tips": [
     "20-20-20-Regel: Blicken Sie für 20 Sekunden auf einen Punkt in mindestens 6 Metern Entfernung.",

@@ -61,7 +61,7 @@
     "focus_near_label": "Mise au point proche (15 cm)",
     "focus_far_label": "Mise au point au loin (>6 m)",
     "default_tip": "Reposez vos yeux et respirez calmement.",
-    "cli_description": "Assistant multiplateforme de pause et de santé oculaire.\n\nCommandes :\n  uninstall           Désinstalle complètement ProtectEye de votre système",
+    "cli_description": "Assistant multiplateforme de pause et de santé oculaire.\n\nCommandes :\n  update              Recherche et met à jour automatiquement ProtectEye vers la dernière version\n  uninstall           Désinstalle complètement ProtectEye de votre système",
     "cli_cmd_uninstall": "Commande optionnelle : 'uninstall' pour supprimer ProtectEye",
     "cli_opt_test_break": "Déclenche un écran de pause de test immédiatement au démarrage",
     "cli_opt_test_warning": "Déclenche une notification d'avertissement préalable de test immédiatement au démarrage",
@@ -79,7 +79,12 @@
     "tab_schedules": "Horaires",
     "tab_smart_features": "Fonctions",
     "tab_general": "Général et Mises à jour",
-    "group_updates": "Mises à jour du logiciel"
+    "group_updates": "Mises à jour du logiciel",
+    "cli_cmd_update": "Commande optionnelle : 'update' pour mettre à jour ProtectEye vers la dernière version",
+    "update_running": "Vérification et mise à jour de ProtectEye vers la dernière version...",
+    "update_win_hint": "Téléchargement du programme d'installation Windows et lancement de la mise à jour...",
+    "update_success": "ProtectEye a été mis à jour avec succès vers la version v%1 !",
+    "update_no_package": "Aucun paquet approprié trouvé pour l'architecture de votre système."
   },
   "short_tips": [
     "Règle 20-20-20 : Fixez un objet situé à 6 mètres (20 pieds) pendant 20 secondes.",
