@@ -19,7 +19,7 @@ public:
     static int runCliUpdate(int argc, char* argv[]);
 
     void startBackgroundChecks();
-    void checkForUpdates(bool manual = false);
+    void checkForUpdates(bool manual = false, bool isStartup = false);
 
     bool isChecking() const { return m_isChecking; }
     QString latestVersion() const { return m_latestVersion; }
@@ -34,6 +34,10 @@ private slots:
     void onPeriodicTimer();
 
 private:
+    void queryGithubApi(bool manual, bool isStartup);
+    void queryFallbackVersion(bool manual, bool isStartup, const QString& primaryError);
+    void processVersionResult(const QString& version, const QString& releaseUrl, const QString& releaseNotes, bool manual);
+
     QNetworkAccessManager* m_networkManager{nullptr};
     QTimer* m_periodicTimer{nullptr};
     bool m_isChecking{false};

@@ -187,6 +187,7 @@ if (Qt6Test_FOUND)
         src/services/DndMonitor.cpp
         src/services/ScreenLockMonitor.cpp
         src/services/UpdateChecker.cpp
+        src/services/NotificationService.cpp
         src/utils/AutostartHelper.cpp
         src/ui/OverlayWindow.cpp
         src/ui/OverlayManager.cpp

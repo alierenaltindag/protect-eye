@@ -238,15 +238,6 @@ void TrayManager::onUpdateAvailable(const QString& version, const QString& relea
     auto& loc = Localization::instance();
     m_updateAction->setText(loc.actionUpdateAvailable().arg(version));
     m_updateAction->setVisible(true);
-
-    if (m_trayIcon) {
-        m_trayIcon->showMessage(
-            loc.updateNotifTitle(),
-            loc.updateNotifBody().arg(version),
-            QSystemTrayIcon::Information,
-            8000
-        );
-    }
 }
 
 void TrayManager::onOpenReleaseUrl() {

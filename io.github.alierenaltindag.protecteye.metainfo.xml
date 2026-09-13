@@ -34,6 +34,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.0.8" date="2026-09-13">
+      <description>
+        <p>Robust multi-tier update checking with CDN fallback to resolve rate limit and connection issues, automatic update checks on every application startup, native desktop manager notifications (FreeDesktop DBus on Linux, Action Center Toast on Windows) with clickable action buttons, and bundled Windows TLS plugins.</p>
+      </description>
+    </release>
     <release version="1.0.7" date="2026-09-13">
       <description>
         <p>Added 'protecteye update' CLI command for automatic GitHub release updates across Linux distributions (Arch, Debian, Fedora) and Windows. Fixed Interface Language dropdown popup styling to ensure consistent dark theme and high readability across all desktop environments.</p>

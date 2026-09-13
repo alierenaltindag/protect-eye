@@ -188,6 +188,14 @@ jobs:
           copy build_win\protecteye.exe build\dist\
           copy LICENSE build\dist\
           "%QT_ROOT_DIR%\bin\windeployqt.exe" --release --no-translations --compiler-runtime --dir build\dist build\dist\protecteye.exe
+          if exist "%QT_ROOT_DIR%\plugins\tls" (
+            if not exist build\dist\tls mkdir build\dist\tls
+            copy "%QT_ROOT_DIR%\plugins\tls\*.dll" build\dist\tls\
+          )
+          if exist "%QT_ROOT_DIR%\bin\libcrypto*.dll" (
+            copy "%QT_ROOT_DIR%\bin\libcrypto*.dll" build\dist\
+            copy "%QT_ROOT_DIR%\bin\libssl*.dll" build\dist\
+          )
           if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" (
             "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=${{ steps.version.outputs.version }} packaging\windows\protecteye_setup.iss
           ) else (

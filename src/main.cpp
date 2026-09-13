@@ -158,9 +158,9 @@ int main(int argc, char* argv[]) {
 
     // Connect Single-Instance Activation (bring settings to front and notify)
     QObject::connect(&singleInstanceGuard, &SingleInstanceGuard::activateRequested,
-                     &trayManager, [&trayManager]() {
+                     &trayManager, [&trayManager, &notificationService, &loc]() {
         trayManager.showSettings();
-        trayManager.notifyAlreadyRunning();
+        notificationService.showCustomNotification(loc.alreadyRunningTitle(), loc.alreadyRunningMessage());
     });
 
     // Connect Notifications
@@ -193,6 +193,8 @@ int main(int argc, char* argv[]) {
     auto& updateChecker = UpdateChecker::instance();
     QObject::connect(&updateChecker, &UpdateChecker::updateAvailable,
                      &trayManager, &TrayManager::onUpdateAvailable);
+    QObject::connect(&updateChecker, &UpdateChecker::updateAvailable,
+                     &notificationService, &NotificationService::showUpdateNotification);
     updateChecker.startBackgroundChecks();
 
     // Start controller

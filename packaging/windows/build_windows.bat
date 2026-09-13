@@ -40,6 +40,12 @@ copy "LICENSE" "build\dist\"
 echo.
 echo [3/4] Qt6 bagimliliklari kopyalaniyor (windeployqt)...
 windeployqt --release --no-translations --compiler-runtime "build\dist\protecteye.exe"
+if exist "%QTDIR%\plugins\tls" (
+    if not exist "build\dist\tls" mkdir "build\dist\tls"
+    copy "%QTDIR%\plugins\tls\*.dll" "build\dist\tls\" >nul 2>&1
+)
+if exist "%QTDIR%\bin\libcrypto*.dll" copy "%QTDIR%\bin\libcrypto*.dll" "build\dist\" >nul 2>&1
+if exist "%QTDIR%\bin\libssl*.dll" copy "%QTDIR%\bin\libssl*.dll" "build\dist\" >nul 2>&1
 
 echo.
 echo [4/4] Inno Setup ile Installer EXE paketi uretiliyor...

@@ -7,6 +7,7 @@
 #include "services/DndMonitor.h"
 #include "services/ScreenLockMonitor.h"
 #include "services/UpdateChecker.h"
+#include "services/NotificationService.h"
 #include "utils/AutostartHelper.h"
 #include "ui/OverlayWindow.h"
 #include "ui/OverlayManager.h"
@@ -527,6 +528,14 @@ private slots:
             QCOMPARE(loc.appName(), QStringLiteral("ProtectEye"));
 
             QVERIFY(!loc.trayTooltip().isEmpty());
+            QVERIFY(!loc.preBreakTitle(false).isEmpty());
+            QVERIFY(!loc.preBreakTitle(true).isEmpty());
+            QVERIFY(!loc.preBreakMessage(30).isEmpty());
+            QVERIFY(!loc.updateNotifTitle().isEmpty());
+            QVERIFY(!loc.updateNotifBody().arg(QStringLiteral("1.0.8")).isEmpty());
+            QVERIFY(!loc.actionUpdateAvailable().arg(QStringLiteral("1.0.8")).isEmpty());
+            QVERIFY(!loc.alreadyRunningTitle().isEmpty());
+            QVERIFY(!loc.alreadyRunningMessage().isEmpty());
             QVERIFY(!loc.badgeShortBreak().isEmpty());
             QVERIFY(!loc.badgeLongBreak().isEmpty());
             QVERIFY(!loc.buttonSkip().isEmpty());
@@ -628,6 +637,22 @@ private slots:
         }
 
         loc.setLanguageByCode(QStringLiteral("auto"));
+    }
+
+    void testNotificationServiceUpdateNotification() {
+        QSystemTrayIcon tray;
+        NotificationService notif(&tray);
+        // Valid version and URL
+        notif.showUpdateNotification(QStringLiteral("1.0.8"), QStringLiteral("https://github.com/alierenaltindag/protect-eye/releases/tag/v1.0.8"));
+        // Empty URL fallback
+        notif.showUpdateNotification(QStringLiteral("1.0.8"), QString());
+    }
+
+    void testUpdateCheckerStartupAndFallback() {
+        auto& checker = UpdateChecker::instance();
+        QSignalSpy startedSpy(&checker, &UpdateChecker::checkStarted);
+        checker.checkForUpdates(false, /* isStartup = */ true);
+        QCOMPARE(startedSpy.count(), 1);
     }
 
     void testMultiScreenOverlayPlacement() {

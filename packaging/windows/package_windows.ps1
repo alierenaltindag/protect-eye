@@ -40,6 +40,16 @@ Copy-Item "$RootDir\LICENSE" "$DistDir\"
 Write-Host "==> Step 3: Running windeployqt for Qt6 dependencies..." -ForegroundColor Yellow
 if (Get-Command windeployqt -ErrorAction SilentlyContinue) {
     & windeployqt --release --no-translations --compiler-runtime "$DistDir\protecteye.exe"
+    $qtBin = Split-Path (Get-Command windeployqt).Source
+    $qtRoot = Split-Path $qtBin
+    $tlsSource = Join-Path $qtRoot "plugins\tls"
+    if (Test-Path $tlsSource) {
+        $tlsTarget = Join-Path $DistDir "tls"
+        if (-not (Test-Path $tlsTarget)) { New-Item -ItemType Directory -Path $tlsTarget | Out-Null }
+        Copy-Item -Path "$tlsSource\*.dll" -Destination $tlsTarget -Force
+    }
+    Get-ChildItem -Path $qtBin -Filter "libcrypto*.dll" -ErrorAction SilentlyContinue | Copy-Item -Destination $DistDir -Force
+    Get-ChildItem -Path $qtBin -Filter "libssl*.dll" -ErrorAction SilentlyContinue | Copy-Item -Destination $DistDir -Force
 } else {
     Write-Warning "windeployqt not found in PATH. Please ensure Qt DLLs are bundled."
 }

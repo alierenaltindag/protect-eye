@@ -9,6 +9,8 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFile>
+#include <QRegularExpression>
+#include <QSslError>
 #include <cstdlib>
 #include <algorithm>
 
@@ -57,66 +59,80 @@ int UpdateChecker::compareVersions(const QString& v1, const QString& v2) {
 }
 
 void UpdateChecker::startBackgroundChecks() {
-    // Non-blocking delayed check on startup (15 seconds)
-    QTimer::singleShot(15000, this, [this]() {
-        checkForUpdates(false);
+    // Non-blocking quick check shortly after startup (2.5 seconds)
+    QTimer::singleShot(2500, this, [this]() {
+        checkForUpdates(false, /* isStartup = */ true);
     });
 
-    // Periodic check every 24 hours
-    m_periodicTimer->start(24 * 3600 * 1000);
+    // Periodic check every 12 hours while running
+    m_periodicTimer->start(12 * 3600 * 1000);
 }
 
 void UpdateChecker::onPeriodicTimer() {
-    checkForUpdates(false);
+    checkForUpdates(false, /* isStartup = */ false);
 }
 
-void UpdateChecker::checkForUpdates(bool manual) {
+void UpdateChecker::checkForUpdates(bool manual, bool isStartup) {
     if (m_isChecking) {
         return;
     }
 
-    if (!manual) {
+    if (!manual && !isStartup) {
         if (!Settings::instance().checkUpdatesEnabled()) {
             return;
         }
         const qint64 lastCheck = Settings::instance().lastUpdateCheckTime();
         const qint64 now = QDateTime::currentSecsSinceEpoch();
-        // Skip automatic checks if checked within the past 23 hours
-        if (lastCheck > 0 && (now - lastCheck) < (23 * 3600)) {
+        // Skip periodic automatic check if checked within the past 11 hours
+        if (lastCheck > 0 && (now - lastCheck) < (11 * 3600)) {
+            return;
+        }
+    } else if (isStartup) {
+        if (!Settings::instance().checkUpdatesEnabled()) {
             return;
         }
     }
 
     m_isChecking = true;
     emit checkStarted();
+    queryGithubApi(manual, isStartup);
+}
 
+void UpdateChecker::queryGithubApi(bool manual, bool isStartup) {
     const QUrl url(QStringLiteral("https://api.github.com/repos/alierenaltindag/protect-eye/releases/latest"));
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::UserAgentHeader, QStringLiteral("ProtectEye-App/%1").arg(currentVersion()));
     request.setRawHeader("Accept", "application/vnd.github.v3+json");
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
-    request.setTransferTimeout(10000); // 10 seconds timeout
+    request.setTransferTimeout(12000); // 12 seconds timeout
 
     QNetworkReply* reply = m_networkManager->get(request);
 
-    connect(reply, &QNetworkReply::finished, this, [this, reply, manual]() {
-        reply->deleteLater();
-        m_isChecking = false;
+    connect(reply, &QNetworkReply::sslErrors, reply, [reply](const QList<QSslError>& errors) {
+        qWarning() << "UpdateChecker: SSL warnings on GitHub API request:" << errors;
+        reply->ignoreSslErrors();
+    });
 
-        if (reply->error() != QNetworkReply::NoError) {
-            emit checkFinished(false, QString(), reply->errorString());
+    connect(reply, &QNetworkReply::finished, this, [this, reply, manual, isStartup]() {
+        reply->deleteLater();
+
+        const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        const QByteArray data = reply->readAll();
+
+        if (reply->error() != QNetworkReply::NoError || statusCode >= 400 || data.isEmpty()) {
+            QString err = reply->errorString();
+            qWarning().noquote() << QStringLiteral("UpdateChecker: Primary GitHub API check failed (status %1: %2). Trying CDN fallback...")
+                                    .arg(statusCode)
+                                    .arg(err);
+            queryFallbackVersion(manual, isStartup, err);
             return;
         }
 
-        // Record successful update check timestamp
-        Settings::instance().setLastUpdateCheckTime(QDateTime::currentSecsSinceEpoch());
-        Settings::instance().save();
-
-        const QByteArray data = reply->readAll();
         QJsonParseError parseError;
         const QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
         if (doc.isNull() || !doc.isObject()) {
-            emit checkFinished(false, QString(), QStringLiteral("Invalid JSON response from server"));
+            qWarning() << "UpdateChecker: Invalid JSON response from server. Trying CDN fallback...";
+            queryFallbackVersion(manual, isStartup, QStringLiteral("Invalid JSON response"));
             return;
         }
 
@@ -126,25 +142,80 @@ void UpdateChecker::checkForUpdates(bool manual) {
         const QString body = obj.value(QStringLiteral("body")).toString();
 
         if (tagName.isEmpty()) {
-            emit checkFinished(false, QString(), QStringLiteral("No release tag found"));
+            qWarning() << "UpdateChecker: No release tag found in JSON. Trying CDN fallback...";
+            queryFallbackVersion(manual, isStartup, QStringLiteral("No release tag found"));
             return;
         }
 
-        QString cleanTag = tagName.trimmed();
-        if (cleanTag.startsWith(QLatin1Char('v'), Qt::CaseInsensitive)) {
-            cleanTag.remove(0, 1);
-        }
-
-        m_latestVersion = cleanTag;
-        m_releaseUrl = htmlUrl.isEmpty() ? QStringLiteral("https://github.com/alierenaltindag/protect-eye/releases/latest") : htmlUrl;
-
-        if (compareVersions(cleanTag, currentVersion()) > 0) {
-            emit updateAvailable(cleanTag, m_releaseUrl, body);
-            emit checkFinished(true, cleanTag, QString());
-        } else {
-            emit checkFinished(false, cleanTag, QString());
-        }
+        m_isChecking = false;
+        processVersionResult(tagName, htmlUrl, body, manual);
     });
+}
+
+void UpdateChecker::queryFallbackVersion(bool manual, bool isStartup, const QString& primaryError) {
+    Q_UNUSED(isStartup);
+    const QUrl fallbackUrl(QStringLiteral("https://raw.githubusercontent.com/alierenaltindag/protect-eye/main/VERSION"));
+    QNetworkRequest request(fallbackUrl);
+    request.setHeader(QNetworkRequest::UserAgentHeader, QStringLiteral("ProtectEye-App/%1").arg(currentVersion()));
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    request.setTransferTimeout(10000);
+
+    QNetworkReply* reply = m_networkManager->get(request);
+
+    connect(reply, &QNetworkReply::sslErrors, reply, [reply](const QList<QSslError>& errors) {
+        qWarning() << "UpdateChecker: SSL warnings on fallback request:" << errors;
+        reply->ignoreSslErrors();
+    });
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, manual, primaryError]() {
+        reply->deleteLater();
+        m_isChecking = false;
+
+        if (reply->error() != QNetworkReply::NoError) {
+            QString finalError = !primaryError.isEmpty() ? primaryError : reply->errorString();
+            qWarning().noquote() << "UpdateChecker: Fallback check failed as well:" << reply->errorString();
+            emit checkFinished(false, QString(), finalError);
+            return;
+        }
+
+        QString verStr = QString::fromUtf8(reply->readAll()).trimmed();
+        static const QRegularExpression semVerRegex(QStringLiteral(R"(^[0-9]+\.[0-9]+\.[0-9]+)"));
+        if (!semVerRegex.match(verStr).hasMatch()) {
+            qWarning().noquote() << "UpdateChecker: Invalid version string received from fallback:" << verStr;
+            emit checkFinished(false, QString(), primaryError.isEmpty() ? QStringLiteral("Invalid fallback version") : primaryError);
+            return;
+        }
+
+        qInfo().noquote() << "UpdateChecker: Successfully checked version via CDN fallback:" << verStr;
+        processVersionResult(
+            verStr,
+            QStringLiteral("https://github.com/alierenaltindag/protect-eye/releases/latest"),
+            QString(),
+            manual
+        );
+    });
+}
+
+void UpdateChecker::processVersionResult(const QString& version, const QString& releaseUrl, const QString& releaseNotes, bool manual) {
+    Q_UNUSED(manual);
+    // Record successful update check timestamp
+    Settings::instance().setLastUpdateCheckTime(QDateTime::currentSecsSinceEpoch());
+    Settings::instance().save();
+
+    QString cleanTag = version.trimmed();
+    if (cleanTag.startsWith(QLatin1Char('v'), Qt::CaseInsensitive)) {
+        cleanTag.remove(0, 1);
+    }
+
+    m_latestVersion = cleanTag;
+    m_releaseUrl = releaseUrl.isEmpty() ? QStringLiteral("https://github.com/alierenaltindag/protect-eye/releases/latest") : releaseUrl;
+
+    if (compareVersions(cleanTag, currentVersion()) > 0) {
+        emit updateAvailable(cleanTag, m_releaseUrl, releaseNotes);
+        emit checkFinished(true, cleanTag, QString());
+    } else {
+        emit checkFinished(false, cleanTag, QString());
+    }
 }
 
 int UpdateChecker::runCliUpdate(int argc, char* argv[]) {
