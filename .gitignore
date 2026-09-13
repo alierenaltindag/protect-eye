@@ -69,7 +69,7 @@ releases/*.zip
 releases/*.tar.gz
 
 # IDE & Editor Files
-.vscode/
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
