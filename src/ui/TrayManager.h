@@ -19,10 +19,14 @@ public:
     void showSettings();
     void notifyAlreadyRunning();
 
+public slots:
+    void onUpdateAvailable(const QString& version, const QString& releaseUrl, const QString& releaseNotes);
+
 private slots:
     void onTick(int secToShort, int secToLong);
     void onStateChanged(BreakState newState);
     void onOpenSettings();
+    void onOpenReleaseUrl();
     void retranslateUi();
 
 private:
@@ -39,6 +43,7 @@ private:
     QMenu* m_menu{nullptr};
 
     QAction* m_statusAction{nullptr};
+    QAction* m_updateAction{nullptr};
     QAction* m_shortStatusAction{nullptr};
     QAction* m_longStatusAction{nullptr};
     QAction* m_pauseResumeAction{nullptr};
@@ -46,6 +51,9 @@ private:
     QAction* m_triggerLongAction{nullptr};
     QAction* m_settingsAction{nullptr};
     QAction* m_quitAction{nullptr};
+
+    QString m_latestReleaseUrl;
+    QString m_latestVersion;
 
     SettingsDialog* m_settingsDialog{nullptr};
 };

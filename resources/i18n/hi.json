@@ -66,7 +66,16 @@
     "cli_opt_test_break": "स्टार्टअप पर तुरंत एक परीक्षण ब्रेक ओवरले सक्रिय करता है",
     "cli_opt_test_warning": "स्टार्टअप पर तुरंत एक परीक्षण पूर्व-चेतावनी सूचना भेजता है",
     "uninstall_running": "ProtectEye अनइंस्टॉलर चलाया जा रहा है...",
-    "uninstall_win_hint": "Windows पर, सेटिंग्स > इंस्टॉल किए गए ऐप्स या स्टार्ट मेनू शॉर्टकट के माध्यम से अनइंस्टॉल करें।"
+    "uninstall_win_hint": "Windows पर, सेटिंग्स > इंस्टॉल किए गए ऐप्स या स्टार्ट मेनू शॉर्टकट के माध्यम से अनइंस्टॉल करें।",
+    "setting_check_updates": "स्वचालित रूप से अपडेट की जाँच करें",
+    "btn_check_updates": "अभी जाँच करें",
+    "update_status_checking": "अपडेट की जाँच की जा रही है...",
+    "update_status_uptodate": "ProtectEye अप-टू-डेट है (v%1)",
+    "update_status_available": "नया संस्करण उपलब्ध है: v%1",
+    "update_status_failed": "अपडेट जाँचने में विफल।",
+    "action_update_available": "✨ नया अपडेट उपलब्ध है: v%1",
+    "update_notif_title": "ProtectEye अपडेट उपलब्ध है",
+    "update_notif_body": "संस्करण %1 अब उपलब्ध है। डाउनलोड करने के लिए क्लिक करें।"
   },
   "short_tips": [
     "20-20-20 नियम: 20 सेकंड के लिए कम से कम 20 फीट (6 मीटर) दूर किसी वस्तु को देखें।",

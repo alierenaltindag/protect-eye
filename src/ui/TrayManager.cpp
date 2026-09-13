@@ -4,6 +4,8 @@
 #include <QCursor>
 #include <QIcon>
 #include <QTimer>
+#include <QDesktopServices>
+#include <QUrl>
 
 TrayManager::TrayManager(BreakController* controller, QObject* parent)
     : QObject(parent)
@@ -50,6 +52,10 @@ void TrayManager::setupTray() {
             margin: 6px 12px;
         }
     )");
+
+    m_updateAction = m_menu->addAction(QString());
+    m_updateAction->setVisible(false);
+    connect(m_updateAction, &QAction::triggered, this, &TrayManager::onOpenReleaseUrl);
 
     m_statusAction = m_menu->addAction(loc.statusActive());
     m_statusAction->setEnabled(false);
@@ -123,6 +129,10 @@ void TrayManager::retranslateUi() {
     m_triggerLongAction->setText(loc.actionTakeLongNow());
     m_settingsAction->setText(loc.actionSettings());
     m_quitAction->setText(loc.actionQuit());
+
+    if (m_updateAction && m_updateAction->isVisible() && !m_latestVersion.isEmpty()) {
+        m_updateAction->setText(loc.actionUpdateAvailable().arg(m_latestVersion));
+    }
 
     onStateChanged(m_controller->state());
     updateMenuText(m_lastSecToShort, m_lastSecToLong);
@@ -219,3 +229,30 @@ void TrayManager::notifyAlreadyRunning() {
         );
     }
 }
+
+void TrayManager::onUpdateAvailable(const QString& version, const QString& releaseUrl, const QString& releaseNotes) {
+    Q_UNUSED(releaseNotes);
+    m_latestVersion = version;
+    m_latestReleaseUrl = releaseUrl;
+
+    auto& loc = Localization::instance();
+    m_updateAction->setText(loc.actionUpdateAvailable().arg(version));
+    m_updateAction->setVisible(true);
+
+    if (m_trayIcon) {
+        m_trayIcon->showMessage(
+            loc.updateNotifTitle(),
+            loc.updateNotifBody().arg(version),
+            QSystemTrayIcon::Information,
+            8000
+        );
+    }
+}
+
+void TrayManager::onOpenReleaseUrl() {
+    QString url = m_latestReleaseUrl.isEmpty() 
+        ? QStringLiteral("https://github.com/alierenaltindag/protect-eye/releases/latest") 
+        : m_latestReleaseUrl;
+    QDesktopServices::openUrl(QUrl(url));
+}
+

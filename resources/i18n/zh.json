@@ -66,7 +66,16 @@
     "cli_opt_test_break": "启动时立即触发测试用全屏休息界面",
     "cli_opt_test_warning": "启动时立即触发测试用休息预告通知",
     "uninstall_running": "正在运行 ProtectEye 卸载向导...",
-    "uninstall_win_hint": "在 Windows 上，请通过“设置 > 已安装的应用”或开始菜单快捷方式卸载。"
+    "uninstall_win_hint": "在 Windows 上，请通过“设置 > 已安装的应用”或开始菜单快捷方式卸载。",
+    "setting_check_updates": "自动检查更新",
+    "btn_check_updates": "立即检查",
+    "update_status_checking": "正在检查更新...",
+    "update_status_uptodate": "ProtectEye 已是最新版本 (v%1)",
+    "update_status_available": "发现新版本：v%1",
+    "update_status_failed": "检查更新失败。",
+    "action_update_available": "✨ 发现新版本：v%1",
+    "update_notif_title": "ProtectEye 更新可用",
+    "update_notif_body": "版本 %1 现已推出，点击前往下载。"
   },
   "short_tips": [
     "20-20-20 法则：眺望至少 6 米（20英尺）外的景物 20 秒钟。",

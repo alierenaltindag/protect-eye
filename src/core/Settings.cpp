@@ -30,6 +30,8 @@ void Settings::load() {
     bool hasAutostartKey = m_qsettings.contains("features/autostart_enabled");
     m_autostartEnabled = m_qsettings.value("features/autostart_enabled", true).toBool();
     m_interactiveExercisesEnabled = m_qsettings.value("features/interactive_exercises_enabled", true).toBool();
+    m_checkUpdatesEnabled = m_qsettings.value("features/check_updates_enabled", true).toBool();
+    m_lastUpdateCheckTime = m_qsettings.value("features/last_update_check_time", 0).toLongLong();
 
     m_language = m_qsettings.value("general/language", QStringLiteral("auto")).toString();
     Localization::instance().setLanguageByCode(m_language);
@@ -54,6 +56,8 @@ void Settings::save() {
     m_qsettings.setValue("features/screen_lock_check_enabled", m_screenLockCheckEnabled);
     m_qsettings.setValue("features/autostart_enabled", m_autostartEnabled);
     m_qsettings.setValue("features/interactive_exercises_enabled", m_interactiveExercisesEnabled);
+    m_qsettings.setValue("features/check_updates_enabled", m_checkUpdatesEnabled);
+    m_qsettings.setValue("features/last_update_check_time", m_lastUpdateCheckTime);
 
     m_qsettings.setValue("general/language", m_language);
     m_qsettings.sync();
@@ -76,6 +80,8 @@ void Settings::resetToDefaults() {
     m_screenLockCheckEnabled = true;
     m_autostartEnabled = true;
     m_interactiveExercisesEnabled = true;
+    m_checkUpdatesEnabled = true;
+    m_lastUpdateCheckTime = 0;
 
     m_language = QStringLiteral("auto");
     Localization::instance().setLanguageByCode(m_language);
@@ -153,6 +159,18 @@ void Settings::setAutostartEnabled(bool enabled) {
 void Settings::setInteractiveExercisesEnabled(bool enabled) {
     if (m_interactiveExercisesEnabled != enabled) {
         m_interactiveExercisesEnabled = enabled;
+    }
+}
+
+void Settings::setCheckUpdatesEnabled(bool enabled) {
+    if (m_checkUpdatesEnabled != enabled) {
+        m_checkUpdatesEnabled = enabled;
+    }
+}
+
+void Settings::setLastUpdateCheckTime(qint64 timestamp) {
+    if (m_lastUpdateCheckTime != timestamp) {
+        m_lastUpdateCheckTime = timestamp;
     }
 }
 

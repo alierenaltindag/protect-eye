@@ -43,6 +43,10 @@ RestartApplications=no
 Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
+[CustomMessages]
+turkish.PreviousInstallPrompt=Sistemde mevcut bir ProtectEye kurulumu tespit edildi.%n%nTemiz bir kurulum için eski sürüm tamamen kaldırılsın mı?
+english.PreviousInstallPrompt=An existing ProtectEye installation was detected.%n%nWould you like to completely remove the previous version before continuing?
+
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "autostart"; Description: "Windows başladığında otomatik çalıştır (Önerilir)"; GroupDescription: "Başlangıç Ayarları:"
@@ -78,12 +82,41 @@ begin
   Result := True;
 end;
 
-// Close running instance at the very beginning of installation/update
+// Check for existing installation
+function GetPreviousUninstallString(): String;
+var
+  sUninstPath: String;
+begin
+  sUninstPath := '';
+  // Check HKCU (PrivilegesRequired=lowest) and fallback to HKLM
+  if not RegQueryStringValue(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{D9A83F42-B35E-4F28-8C61-B65E478F12A0}_is1', 'UninstallString', sUninstPath) then
+    RegQueryStringValue(HKLM, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{D9A83F42-B35E-4F28-8C61-B65E478F12A0}_is1', 'UninstallString', sUninstPath);
+  Result := sUninstPath;
+end;
+
+// Close running instance and prompt user for clean installation if previous install is found
 function InitializeSetup(): Boolean;
 var
   ErrorCode: Integer;
+  OldUninstallString: String;
 begin
+  // Terminate running ProtectEye instance silently
   Exec('taskkill.exe', '/F /IM {#MyAppExeName}', '', SW_HIDE, ewWaitUntilTerminated, ErrorCode);
+
+  OldUninstallString := GetPreviousUninstallString();
+  if OldUninstallString <> '' then
+  begin
+    OldUninstallString := RemoveQuotes(OldUninstallString);
+    if FileExists(OldUninstallString) then
+    begin
+      if SuppressibleMsgBox(CustomMessage('PreviousInstallPrompt'), mbConfirmation, MB_YESNO, IDYES) = IDYES then
+      begin
+        // Run uninstaller silently and wait for completion before proceeding
+        Exec(OldUninstallString, '/SILENT /NORESTART', '', SW_HIDE, ewWaitUntilTerminated, ErrorCode);
+      end;
+    end;
+  end;
+
   Result := True;
 end;
 

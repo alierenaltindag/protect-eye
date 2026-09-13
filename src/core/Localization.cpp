@@ -468,6 +468,42 @@ QString Localization::checkInteractiveExercises() const {
     return get(QStringLiteral("check_interactive_exercises"));
 }
 
+QString Localization::checkUpdates() const {
+    return get(QStringLiteral("setting_check_updates"), QStringLiteral("Automatically check for updates"));
+}
+
+QString Localization::btnCheckUpdates() const {
+    return get(QStringLiteral("btn_check_updates"), QStringLiteral("Check Now"));
+}
+
+QString Localization::updateStatusChecking() const {
+    return get(QStringLiteral("update_status_checking"), QStringLiteral("Checking for updates..."));
+}
+
+QString Localization::updateStatusUpToDate() const {
+    return get(QStringLiteral("update_status_uptodate"), QStringLiteral("ProtectEye is up to date (v%1)"));
+}
+
+QString Localization::updateStatusAvailable() const {
+    return get(QStringLiteral("update_status_available"), QStringLiteral("New version available: v%1"));
+}
+
+QString Localization::updateStatusFailed() const {
+    return get(QStringLiteral("update_status_failed"), QStringLiteral("Failed to check for updates."));
+}
+
+QString Localization::actionUpdateAvailable() const {
+    return get(QStringLiteral("action_update_available"), QStringLiteral("✨ Update Available: v%1"));
+}
+
+QString Localization::updateNotifTitle() const {
+    return get(QStringLiteral("update_notif_title"), QStringLiteral("ProtectEye Update Available"));
+}
+
+QString Localization::updateNotifBody() const {
+    return get(QStringLiteral("update_notif_body"), QStringLiteral("Version %1 is now available. Click to download."));
+}
+
 QString Localization::buttonDefaults() const {
     return get(QStringLiteral("button_defaults"));
 }

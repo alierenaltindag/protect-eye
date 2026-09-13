@@ -123,6 +123,15 @@ public:
     QString checkLock() const;
     QString checkAutostart() const;
     QString checkInteractiveExercises() const;
+    QString checkUpdates() const;
+    QString btnCheckUpdates() const;
+    QString updateStatusChecking() const;
+    QString updateStatusUpToDate() const;
+    QString updateStatusAvailable() const;
+    QString updateStatusFailed() const;
+    QString actionUpdateAvailable() const;
+    QString updateNotifTitle() const;
+    QString updateNotifBody() const;
     QString buttonDefaults() const;
     QString buttonCancel() const;
     QString buttonSave() const;

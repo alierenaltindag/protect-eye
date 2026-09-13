@@ -6,6 +6,7 @@
 
 #include "services/DndMonitor.h"
 #include "services/ScreenLockMonitor.h"
+#include "services/UpdateChecker.h"
 #include "utils/AutostartHelper.h"
 #include "ui/OverlayWindow.h"
 #include "ui/OverlayManager.h"
@@ -567,6 +568,61 @@ private slots:
         }
 
         // Reset to Auto
+        loc.setLanguageByCode(QStringLiteral("auto"));
+    }
+
+    void testUpdateCheckerVersionComparison() {
+        // Standard semver comparisons
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("1.0.4"), QStringLiteral("1.0.3")), 1);
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("1.0.3"), QStringLiteral("1.0.4")), -1);
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("1.0.3"), QStringLiteral("1.0.3")), 0);
+
+        // 'v' prefix handling
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("v1.0.4"), QStringLiteral("1.0.3")), 1);
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("1.0.3"), QStringLiteral("v1.0.3")), 0);
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("v2.0.0"), QStringLiteral("v1.99.99")), 1);
+
+        // Subversion and digit padding
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("1.0"), QStringLiteral("1.0.0")), 0);
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("1.0.3.1"), QStringLiteral("1.0.3")), 1);
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("1.0.3"), QStringLiteral("1.0.3.1")), -1);
+
+        // Suffix handling (-beta, -rc)
+        QCOMPARE(UpdateChecker::compareVersions(QStringLiteral("v1.0.4-beta"), QStringLiteral("v1.0.3")), 1);
+
+        // Current version check
+        QVERIFY(!UpdateChecker::currentVersion().isEmpty());
+    }
+
+    void testUpdateSettingsAndLocalization() {
+        auto& s = Settings::instance();
+        s.resetToDefaults();
+        QCOMPARE(s.checkUpdatesEnabled(), true);
+
+        s.setCheckUpdatesEnabled(false);
+        QCOMPARE(s.checkUpdatesEnabled(), false);
+        s.save();
+        s.load();
+        QCOMPARE(s.checkUpdatesEnabled(), false);
+
+        s.resetToDefaults();
+        QCOMPARE(s.checkUpdatesEnabled(), true);
+
+        auto& loc = Localization::instance();
+        const auto langs = loc.availableLanguages();
+        for (const auto& lang : langs) {
+            loc.setLanguageByCode(lang.code);
+            QVERIFY(!loc.checkUpdates().isEmpty());
+            QVERIFY(!loc.btnCheckUpdates().isEmpty());
+            QVERIFY(!loc.updateStatusChecking().isEmpty());
+            QVERIFY(!loc.updateStatusUpToDate().isEmpty());
+            QVERIFY(!loc.updateStatusAvailable().isEmpty());
+            QVERIFY(!loc.updateStatusFailed().isEmpty());
+            QVERIFY(!loc.actionUpdateAvailable().isEmpty());
+            QVERIFY(!loc.updateNotifTitle().isEmpty());
+            QVERIFY(!loc.updateNotifBody().isEmpty());
+        }
+
         loc.setLanguageByCode(QStringLiteral("auto"));
     }
 };

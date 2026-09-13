@@ -72,4 +72,16 @@ for code, data in all_langs.items():
         json.dump(data, f, ensure_ascii=False, indent=2)
     print(f"Successfully generated {out_file} ({data['name']})")
 
-print(f"All {len(ALL_LANGS)} languages successfully validated and generated!")
+# Validate tr.json
+tr_path = os.path.join(I18N_DIR, "tr.json")
+with open(tr_path, "r", encoding="utf-8") as f:
+    tr_data = json.load(f)
+tr_missing = expected_keys - set(tr_data["strings"].keys())
+tr_extra = set(tr_data["strings"].keys()) - expected_keys
+if tr_missing:
+    raise ValueError(f"Language tr is missing strings: {tr_missing}")
+if tr_extra:
+    raise ValueError(f"Language tr has extra strings: {tr_extra}")
+print(f"Successfully validated {tr_path} (Türkçe)")
+
+print(f"All {len(all_langs) + 2} languages (including en, tr) successfully validated and generated!")

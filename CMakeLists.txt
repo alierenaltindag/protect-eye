@@ -47,6 +47,7 @@ set(SOURCES
     src/services/ScreenLockMonitor.cpp
     src/services/SoundManager.cpp
     src/services/NotificationService.cpp
+    src/services/UpdateChecker.cpp
     src/ui/EyeExerciseWidget.cpp
     src/ui/OverlayWindow.cpp
     src/ui/OverlayManager.cpp
@@ -65,8 +66,8 @@ set(HEADERS
     src/services/DndMonitor.h
     src/services/ScreenLockMonitor.h
     src/services/SoundManager.h
-
     src/services/NotificationService.h
+    src/services/UpdateChecker.h
     src/ui/EyeExerciseWidget.h
     src/ui/OverlayWindow.h
     src/ui/OverlayManager.h
@@ -172,6 +173,7 @@ if (Qt6Test_FOUND)
         src/core/BreakController.cpp
         src/services/DndMonitor.cpp
         src/services/ScreenLockMonitor.cpp
+        src/services/UpdateChecker.cpp
         src/utils/AutostartHelper.cpp
         src/ui/OverlayWindow.cpp
         src/ui/OverlayManager.cpp
@@ -179,14 +181,18 @@ if (Qt6Test_FOUND)
         resources/resources.qrc
     )
 
-
     add_executable(test_protecteye ${TEST_SOURCES})
     target_include_directories(test_protecteye PRIVATE src)
     target_link_libraries(test_protecteye PRIVATE
         Qt6::Core
         Qt6::Widgets
+        Qt6::Network
         Qt6::Test
         ${EXTRA_LIBS}
+    )
+
+    target_compile_definitions(test_protecteye PRIVATE
+        PROTECTEYE_VERSION="${PROJECT_VERSION}"
     )
 
     add_test(NAME ProtectEyeUnitTests COMMAND test_protecteye)

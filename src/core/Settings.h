@@ -44,6 +44,12 @@ public:
     bool interactiveExercisesEnabled() const { return m_interactiveExercisesEnabled; }
     void setInteractiveExercisesEnabled(bool enabled);
 
+    bool checkUpdatesEnabled() const { return m_checkUpdatesEnabled; }
+    void setCheckUpdatesEnabled(bool enabled);
+
+    qint64 lastUpdateCheckTime() const { return m_lastUpdateCheckTime; }
+    void setLastUpdateCheckTime(qint64 timestamp);
+
     // Language ("auto", "en", "tr")
     QString language() const { return m_language; }
     void setLanguage(const QString& lang);
@@ -76,6 +82,8 @@ private:
     bool m_screenLockCheckEnabled{true};
     bool m_autostartEnabled{false};
     bool m_interactiveExercisesEnabled{true};
+    bool m_checkUpdatesEnabled{true};
+    qint64 m_lastUpdateCheckTime{0};
 
     QString m_language{QStringLiteral("auto")};
 };

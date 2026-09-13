@@ -66,7 +66,16 @@
     "cli_opt_test_break": "Löst beim Start sofort ein Test-Pausenfenster aus",
     "cli_opt_test_warning": "Löst beim Start sofort eine Test-Vorwarnbenachrichtigung aus",
     "uninstall_running": "ProtectEye-Deinstallationsprogramm wird ausgeführt...",
-    "uninstall_win_hint": "Unter Windows über Einstellungen > Installierte Apps oder das Startmenü deinstallieren."
+    "uninstall_win_hint": "Unter Windows über Einstellungen > Installierte Apps oder das Startmenü deinstallieren.",
+    "setting_check_updates": "Automatisch nach Updates suchen",
+    "btn_check_updates": "Jetzt prüfen",
+    "update_status_checking": "Suche nach Updates...",
+    "update_status_uptodate": "ProtectEye ist auf dem neuesten Stand (v%1)",
+    "update_status_available": "Neue Version verfügbar: v%1",
+    "update_status_failed": "Fehler beim Suchen nach Updates.",
+    "action_update_available": "✨ Update verfügbar: v%1",
+    "update_notif_title": "ProtectEye-Update verfügbar",
+    "update_notif_body": "Version %1 ist jetzt verfügbar. Klicken zum Herunterladen."
   },
   "short_tips": [
     "20-20-20-Regel: Blicken Sie für 20 Sekunden auf einen Punkt in mindestens 6 Metern Entfernung.",

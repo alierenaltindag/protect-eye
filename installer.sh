@@ -43,9 +43,12 @@ fi
 
 # Parse arguments
 USER_MODE=false
+AUTO_YES=false
 for arg in "$@"; do
     if [ "$arg" = "--user" ]; then
         USER_MODE=true
+    elif [ "$arg" = "-y" ] || [ "$arg" = "--yes" ]; then
+        AUTO_YES=true
     fi
 done
 
@@ -107,6 +110,89 @@ if [ "$1" = "--uninstall" ] || [ "$1" = "-u" ]; then
         echo -e "${GREEN}[OK] ${APP_NAME} has been completely uninstalled.${NC}"
     fi
     exit 0
+fi
+
+# Detect previous installation and prompt for clean install
+PREV_INSTALLED=false
+for check_path in \
+    "/usr/local/bin/$BIN_NAME" \
+    "/usr/bin/$BIN_NAME" \
+    "$HOME/.local/bin/$BIN_NAME" \
+    "/usr/local/share/applications/$BIN_NAME.desktop" \
+    "/usr/share/applications/$BIN_NAME.desktop" \
+    "$HOME/.local/share/applications/$BIN_NAME.desktop"; do
+    if [ -f "$check_path" ]; then
+        PREV_INSTALLED=true
+        break
+    fi
+done
+
+if [ "$PREV_INSTALLED" = true ]; then
+    CLEAN_OLD=true
+    if [ "$AUTO_YES" = false ]; then
+        if [ -t 0 ] || [ -e /dev/tty ]; then
+            if [ "$IS_TR" = true ]; then
+                echo -e "${YELLOW}[UYARI] Sistemde mevcut bir ProtectEye kurulumu tespit edildi.${NC}"
+                echo -ne "${BOLD}Temiz bir kurulum için eski sürüm tamamen kaldırılsın mı? [E/h]: ${NC}"
+            else
+                echo -e "${YELLOW}[WARNING] An existing ProtectEye installation was detected.${NC}"
+                echo -ne "${BOLD}Would you like to completely remove the previous version before continuing? [Y/n]: ${NC}"
+            fi
+            if [ -e /dev/tty ]; then
+                read -r response < /dev/tty || response=""
+            else
+                read -r response || response=""
+            fi
+            if [[ "$response" =~ ^[nNhH] ]]; then
+                CLEAN_OLD=false
+            fi
+        fi
+    fi
+
+    if [ "$CLEAN_OLD" = true ]; then
+        if [ "$IS_TR" = true ]; then
+            echo -e "${BLUE}==> Eski kurulum temizleniyor...${NC}"
+        else
+            echo -e "${BLUE}==> Cleaning previous installation...${NC}"
+        fi
+
+        # Terminate running ProtectEye instances
+        CURRENT_PID=$$
+        PARENT_PID=$PPID
+        GRANDPARENT_PID=$(ps -o ppid= -p "$PARENT_PID" 2>/dev/null | tr -d ' ' || true)
+        for pid in $(pgrep -x "$BIN_NAME" 2>/dev/null || true); do
+            if [ "$pid" -ne "$CURRENT_PID" ] && [ "$pid" -ne "$PARENT_PID" ] && [ "$pid" -ne "$GRANDPARENT_PID" ]; then
+                kill "$pid" 2>/dev/null || true
+            fi
+        done
+
+        # Remove old files (both user and system level)
+        rm -f "$HOME/.local/bin/$BIN_NAME"
+        rm -f "$HOME/.local/share/applications/$BIN_NAME.desktop"
+        rm -f "$HOME/.config/autostart/$BIN_NAME.desktop"
+        rm -f "$HOME/.local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+        if [ -n "$SUDO" ] || [ "$(id -u)" -eq 0 ]; then
+            $SUDO rm -f "/usr/local/bin/$BIN_NAME"
+            $SUDO rm -f "/usr/bin/$BIN_NAME"
+            $SUDO rm -f "/usr/local/share/applications/$BIN_NAME.desktop"
+            $SUDO rm -f "/usr/share/applications/$BIN_NAME.desktop"
+            $SUDO rm -f "/etc/xdg/autostart/$BIN_NAME.desktop"
+            $SUDO rm -f "/usr/local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+            $SUDO rm -f "/usr/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+            if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+                $SUDO gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor 2>/dev/null || true
+            fi
+            if command -v update-desktop-database >/dev/null 2>&1; then
+                $SUDO update-desktop-database -q /usr/share/applications 2>/dev/null || true
+            fi
+        fi
+
+        if [ "$IS_TR" = true ]; then
+            echo -e "${GREEN}[TAMAMLANDI] Eski sürüm başarıyla temizlendi.${NC}\n"
+        else
+            echo -e "${GREEN}[OK] Previous version removed cleanly.${NC}\n"
+        fi
+    fi
 fi
 
 # Locate repository / source directory

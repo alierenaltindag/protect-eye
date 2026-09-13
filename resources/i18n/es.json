@@ -66,7 +66,16 @@
     "cli_opt_test_break": "Activa una ventana de descanso de prueba inmediatamente al iniciar",
     "cli_opt_test_warning": "Activa una notificación de aviso previo de prueba inmediatamente al iniciar",
     "uninstall_running": "Ejecutando el asistente de desinstalación de ProtectEye...",
-    "uninstall_win_hint": "En Windows, desinstale a través de Configuración > Aplicaciones instaladas o el menú Inicio."
+    "uninstall_win_hint": "En Windows, desinstale a través de Configuración > Aplicaciones instaladas o el menú Inicio.",
+    "setting_check_updates": "Buscar actualizaciones automáticamente",
+    "btn_check_updates": "Buscar ahora",
+    "update_status_checking": "Buscando actualizaciones...",
+    "update_status_uptodate": "ProtectEye está actualizado (v%1)",
+    "update_status_available": "Nueva versión disponible: v%1",
+    "update_status_failed": "Error al buscar actualizaciones.",
+    "action_update_available": "✨ Actualización disponible: v%1",
+    "update_notif_title": "Actualización de ProtectEye disponible",
+    "update_notif_body": "La versión %1 ya está disponible. Haz clic para descargar."
   },
   "short_tips": [
     "Regla 20-20-20: Mira a un punto a al menos 6 metros (20 pies) durante 20 segundos.",

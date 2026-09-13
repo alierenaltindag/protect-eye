@@ -12,6 +12,7 @@
 #include "services/ScreenLockMonitor.h"
 #include "services/SoundManager.h"
 #include "services/NotificationService.h"
+#include "services/UpdateChecker.h"
 #include "ui/OverlayManager.h"
 #include "ui/TrayManager.h"
 #include "utils/SingleInstanceGuard.h"
@@ -173,6 +174,12 @@ int main(int argc, char* argv[]) {
                      &breakController, [&breakController]() {
         breakController.snoozeBreak(Settings::instance().snoozeDurationSec());
     });
+
+    // Update Checker
+    auto& updateChecker = UpdateChecker::instance();
+    QObject::connect(&updateChecker, &UpdateChecker::updateAvailable,
+                     &trayManager, &TrayManager::onUpdateAvailable);
+    updateChecker.startBackgroundChecks();
 
     // Start controller
     breakController.start();

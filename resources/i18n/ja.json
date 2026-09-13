@@ -66,7 +66,16 @@
     "cli_opt_test_break": "起動時にテスト用休憩画面を即座に表示します",
     "cli_opt_test_warning": "起動時に休憩前の事前テスト通知を即座に表示します",
     "uninstall_running": "ProtectEye アンインストーラーを実行中...",
-    "uninstall_win_hint": "Windows では「設定 > インストールされているアプリ」またはスタートメニューからアンインストールしてください。"
+    "uninstall_win_hint": "Windows では「設定 > インストールされているアプリ」またはスタートメニューからアンインストールしてください。",
+    "setting_check_updates": "アップデートを自動的に確認する",
+    "btn_check_updates": "今すぐ確認",
+    "update_status_checking": "アップデートを確認中...",
+    "update_status_uptodate": "ProtectEye は最新バージョンです (v%1)",
+    "update_status_available": "新しいバージョンが利用可能です: v%1",
+    "update_status_failed": "アップデートの確認に失敗しました。",
+    "action_update_available": "✨ アップデートが利用可能: v%1",
+    "update_notif_title": "ProtectEye のアップデートがあります",
+    "update_notif_body": "バージョン %1 が利用可能です。クリックしてダウンロード。"
   },
   "short_tips": [
     "20-20-20ルール: 20秒間、少なくとも6メートル（20フィート）離れた遠くを見つめましょう。",

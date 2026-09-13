@@ -1,6 +1,7 @@
 #include "SettingsDialog.h"
 #include "core/Settings.h"
 #include "core/Localization.h"
+#include "services/UpdateChecker.h"
 #include "utils/AutostartHelper.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -12,7 +13,7 @@
 SettingsDialog::SettingsDialog(QWidget* parent)
     : QDialog(parent) {
     setWindowIcon(QIcon(QStringLiteral(":/app_icon.svg")));
-    resize(520, 640);
+    resize(520, 680);
 
     setupUi();
     applyStyles();
@@ -134,11 +135,30 @@ void SettingsDialog::setupUi() {
     m_autostartCheck->setCursor(Qt::PointingHandCursor);
     m_interactiveExercisesCheck->setCursor(Qt::PointingHandCursor);
 
+    m_checkUpdatesCheck = new QCheckBox(m_featGroup);
+    m_checkUpdatesCheck->setCursor(Qt::PointingHandCursor);
+
+    auto* updateRowLayout = new QHBoxLayout();
+    updateRowLayout->setSpacing(10);
+    updateRowLayout->setContentsMargins(0, 0, 0, 0);
+
+    m_checkUpdatesBtn = new QPushButton(m_featGroup);
+    m_checkUpdatesBtn->setCursor(Qt::PointingHandCursor);
+    m_checkUpdatesBtn->setFixedHeight(30);
+
+    m_updateStatusLabel = new QLabel(m_featGroup);
+    m_updateStatusLabel->setStyleSheet(QStringLiteral("color: #94a3b8; font-size: 11px;"));
+
+    updateRowLayout->addWidget(m_checkUpdatesBtn);
+    updateRowLayout->addWidget(m_updateStatusLabel, 1);
+
     featLayout->addWidget(m_soundCheck);
     featLayout->addWidget(m_dndCheck);
     featLayout->addWidget(m_lockCheck);
     featLayout->addWidget(m_autostartCheck);
     featLayout->addWidget(m_interactiveExercisesCheck);
+    featLayout->addWidget(m_checkUpdatesCheck);
+    featLayout->addLayout(updateRowLayout);
 
     mainLayout->addWidget(m_featGroup);
 
@@ -165,6 +185,10 @@ void SettingsDialog::setupUi() {
     connect(m_saveBtn, &QPushButton::clicked, this, &SettingsDialog::onSave);
     connect(m_cancelBtn, &QPushButton::clicked, this, &QDialog::reject);
     connect(m_resetBtn, &QPushButton::clicked, this, &SettingsDialog::onResetDefaults);
+
+    connect(m_checkUpdatesBtn, &QPushButton::clicked, this, &SettingsDialog::onCheckUpdatesClicked);
+    connect(&UpdateChecker::instance(), &UpdateChecker::checkStarted, this, &SettingsDialog::onCheckStarted);
+    connect(&UpdateChecker::instance(), &UpdateChecker::checkFinished, this, &SettingsDialog::onCheckFinished);
 }
 
 void SettingsDialog::retranslateUi() {
@@ -198,6 +222,8 @@ void SettingsDialog::retranslateUi() {
     m_lockCheck->setText(loc.checkLock());
     m_autostartCheck->setText(loc.checkAutostart());
     m_interactiveExercisesCheck->setText(loc.checkInteractiveExercises());
+    m_checkUpdatesCheck->setText(loc.checkUpdates());
+    m_checkUpdatesBtn->setText(loc.btnCheckUpdates());
 
     m_resetBtn->setText(loc.buttonDefaults());
     m_cancelBtn->setText(loc.buttonCancel());
@@ -390,6 +416,7 @@ void SettingsDialog::loadValues() {
     m_lockCheck->setChecked(s.screenLockCheckEnabled());
     m_autostartCheck->setChecked(AutostartHelper::isAutostartEnabled());
     m_interactiveExercisesCheck->setChecked(s.interactiveExercisesEnabled());
+    m_checkUpdatesCheck->setChecked(s.checkUpdatesEnabled());
 
     QString lang = s.language().toLower();
     int foundIdx = m_langCombo->findData(lang);
@@ -421,6 +448,7 @@ void SettingsDialog::onSave() {
     s.setScreenLockCheckEnabled(m_lockCheck->isChecked());
     s.setAutostartEnabled(m_autostartCheck->isChecked());
     s.setInteractiveExercisesEnabled(m_interactiveExercisesCheck->isChecked());
+    s.setCheckUpdatesEnabled(m_checkUpdatesCheck->isChecked());
 
     QString langCode = m_langCombo->currentData().toString();
     if (langCode.isEmpty()) langCode = QStringLiteral("auto");
@@ -437,4 +465,28 @@ void SettingsDialog::onResetDefaults() {
     AutostartHelper::setAutostartEnabled(true);
     loadValues();
     retranslateUi();
+}
+
+void SettingsDialog::onCheckUpdatesClicked() {
+    UpdateChecker::instance().checkForUpdates(true);
+}
+
+void SettingsDialog::onCheckStarted() {
+    m_checkUpdatesBtn->setEnabled(false);
+    m_updateStatusLabel->setStyleSheet(QStringLiteral("color: #94a3b8; font-size: 11px;"));
+    m_updateStatusLabel->setText(Localization::instance().updateStatusChecking());
+}
+
+void SettingsDialog::onCheckFinished(bool updateFound, const QString& latestVersion, const QString& errorString) {
+    m_checkUpdatesBtn->setEnabled(true);
+    if (!errorString.isEmpty()) {
+        m_updateStatusLabel->setStyleSheet(QStringLiteral("color: #f87171; font-size: 11px;"));
+        m_updateStatusLabel->setText(Localization::instance().updateStatusFailed());
+    } else if (updateFound) {
+        m_updateStatusLabel->setStyleSheet(QStringLiteral("color: #4ade80; font-size: 11px; font-weight: bold;"));
+        m_updateStatusLabel->setText(Localization::instance().updateStatusAvailable().arg(latestVersion));
+    } else {
+        m_updateStatusLabel->setStyleSheet(QStringLiteral("color: #38bdf8; font-size: 11px;"));
+        m_updateStatusLabel->setText(Localization::instance().updateStatusUpToDate().arg(UpdateChecker::currentVersion()));
+    }
 }

@@ -20,6 +20,9 @@ private slots:
     void onSave();
     void onResetDefaults();
     void onLanguageChanged(int index);
+    void onCheckUpdatesClicked();
+    void onCheckStarted();
+    void onCheckFinished(bool updateFound, const QString& latestVersion, const QString& errorString);
 
 private:
     void setupUi();
@@ -66,6 +69,10 @@ private:
     QCheckBox* m_lockCheck{nullptr};
     QCheckBox* m_autostartCheck{nullptr};
     QCheckBox* m_interactiveExercisesCheck{nullptr};
+    QCheckBox* m_checkUpdatesCheck{nullptr};
+
+    QPushButton* m_checkUpdatesBtn{nullptr};
+    QLabel* m_updateStatusLabel{nullptr};
 
     QPushButton* m_saveBtn{nullptr};
     QPushButton* m_cancelBtn{nullptr};

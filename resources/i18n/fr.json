@@ -66,7 +66,16 @@
     "cli_opt_test_break": "Déclenche un écran de pause de test immédiatement au démarrage",
     "cli_opt_test_warning": "Déclenche une notification d'avertissement préalable de test immédiatement au démarrage",
     "uninstall_running": "Exécution du programme de désinstallation de ProtectEye...",
-    "uninstall_win_hint": "Sur Windows, désinstallez via Paramètres > Applications installées ou le menu Démarrer."
+    "uninstall_win_hint": "Sur Windows, désinstallez via Paramètres > Applications installées ou le menu Démarrer.",
+    "setting_check_updates": "Rechercher automatiquement les mises à jour",
+    "btn_check_updates": "Vérifier maintenant",
+    "update_status_checking": "Recherche de mises à jour...",
+    "update_status_uptodate": "ProtectEye est à jour (v%1)",
+    "update_status_available": "Nouvelle version disponible : v%1",
+    "update_status_failed": "Échec de la recherche de mises à jour.",
+    "action_update_available": "✨ Mise à jour disponible : v%1",
+    "update_notif_title": "Mise à jour de ProtectEye disponible",
+    "update_notif_body": "La version %1 est maintenant disponible. Cliquez pour télécharger."
   },
   "short_tips": [
     "Règle 20-20-20 : Fixez un objet situé à 6 mètres (20 pieds) pendant 20 secondes.",

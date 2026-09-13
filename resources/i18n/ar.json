@@ -66,7 +66,16 @@
     "cli_opt_test_break": "تشغيل نافذة استراحة تجريبية فوراً عند بدء التشغيل",
     "cli_opt_test_warning": "تشغيل إشعار تحذيري تجريبي مسبق للاستراحة عند بدء التشغيل",
     "uninstall_running": "جاري تشغيل معالج إلغاء تثبيت ProtectEye...",
-    "uninstall_win_hint": "على نظام Windows، يُرجى إلغاء التثبيت عبر الإعدادات > التطبيقات المثبتة أو قائمة ابدأ."
+    "uninstall_win_hint": "على نظام Windows، يُرجى إلغاء التثبيت عبر الإعدادات > التطبيقات المثبتة أو قائمة ابدأ.",
+    "setting_check_updates": "التحقق من وجود تحديثات تلقائيًا",
+    "btn_check_updates": "تحقق الآن",
+    "update_status_checking": "جارٍ التحقق من وجود تحديثات...",
+    "update_status_uptodate": "برنامج ProtectEye محدث لأحدث إصدار (v%1)",
+    "update_status_available": "يتوفر إصدار جديد: v%1",
+    "update_status_failed": "فشل التحقق من وجود تحديثات.",
+    "action_update_available": "✨ يتوفر تحديث جديد: v%1",
+    "update_notif_title": "يتوفر تحديث لبرنامج ProtectEye",
+    "update_notif_body": "الإصدار %1 متوفر الآن. انقر للتنزيل."
   },
   "short_tips": [
     "قاعدة 20-20-20: انظر إلى شيء يبعد 6 أمتار (20 قدماً) على الأقل لمدة 20 ثانية.",
