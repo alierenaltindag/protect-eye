@@ -34,6 +34,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.0.6" date="2026-09-13">
+      <description>
+        <p>Reorganized Preferences dialog into a compact, modern 3-tab layout (Schedules, Smart Features, General &amp; Updates) with scroll area guarantees, perfectly optimized for laptops and smaller screens. Configured Clangd compilation database export for IDE support.</p>
+      </description>
+    </release>
     <release version="1.0.5" date="2026-09-13">
       <description>
         <p>Full multi-monitor eye break overlay coverage across Wayland, X11, and Windows, versioned Windows setup installer (ProtectEye_&lt;version&gt;_Setup.exe), and automated single source of truth version management.</p>
