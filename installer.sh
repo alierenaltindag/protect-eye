@@ -186,8 +186,10 @@ install_dependencies() {
     fi
 }
 
-# Check if build tools are ready
-if ! command -v cmake >/dev/null 2>&1 || ! command -v pkg-config >/dev/null 2>&1; then
+# Check if build tools and all Qt6 development modules are ready
+if ! command -v cmake >/dev/null 2>&1 || \
+    ! command -v pkg-config >/dev/null 2>&1 || \
+    ! pkg-config --exists Qt6Core Qt6Gui Qt6Widgets Qt6Multimedia Qt6Svg Qt6Network Qt6DBus; then
     if [ "$USER_MODE" = true ]; then
         if [ "$IS_TR" = true ]; then
             echo -e "${RED}[HATA] Gerekli derleme araçları (CMake veya pkg-config) sistemde bulunamadı.${NC}"
