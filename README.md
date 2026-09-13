@@ -187,6 +187,10 @@ graph TD
 - **Session Notifications:** Registers with `WTSRegisterSessionNotification` for instant workstation lock/unlock detection.
 - **Tray & Audio:** Uses low-latency `QSoundEffect` for break bells and native Windows system tray menu.
 
+### 🍎 What about macOS?
+
+> We’d love to protect Mac users' eyes too, but Apple insists on charging a \$99/year toll just for the privilege of giving away free open-source software without Gatekeeper warning users that the app is "damaged". Until someone donates a developer license—or Apple remembers what open source means—macOS support remains in the hands of the community! PRs from certified Mac developers are warmly welcome.
+
 ---
 
 ## ✨ Features

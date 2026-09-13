@@ -187,6 +187,10 @@ graph TD
 - **Oturum Kilit Bildirimleri:** `WTSRegisterSessionNotification` ile anlık iş istasyonu kilitlenme/kilit açılma olaylarını yakalar.
 - **Tepsi ve Düşük Gecikmeli Ses:** Düşük gecikmeli `QSoundEffect` ile mola başlangıç zilleri çalar ve yerel bildirim alanında çalışır.
 
+### 🍎 macOS Sürümü Nerede?
+
+> Mac kullanıcılarının gözlerini de seve seve korumak isterdik; fakat Apple, insanlara bedava bir açık kaynak yazılım hediye edebilmemiz için bile her yıl 99 dolar "vize ücreti" kesmekte ısrarcı. Biri geliştirici lisansı bağışlayana (ya da Apple açık kaynağın ne olduğunu hatırlayana) kadar Mac desteğini topluluğun ellerine bırakıyoruz! Sertifikalı Mac geliştiricilerinden gelecek PR'lar her zaman memnuniyetle karşılanır.
+
 ---
 
 ## ✨ Özellikler
