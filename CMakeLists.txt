@@ -188,6 +188,7 @@ if (Qt6Test_FOUND)
         src/ui/OverlayWindow.cpp
         src/ui/OverlayManager.cpp
         src/ui/EyeExerciseWidget.cpp
+        src/ui/SettingsDialog.cpp
         resources/resources.qrc
     )
 

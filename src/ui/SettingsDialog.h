@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QFormLayout>
+#include <QTabWidget>
+#include <QScrollArea>
 
 class SettingsDialog : public QDialog {
     Q_OBJECT
@@ -30,15 +32,21 @@ private:
     void applyStyles();
     void retranslateUi();
 
-    // Language
+    // Tab container & Header
+    QLabel* m_titleLabel{nullptr};
+    QTabWidget* m_tabWidget{nullptr};
+
+    // Tab 1: Schedules
+    QGroupBox* m_timesGroup{nullptr};
+
+    // Tab 2: Features
+    QGroupBox* m_featGroup{nullptr};
+
+    // Tab 3: Language & Updates
     QGroupBox* m_langGroup{nullptr};
     QLabel* m_langLabel{nullptr};
     QComboBox* m_langCombo{nullptr};
-
-    // Header & Groups
-    QLabel* m_titleLabel{nullptr};
-    QGroupBox* m_timesGroup{nullptr};
-    QGroupBox* m_featGroup{nullptr};
+    QGroupBox* m_updateGroup{nullptr};
 
     // Form labels
     QLabel* m_shortIntervalLabel{nullptr};

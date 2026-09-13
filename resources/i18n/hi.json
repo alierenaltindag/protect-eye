@@ -75,7 +75,11 @@
     "update_status_failed": "अपडेट जाँचने में विफल।",
     "action_update_available": "✨ नया अपडेट उपलब्ध है: v%1",
     "update_notif_title": "ProtectEye अपडेट उपलब्ध है",
-    "update_notif_body": "संस्करण %1 अब उपलब्ध है। डाउनलोड करने के लिए क्लिक करें।"
+    "update_notif_body": "संस्करण %1 अब उपलब्ध है। डाउनलोड करने के लिए क्लिक करें।",
+    "tab_schedules": "समय सारिणी",
+    "tab_smart_features": "विशेषताएं",
+    "tab_general": "सामान्य और अपडेट",
+    "group_updates": "सॉफ़्टवेयर अपडेट"
   },
   "short_tips": [
     "20-20-20 नियम: 20 सेकंड के लिए कम से कम 20 फीट (6 मीटर) दूर किसी वस्तु को देखें।",

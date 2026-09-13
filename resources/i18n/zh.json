@@ -75,7 +75,11 @@
     "update_status_failed": "检查更新失败。",
     "action_update_available": "✨ 发现新版本：v%1",
     "update_notif_title": "ProtectEye 更新可用",
-    "update_notif_body": "版本 %1 现已推出，点击前往下载。"
+    "update_notif_body": "版本 %1 现已推出，点击前往下载。",
+    "tab_schedules": "休息计划",
+    "tab_smart_features": "智能功能",
+    "tab_general": "常规与更新",
+    "group_updates": "软件更新"
   },
   "short_tips": [
     "20-20-20 法则：眺望至少 6 米（20英尺）外的景物 20 秒钟。",

@@ -75,7 +75,11 @@
     "update_status_failed": "Fehler beim Suchen nach Updates.",
     "action_update_available": "✨ Update verfügbar: v%1",
     "update_notif_title": "ProtectEye-Update verfügbar",
-    "update_notif_body": "Version %1 ist jetzt verfügbar. Klicken zum Herunterladen."
+    "update_notif_body": "Version %1 ist jetzt verfügbar. Klicken zum Herunterladen.",
+    "tab_schedules": "Pausen",
+    "tab_smart_features": "Funktionen",
+    "tab_general": "Allgemein & Updates",
+    "group_updates": "Software-Updates"
   },
   "short_tips": [
     "20-20-20-Regel: Blicken Sie für 20 Sekunden auf einen Punkt in mindestens 6 Metern Entfernung.",

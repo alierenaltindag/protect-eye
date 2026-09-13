@@ -388,6 +388,18 @@ QString Localization::settingsHeader() const {
     return get(QStringLiteral("settings_header"));
 }
 
+QString Localization::tabSchedules() const {
+    return get(QStringLiteral("tab_schedules"), groupBreakSchedules());
+}
+
+QString Localization::tabSmartFeatures() const {
+    return get(QStringLiteral("tab_smart_features"), groupSmartFeatures());
+}
+
+QString Localization::tabGeneral() const {
+    return get(QStringLiteral("tab_general"), groupLanguage());
+}
+
 QString Localization::groupBreakSchedules() const {
     return get(QStringLiteral("group_break_schedules"));
 }
@@ -398,6 +410,10 @@ QString Localization::groupSmartFeatures() const {
 
 QString Localization::groupLanguage() const {
     return get(QStringLiteral("group_language"));
+}
+
+QString Localization::groupUpdates() const {
+    return get(QStringLiteral("group_updates"));
 }
 
 QString Localization::labelLanguage() const {

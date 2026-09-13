@@ -75,7 +75,11 @@
     "update_status_failed": "アップデートの確認に失敗しました。",
     "action_update_available": "✨ アップデートが利用可能: v%1",
     "update_notif_title": "ProtectEye のアップデートがあります",
-    "update_notif_body": "バージョン %1 が利用可能です。クリックしてダウンロード。"
+    "update_notif_body": "バージョン %1 が利用可能です。クリックしてダウンロード。",
+    "tab_schedules": "休憩設定",
+    "tab_smart_features": "スマート機能",
+    "tab_general": "一般と更新",
+    "group_updates": "ソフトウェアの更新"
   },
   "short_tips": [
     "20-20-20ルール: 20秒間、少なくとも6メートル（20フィート）離れた遠くを見つめましょう。",

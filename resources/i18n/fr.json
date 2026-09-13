@@ -75,7 +75,11 @@
     "update_status_failed": "Échec de la recherche de mises à jour.",
     "action_update_available": "✨ Mise à jour disponible : v%1",
     "update_notif_title": "Mise à jour de ProtectEye disponible",
-    "update_notif_body": "La version %1 est maintenant disponible. Cliquez pour télécharger."
+    "update_notif_body": "La version %1 est maintenant disponible. Cliquez pour télécharger.",
+    "tab_schedules": "Horaires",
+    "tab_smart_features": "Fonctions",
+    "tab_general": "Général et Mises à jour",
+    "group_updates": "Mises à jour du logiciel"
   },
   "short_tips": [
     "Règle 20-20-20 : Fixez un objet situé à 6 mètres (20 pieds) pendant 20 secondes.",

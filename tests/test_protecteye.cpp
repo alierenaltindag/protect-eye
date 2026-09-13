@@ -10,8 +10,10 @@
 #include "utils/AutostartHelper.h"
 #include "ui/OverlayWindow.h"
 #include "ui/OverlayManager.h"
+#include "ui/SettingsDialog.h"
 #include <QLabel>
 #include <QPushButton>
+#include <QTabWidget>
 
 // Mock DndMonitor for testing DND logic
 class MockDndMonitor : public DndMonitor {
@@ -662,6 +664,37 @@ private slots:
             }
         }
         QCOMPARE(remainingVisible, 0);
+    }
+
+    void testSettingsDialogTabbedLayout() {
+        SettingsDialog dlg;
+        dlg.show();
+        qApp->processEvents();
+
+        QVERIFY(dlg.width() <= 600);
+        QVERIFY(dlg.height() <= 480);
+
+        auto* tabWidget = dlg.findChild<QTabWidget*>();
+        QVERIFY(tabWidget != nullptr);
+        QCOMPARE(tabWidget->count(), 3);
+
+        // Tab 0: Schedules
+        tabWidget->setCurrentIndex(0);
+        qApp->processEvents();
+        QPixmap p0 = dlg.grab();
+        p0.save(QStringLiteral("/home/aa-linux/.gemini/antigravity/brain/0c4ec0a9-540e-45d4-9649-6f38da9ba228/settings_tab1_schedules.png"));
+
+        // Tab 1: Features
+        tabWidget->setCurrentIndex(1);
+        qApp->processEvents();
+        QPixmap p1 = dlg.grab();
+        p1.save(QStringLiteral("/home/aa-linux/.gemini/antigravity/brain/0c4ec0a9-540e-45d4-9649-6f38da9ba228/settings_tab2_features.png"));
+
+        // Tab 2: General & Updates
+        tabWidget->setCurrentIndex(2);
+        qApp->processEvents();
+        QPixmap p2 = dlg.grab();
+        p2.save(QStringLiteral("/home/aa-linux/.gemini/antigravity/brain/0c4ec0a9-540e-45d4-9649-6f38da9ba228/settings_tab3_general.png"));
     }
 };
 

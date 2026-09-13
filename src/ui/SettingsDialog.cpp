@@ -13,7 +13,8 @@
 SettingsDialog::SettingsDialog(QWidget* parent)
     : QDialog(parent) {
     setWindowIcon(QIcon(QStringLiteral(":/app_icon.svg")));
-    resize(520, 680);
+    resize(560, 480);
+    setMinimumSize(500, 400);
 
     setupUi();
     applyStyles();
@@ -23,50 +24,40 @@ SettingsDialog::SettingsDialog(QWidget* parent)
 
 void SettingsDialog::setupUi() {
     auto* mainLayout = new QVBoxLayout(this);
-    mainLayout->setSpacing(16);
-    mainLayout->setContentsMargins(24, 24, 24, 24);
+    mainLayout->setSpacing(12);
+    mainLayout->setContentsMargins(18, 16, 18, 14);
 
     // Header
     auto* headerLayout = new QHBoxLayout();
+    headerLayout->setSpacing(10);
     auto* iconLabel = new QLabel(this);
-    iconLabel->setPixmap(QIcon(QStringLiteral(":/app_icon.svg")).pixmap(36, 36));
+    iconLabel->setPixmap(QIcon(QStringLiteral(":/app_icon.svg")).pixmap(30, 30));
     m_titleLabel = new QLabel(this);
-    m_titleLabel->setStyleSheet("font-size: 19px; font-weight: 700; color: #f8fafc;");
+    m_titleLabel->setStyleSheet(QStringLiteral("font-size: 17px; font-weight: 700; color: #f8fafc;"));
     headerLayout->addWidget(iconLabel);
     headerLayout->addWidget(m_titleLabel);
     headerLayout->addStretch();
     mainLayout->addLayout(headerLayout);
 
-    // Group 0: Language & Appearance
-    m_langGroup = new QGroupBox(this);
-    auto* langLayout = new QHBoxLayout(m_langGroup);
-    langLayout->setContentsMargins(16, 16, 16, 16);
-    langLayout->setSpacing(12);
+    // Tab Widget
+    m_tabWidget = new QTabWidget(this);
+    m_tabWidget->setCursor(Qt::PointingHandCursor);
 
-    m_langLabel = new QLabel(m_langGroup);
-    m_langCombo = new QComboBox(m_langGroup);
-    m_langCombo->setCursor(Qt::PointingHandCursor);
-    m_langCombo->setMinimumWidth(220);
+    auto createScrollPage = [this](QWidget* content) -> QScrollArea* {
+        auto* scroll = new QScrollArea(m_tabWidget);
+        scroll->setWidget(content);
+        scroll->setWidgetResizable(true);
+        scroll->setFrameShape(QFrame::NoFrame);
+        scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scroll->viewport()->setAutoFillBackground(false);
+        scroll->viewport()->setStyleSheet(QStringLiteral("background: transparent; border: none;"));
+        scroll->setStyleSheet(QStringLiteral("background: transparent; border: none;"));
+        return scroll;
+    };
 
-    m_langCombo->addItem(Localization::instance().langAuto(), QStringLiteral("auto"));
-    for (const auto& lang : Localization::instance().availableLanguages()) {
-        m_langCombo->addItem(lang.name, lang.code);
-    }
-
-    langLayout->addWidget(m_langLabel);
-    langLayout->addWidget(m_langCombo);
-    langLayout->addStretch();
-
-    mainLayout->addWidget(m_langGroup);
-
-    // Group 1: Break Times
-    m_timesGroup = new QGroupBox(this);
-    auto* timesForm = new QFormLayout(m_timesGroup);
-    timesForm->setSpacing(12);
-    timesForm->setLabelAlignment(Qt::AlignRight);
-
-    auto createDurationRow = [this](QSpinBox* spin, QLabel*& unitLabel) -> QWidget* {
-        auto* container = new QWidget(m_timesGroup);
+    auto createDurationRow = [](QWidget* parent, QSpinBox* spin, QLabel*& unitLabel) -> QWidget* {
+        auto* container = new QWidget(parent);
         auto* rowLayout = new QHBoxLayout(container);
         rowLayout->setContentsMargins(0, 0, 0, 0);
         rowLayout->setSpacing(10);
@@ -82,6 +73,22 @@ void SettingsDialog::setupUi() {
         rowLayout->addStretch();
         return container;
     };
+
+    // ==========================================
+    // Tab 1: Break Schedules
+    // ==========================================
+    auto* schedContent = new QWidget();
+    schedContent->setObjectName(QStringLiteral("schedContent"));
+    auto* schedLayout = new QVBoxLayout(schedContent);
+    schedLayout->setContentsMargins(4, 4, 4, 4);
+    schedLayout->setSpacing(8);
+
+    m_timesGroup = new QGroupBox(schedContent);
+    auto* timesForm = new QFormLayout(m_timesGroup);
+    timesForm->setVerticalSpacing(8);
+    timesForm->setHorizontalSpacing(14);
+    timesForm->setLabelAlignment(Qt::AlignRight);
+    timesForm->setContentsMargins(14, 16, 14, 14);
 
     m_shortIntervalSpin = new QSpinBox(m_timesGroup);
     m_shortIntervalSpin->setRange(1, 120);
@@ -108,20 +115,31 @@ void SettingsDialog::setupUi() {
     m_snoozeLabel = new QLabel(m_timesGroup);
     m_preWarnLabel = new QLabel(m_timesGroup);
 
-    timesForm->addRow(m_shortIntervalLabel, createDurationRow(m_shortIntervalSpin, m_shortIntervalUnit));
-    timesForm->addRow(m_shortDurationLabel, createDurationRow(m_shortDurationSpin, m_shortDurationUnit));
-    timesForm->addRow(m_longIntervalLabel, createDurationRow(m_longIntervalSpin, m_longIntervalUnit));
-    timesForm->addRow(m_longDurationLabel, createDurationRow(m_longDurationSpin, m_longDurationUnit));
-    timesForm->addRow(m_snoozeLabel, createDurationRow(m_snoozeSpin, m_snoozeUnit));
-    timesForm->addRow(m_preWarnLabel, createDurationRow(m_preWarnSpin, m_preWarnUnit));
+    timesForm->addRow(m_shortIntervalLabel, createDurationRow(m_timesGroup, m_shortIntervalSpin, m_shortIntervalUnit));
+    timesForm->addRow(m_shortDurationLabel, createDurationRow(m_timesGroup, m_shortDurationSpin, m_shortDurationUnit));
+    timesForm->addRow(m_longIntervalLabel, createDurationRow(m_timesGroup, m_longIntervalSpin, m_longIntervalUnit));
+    timesForm->addRow(m_longDurationLabel, createDurationRow(m_timesGroup, m_longDurationSpin, m_longDurationUnit));
+    timesForm->addRow(m_snoozeLabel, createDurationRow(m_timesGroup, m_snoozeSpin, m_snoozeUnit));
+    timesForm->addRow(m_preWarnLabel, createDurationRow(m_timesGroup, m_preWarnSpin, m_preWarnUnit));
 
-    mainLayout->addWidget(m_timesGroup);
+    schedLayout->addWidget(m_timesGroup);
+    schedLayout->addStretch();
 
-    // Group 2: Features
-    m_featGroup = new QGroupBox(this);
+    m_tabWidget->addTab(createScrollPage(schedContent), QString());
+
+    // ==========================================
+    // Tab 2: Smart Features
+    // ==========================================
+    auto* featContent = new QWidget();
+    featContent->setObjectName(QStringLiteral("featContent"));
+    auto* featContentLayout = new QVBoxLayout(featContent);
+    featContentLayout->setContentsMargins(4, 4, 4, 4);
+    featContentLayout->setSpacing(10);
+
+    m_featGroup = new QGroupBox(featContent);
     auto* featLayout = new QVBoxLayout(m_featGroup);
-    featLayout->setSpacing(12);
-    featLayout->setContentsMargins(16, 18, 16, 16);
+    featLayout->setSpacing(10);
+    featLayout->setContentsMargins(14, 16, 14, 14);
 
     m_soundCheck = new QCheckBox(m_featGroup);
     m_dndCheck = new QCheckBox(m_featGroup);
@@ -135,32 +153,91 @@ void SettingsDialog::setupUi() {
     m_autostartCheck->setCursor(Qt::PointingHandCursor);
     m_interactiveExercisesCheck->setCursor(Qt::PointingHandCursor);
 
-    m_checkUpdatesCheck = new QCheckBox(m_featGroup);
+    featLayout->addWidget(m_soundCheck);
+    featLayout->addWidget(m_dndCheck);
+    featLayout->addWidget(m_lockCheck);
+    featLayout->addWidget(m_autostartCheck);
+    featLayout->addWidget(m_interactiveExercisesCheck);
+
+    featContentLayout->addWidget(m_featGroup);
+    featContentLayout->addStretch();
+
+    m_tabWidget->addTab(createScrollPage(featContent), QString());
+
+    // ==========================================
+    // Tab 3: Language & Updates
+    // ==========================================
+    auto* genContent = new QWidget();
+    genContent->setObjectName(QStringLiteral("genContent"));
+    auto* genContentLayout = new QVBoxLayout(genContent);
+    genContentLayout->setContentsMargins(4, 4, 4, 4);
+    genContentLayout->setSpacing(10);
+
+    // Language Group
+    m_langGroup = new QGroupBox(genContent);
+    auto* langLayout = new QHBoxLayout(m_langGroup);
+    langLayout->setContentsMargins(14, 16, 14, 14);
+    langLayout->setSpacing(12);
+
+    m_langLabel = new QLabel(m_langGroup);
+    m_langCombo = new QComboBox(m_langGroup);
+    m_langCombo->setCursor(Qt::PointingHandCursor);
+    m_langCombo->setMinimumWidth(220);
+
+    m_langCombo->addItem(Localization::instance().langAuto(), QStringLiteral("auto"));
+    for (const auto& lang : Localization::instance().availableLanguages()) {
+        m_langCombo->addItem(lang.name, lang.code);
+    }
+
+    langLayout->addWidget(m_langLabel);
+    langLayout->addWidget(m_langCombo);
+    langLayout->addStretch();
+    genContentLayout->addWidget(m_langGroup);
+
+    // Updates Group
+    m_updateGroup = new QGroupBox(genContent);
+    auto* updLayout = new QVBoxLayout(m_updateGroup);
+    updLayout->setContentsMargins(14, 16, 14, 14);
+    updLayout->setSpacing(10);
+
+    m_checkUpdatesCheck = new QCheckBox(m_updateGroup);
     m_checkUpdatesCheck->setCursor(Qt::PointingHandCursor);
 
     auto* updateRowLayout = new QHBoxLayout();
     updateRowLayout->setSpacing(10);
     updateRowLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_checkUpdatesBtn = new QPushButton(m_featGroup);
+    m_checkUpdatesBtn = new QPushButton(m_updateGroup);
     m_checkUpdatesBtn->setCursor(Qt::PointingHandCursor);
-    m_checkUpdatesBtn->setFixedHeight(30);
+    m_checkUpdatesBtn->setMinimumHeight(32);
 
-    m_updateStatusLabel = new QLabel(m_featGroup);
+    m_updateStatusLabel = new QLabel(m_updateGroup);
     m_updateStatusLabel->setStyleSheet(QStringLiteral("color: #94a3b8; font-size: 11px;"));
 
     updateRowLayout->addWidget(m_checkUpdatesBtn);
     updateRowLayout->addWidget(m_updateStatusLabel, 1);
 
-    featLayout->addWidget(m_soundCheck);
-    featLayout->addWidget(m_dndCheck);
-    featLayout->addWidget(m_lockCheck);
-    featLayout->addWidget(m_autostartCheck);
-    featLayout->addWidget(m_interactiveExercisesCheck);
-    featLayout->addWidget(m_checkUpdatesCheck);
-    featLayout->addLayout(updateRowLayout);
+    updLayout->addWidget(m_checkUpdatesCheck);
+    updLayout->addLayout(updateRowLayout);
+    genContentLayout->addWidget(m_updateGroup);
 
-    mainLayout->addWidget(m_featGroup);
+    // Info footer
+    auto* infoCard = new QWidget(genContent);
+    auto* infoLayout = new QHBoxLayout(infoCard);
+    infoLayout->setContentsMargins(4, 2, 4, 2);
+    infoLayout->setSpacing(8);
+
+    auto* verLabel = new QLabel(QStringLiteral("ProtectEye v") + UpdateChecker::currentVersion() + QStringLiteral(" • Open Source"), infoCard);
+    verLabel->setStyleSheet(QStringLiteral("color: #64748b; font-size: 11px; font-weight: 500;"));
+    infoLayout->addWidget(verLabel);
+    infoLayout->addStretch();
+    genContentLayout->addWidget(infoCard);
+
+    genContentLayout->addStretch();
+
+    m_tabWidget->addTab(createScrollPage(genContent), QString());
+
+    mainLayout->addWidget(m_tabWidget, 1);
 
     // Action Buttons
     auto* btnLayout = new QHBoxLayout();
@@ -194,14 +271,18 @@ void SettingsDialog::setupUi() {
 void SettingsDialog::retranslateUi() {
     auto& loc = Localization::instance();
 
+    auto escapeMnemonic = [](QString str) -> QString {
+        return str.replace(QStringLiteral("&"), QStringLiteral("&&"));
+    };
+
     setWindowTitle(loc.settingsTitle());
     m_titleLabel->setText(loc.settingsHeader());
 
-    m_langGroup->setTitle(loc.groupLanguage());
-    m_langLabel->setText(loc.labelLanguage());
-    m_langCombo->setItemText(0, loc.langAuto());
+    m_tabWidget->setTabText(0, QStringLiteral("⏱️  ") + escapeMnemonic(loc.tabSchedules()));
+    m_tabWidget->setTabText(1, QStringLiteral("⚡  ") + escapeMnemonic(loc.tabSmartFeatures()));
+    m_tabWidget->setTabText(2, QStringLiteral("🌐  ") + escapeMnemonic(loc.tabGeneral()));
 
-    m_timesGroup->setTitle(loc.groupBreakSchedules());
+    m_timesGroup->setTitle(escapeMnemonic(loc.groupBreakSchedules()));
     m_shortIntervalLabel->setText(loc.labelShortInterval());
     m_shortDurationLabel->setText(loc.labelShortDuration());
     m_longIntervalLabel->setText(loc.labelLongInterval());
@@ -216,12 +297,18 @@ void SettingsDialog::retranslateUi() {
     m_snoozeUnit->setText(loc.unitMinutes());
     m_preWarnUnit->setText(loc.unitSeconds());
 
-    m_featGroup->setTitle(loc.groupSmartFeatures());
+    m_featGroup->setTitle(escapeMnemonic(loc.groupSmartFeatures()));
     m_soundCheck->setText(loc.checkSound());
     m_dndCheck->setText(loc.checkDnd());
     m_lockCheck->setText(loc.checkLock());
     m_autostartCheck->setText(loc.checkAutostart());
     m_interactiveExercisesCheck->setText(loc.checkInteractiveExercises());
+
+    m_langGroup->setTitle(escapeMnemonic(loc.groupLanguage()));
+    m_langLabel->setText(loc.labelLanguage());
+    m_langCombo->setItemText(0, loc.langAuto());
+
+    m_updateGroup->setTitle(escapeMnemonic(loc.groupUpdates()));
     m_checkUpdatesCheck->setText(loc.checkUpdates());
     m_checkUpdatesBtn->setText(loc.btnCheckUpdates());
 
@@ -235,27 +322,73 @@ void SettingsDialog::retranslateUi() {
 void SettingsDialog::applyStyles() {
     bool isRtl = isRightToLeft();
     QString groupTitleSide = isRtl ? QStringLiteral("top right") : QStringLiteral("top left");
-    QString groupTitleOffset = isRtl ? QStringLiteral("right: 16px;") : QStringLiteral("left: 16px;");
+    QString groupTitleOffset = isRtl ? QStringLiteral("right: 14px;") : QStringLiteral("left: 14px;");
     QString dropDownSide = isRtl ? QStringLiteral("top left") : QStringLiteral("top right");
     QString dropDownBorder = isRtl ? QStringLiteral("border-right: 1px solid #475569;") : QStringLiteral("border-left: 1px solid #475569;");
-    QString spinPadding = isRtl ? QStringLiteral("padding: 6px 8px 6px 26px;") : QStringLiteral("padding: 6px 26px 6px 8px;");
+    QString spinPadding = isRtl ? QStringLiteral("padding: 5px 8px 5px 24px;") : QStringLiteral("padding: 5px 24px 5px 8px;");
     QString spinUpPos = isRtl ? QStringLiteral("top left") : QStringLiteral("top right");
     QString spinDownPos = isRtl ? QStringLiteral("bottom left") : QStringLiteral("bottom right");
     QString spinRadiusUp = isRtl ? QStringLiteral("border-top-left-radius: 7px;") : QStringLiteral("border-top-right-radius: 7px;");
     QString spinRadiusDown = isRtl ? QStringLiteral("border-bottom-left-radius: 7px;") : QStringLiteral("border-bottom-right-radius: 7px;");
+    QString tabMargin = isRtl ? QStringLiteral("margin-left: 6px;") : QStringLiteral("margin-right: 6px;");
 
     setStyleSheet(QString(R"(
         QDialog {
             background-color: #0f172a;
         }
+
+        /* Tabs & TabBar */
+        QTabWidget::pane {
+            border: 1px solid #334155;
+            background-color: #131d2e;
+            border-radius: 12px;
+            padding: 4px;
+        }
+        QScrollArea {
+            background-color: transparent;
+            border: none;
+        }
+        QScrollArea > QWidget > QWidget {
+            background-color: transparent;
+            border: none;
+        }
+        QWidget#schedContent, QWidget#featContent, QWidget#genContent {
+            background-color: transparent;
+        }
+        QTabBar {
+            qproperty-drawBase: 0;
+        }
+        QTabBar::tab {
+            background-color: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 7px 16px;
+            %10
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        QTabBar::tab:selected {
+            background-color: #0284c7;
+            color: #ffffff;
+            border-color: #38bdf8;
+        }
+        QTabBar::tab:hover:!selected {
+            background-color: #273549;
+            color: #f1f5f9;
+        }
+
+        /* GroupBox within Tabs */
         QGroupBox {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             color: #38bdf8;
             border: 1px solid #334155;
-            border-radius: 12px;
-            margin-top: 14px;
-            padding-top: 16px;
+            border-radius: 10px;
+            background-color: rgba(30, 41, 59, 0.65);
+            margin-top: 10px;
+            padding-top: 14px;
         }
         QGroupBox::title {
             subcontrol-origin: margin;
@@ -263,6 +396,7 @@ void SettingsDialog::applyStyles() {
             %2
             padding: 0 6px;
         }
+
         QLabel {
             color: #cbd5e1;
             font-size: 13px;
@@ -272,7 +406,8 @@ void SettingsDialog::applyStyles() {
             font-size: 13px;
             font-weight: 500;
         }
-        
+
+        /* ComboBox */
         QComboBox {
             background-color: #1e293b;
             color: #f8fafc;
@@ -292,6 +427,11 @@ void SettingsDialog::applyStyles() {
             width: 26px;
             %4
         }
+        QComboBox::down-arrow {
+            image: url(:/spin_down.svg);
+            width: 10px;
+            height: 7px;
+        }
         QComboBox QAbstractItemView {
             background-color: #0f172a;
             color: #f8fafc;
@@ -301,14 +441,14 @@ void SettingsDialog::applyStyles() {
             padding: 6px;
         }
 
-        /* Modern Clean Number Input (QSpinBox) */
+        /* QSpinBox */
         QSpinBox {
             background-color: #1e293b;
             color: #f8fafc;
             border: 1px solid #475569;
             border-radius: 8px;
             %5
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
         }
         QSpinBox:focus {
@@ -345,8 +485,8 @@ void SettingsDialog::applyStyles() {
             width: 10px;
             height: 7px;
         }
-        
-        /* Modern Vibrant CheckBox Styling */
+
+        /* CheckBox */
         QCheckBox {
             color: #e2e8f0;
             font-size: 13px;
@@ -360,8 +500,8 @@ void SettingsDialog::applyStyles() {
             background-color: rgba(56, 189, 248, 0.06);
         }
         QCheckBox::indicator {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
         }
         QCheckBox::indicator:unchecked {
             image: url(:/checkbox_unchecked.svg);
@@ -382,7 +522,7 @@ void SettingsDialog::applyStyles() {
             color: #f1f5f9;
             border: 1px solid #475569;
             border-radius: 8px;
-            padding: 8px 18px;
+            padding: 7px 16px;
             font-size: 13px;
             font-weight: 600;
         }
@@ -399,7 +539,26 @@ void SettingsDialog::applyStyles() {
             background-color: #0369a1;
             border-color: #7dd3fc;
         }
-    )").arg(groupTitleSide, groupTitleOffset, dropDownSide, dropDownBorder, spinPadding, spinUpPos, spinRadiusUp, spinDownPos, spinRadiusDown));
+
+        /* ScrollBar */
+        QScrollBar:vertical {
+            background-color: #0f172a;
+            width: 6px;
+            margin: 0px;
+            border-radius: 3px;
+        }
+        QScrollBar::handle:vertical {
+            background-color: #334155;
+            min-height: 24px;
+            border-radius: 3px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background-color: #475569;
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            height: 0px;
+        }
+    )").arg(groupTitleSide, groupTitleOffset, dropDownSide, dropDownBorder, spinPadding, spinUpPos, spinRadiusUp, spinDownPos, spinRadiusDown, tabMargin));
 }
 
 void SettingsDialog::loadValues() {

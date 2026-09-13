@@ -103,9 +103,13 @@ public:
     // Settings dialog
     QString settingsTitle() const;
     QString settingsHeader() const;
+    QString tabSchedules() const;
+    QString tabSmartFeatures() const;
+    QString tabGeneral() const;
     QString groupBreakSchedules() const;
     QString groupSmartFeatures() const;
     QString groupLanguage() const;
+    QString groupUpdates() const;
     QString labelLanguage() const;
     QString langAuto() const;
     QString langEnglish() const;

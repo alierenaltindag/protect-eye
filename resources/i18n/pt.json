@@ -75,7 +75,11 @@
     "update_status_failed": "Falha ao verificar atualizações.",
     "action_update_available": "✨ Atualização disponível: v%1",
     "update_notif_title": "Atualização do ProtectEye disponível",
-    "update_notif_body": "A versão %1 já está disponível. Clique para baixar."
+    "update_notif_body": "A versão %1 já está disponível. Clique para baixar.",
+    "tab_schedules": "Horários",
+    "tab_smart_features": "Recursos",
+    "tab_general": "Geral e Atualizações",
+    "group_updates": "Atualizações de Software"
   },
   "short_tips": [
     "Regra 20-20-20: Olhe para um ponto a pelo menos 6 metros de distância durante 20 segundos.",
