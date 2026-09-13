@@ -1,0 +1,217 @@
+{
+  "code": "ja",
+  "name": "日本語",
+  "strings": {
+    "app_name": "ProtectEye",
+    "tray_tooltip": "ProtectEye - 目の健康サポートアシスタント",
+    "status_active": "状態: 稼働中",
+    "status_paused": "状態: 一時停止中",
+    "status_in_break": "状態: 休憩中...",
+    "status_snoozed": "状態: スヌーズ中",
+    "short_break_label": "小休憩: %1",
+    "long_break_label": "長めの休憩: %1",
+    "action_pause": "⏸️ 一時停止",
+    "action_resume": "▶️ 再開",
+    "action_take_short_now": "⚡ 今すぐ小休憩を取る",
+    "action_take_long_now": "☕ 今すぐ長めの休憩を取る",
+    "action_settings": "⚙️ 設定...",
+    "action_quit": "❌ 終了",
+    "startup_notification_title": "ProtectEye",
+    "startup_notification_message": "ProtectEye はシステムトレイで稼働しています。\n目の健康を見守っています。",
+    "already_running_title": "ProtectEye",
+    "already_running_message": "ProtectEye はすでにシステムトレイで起動しています。",
+    "pre_break_title_short": "👁️ まもなく目の小休憩です（30秒前）",
+    "pre_break_title_long": "🌟 まもなく長めの休憩です（30秒前）",
+    "pre_break_message": "%1 秒後に休憩が始まります。現在の作業をひと段落させてください。",
+    "badge_short_break": "👁️ 目の小休憩",
+    "badge_long_break": "🌟 リフレッシュ休憩",
+    "button_snooze": "⏳ %1分スヌーズ",
+    "button_skip": "休憩をスキップ (Esc)",
+    "settings_title": "ProtectEye - 設定",
+    "settings_header": "ProtectEye 環境設定",
+    "group_break_schedules": "休憩スケジュールの設定",
+    "group_smart_features": "スマート検出と通知",
+    "group_language": "言語と外観",
+    "label_language": "表示言語:",
+    "lang_auto": "自動（システム言語）",
+    "lang_english": "English",
+    "lang_turkish": "Türkçe",
+    "label_short_interval": "小休憩の間隔:",
+    "label_short_duration": "小休憩の長さ:",
+    "label_long_interval": "長めの休憩の間隔:",
+    "label_long_duration": "長めの休憩の長さ:",
+    "label_snooze_duration": "スヌーズ時間:",
+    "label_pre_warn": "休憩前の事前通知:",
+    "unit_minutes": "分",
+    "unit_seconds": "秒",
+    "check_sound": "休憩の開始と終了時に穏やかなチャイム音を鳴らす",
+    "check_dnd": "「集中モード / 応答不可」がオンの時は通知をスキップ",
+    "check_lock": "画面ロック時にタイマーを停止し、解除時に小休憩をリセット",
+    "check_autostart": "システム起動時に自動的に開始する",
+    "check_interactive_exercises": "インタラクティブな目のストレッチ（視線追従・呼吸ガイド）を表示",
+    "button_defaults": "初期設定に戻す",
+    "button_cancel": "キャンセル",
+    "button_save": "保存",
+    "breath_inhale": "息を吸う",
+    "breath_hold": "息を止める",
+    "breath_exhale": "息を吐く",
+    "squeeze_phase_close": "目を閉じる",
+    "squeeze_phase_squeeze": "やさしくギュッと閉じる",
+    "squeeze_phase_open": "パッと開いてリラックス",
+    "focus_near_label": "近くにピントを合わせる (15 cm)",
+    "focus_far_label": "遠くにピントを合わせる (>6 m)",
+    "default_tip": "画面から目を離し、ゆっくりと深呼吸しましょう。",
+    "cli_description": "クロスプラットフォーム対応の目の健康＆休憩リマインダー。\n\nコマンド:\n  uninstall           ProtectEye をシステムから完全にアンインストールします",
+    "cli_cmd_uninstall": "オプションコマンド: 'uninstall' で ProtectEye を削除",
+    "cli_opt_test_break": "起動時にテスト用休憩画面を即座に表示します",
+    "cli_opt_test_warning": "起動時に休憩前の事前テスト通知を即座に表示します",
+    "uninstall_running": "ProtectEye アンインストーラーを実行中...",
+    "uninstall_win_hint": "Windows では「設定 > インストールされているアプリ」またはスタートメニューからアンインストールしてください。"
+  },
+  "short_tips": [
+    "20-20-20ルール: 20秒間、少なくとも6メートル（20フィート）離れた遠くを見つめましょう。",
+    "ゆっくりと意識的にまばたきをして、瞳の涙の膜を潤わせましょう。",
+    "肩の力を抜いて後ろに引き、背筋を伸ばして深く息を吸い込みます。",
+    "パーミング温感ケア: 手のひらをこすり合わせて温め、閉じた目の上に優しく当てます。",
+    "目を時計回りにゆっくり一周回し、次に反時計回りに回します。",
+    "鼻から深く息を吸い、少し息を止めてから、口からゆっくりと息を吐き出します。",
+    "手首や指を優しく反らせてストレッチし、キーボードの疲れを解放します。",
+    "部屋の最も遠い隅を眺めて、目の毛様体筋の緊張を緩めましょう。",
+    "首を左右にゆっくり傾けて、首周りのこわばりをほぐします。",
+    "数秒間完全に目を閉じて、視覚を休ませ頭の中をリセットしましょう。",
+    "こめかみを指の腹でやさしく円を描くようにマッサージします。",
+    "あごをゆっくり胸に引きつけ、首筋の後ろ側を心地よく伸ばします。",
+    "鼻先の親指と遠くの景色を交互に見つめて、ピント調整機能を整えます。",
+    "眉毛をキュッと上げてから力を抜き、額の筋肉の緊張をほぐします。",
+    "コップ半分のお水を飲み、体と瞳の水分を補給しましょう。",
+    "画面から視線を外し、何にも焦点を合わせずにぼんやりと遠くを眺めましょう。"
+  ],
+  "long_tips": [
+    "立ち上がりましょう！その場で1分間歩き回って全身の血行を促します。",
+    "コップ1杯の新鮮なお水を飲んで、体を内側からリフレッシュしましょう。",
+    "首のストレッチ: 頭を前後左右にゆっくりと倒して筋肉を伸ばします。",
+    "窓の外を眺め、遠くの地平線や景色にピントを合わせます。",
+    "両手を頭上に高く伸ばして、背骨全体を心地よくストレッチします。",
+    "肩を後ろに向かって大きく回し、肩甲骨周りの緊張をほぐします。",
+    "窓を開けるか外の空気を吸って、脳に新鮮な酸素を届けましょう。",
+    "背中の後ろで手を組み、胸を心地よく開いて深い呼吸を繰り返します。",
+    "パソコンやスマートフォンから完全に離れて、お茶やコーヒーの時間を楽しみましょう。",
+    "その場で軽く足踏みをして膝を持ち上げ、下半身の血流を促進します。",
+    "冷たい水で顔を洗うと、重くなったまぶたと頭がすっきりと目覚めます。",
+    "足首を回し、ふくらはぎを伸ばして長時間の座り疲れを解消します。",
+    "背筋を伸ばし目を閉じて、お腹を使った深呼吸（腹式呼吸）を5回行います。",
+    "デスクから完全に離れて、集中力をリチャージしましょう。"
+  ],
+  "short_exercises": [
+    {
+      "visual_type": "TrackingInfinity",
+      "badge": "インタラクティブ視線トレーニング",
+      "title": "8の字（∞）スムーズトラッキング",
+      "instruction": "頭を動かさずに固定します。青い光の動きを目だけでなめらかに追ってください。"
+    },
+    {
+      "visual_type": "NearFarShift",
+      "badge": "ピント調節・毛様体筋ストレッチ",
+      "title": "遠近ピント切り替え",
+      "instruction": "鼻から15cm離した親指を3秒見つめ、次に遠くの景色を3秒見つめる動作を交互に行います。"
+    },
+    {
+      "visual_type": "DistanceFocus",
+      "badge": "20-20-20 目のリフレッシュ",
+      "title": "画面から目を離して遠くを見る",
+      "instruction": "6メートル以上離れた遠くの景色を眺めます。目のピント調節筋を完全に休ませましょう。"
+    },
+    {
+      "visual_type": "SqueezeBlink",
+      "badge": "ドライアイ予防（マイボーム腺活性化）",
+      "title": "ぎゅっと閉じてパッと開くまばたき",
+      "instruction": "目を2秒閉じ、2秒やさしくギュッと閉じ、パッと開いて脱力します。涙の油層を整えます。"
+    },
+    {
+      "visual_type": "TrackingCircle",
+      "badge": "眼球円運動ストレッチ",
+      "title": "スムーズな円軌道トラッキング",
+      "instruction": "無理な力を入れず、円を描いて滑らかに動く光の点を一定のリズムで追いかけます。"
+    },
+    {
+      "visual_type": "PeripheralExpansion",
+      "badge": "トンネル視野リセット",
+      "title": "周辺視野の拡大エクササイズ",
+      "instruction": "目を動かさずに画面中央を見つめたまま、部屋の左右両端の気配を意識して視野を広げます。"
+    },
+    {
+      "visual_type": "BreathingCircle",
+      "badge": "温感アイケア＆呼吸ガイド",
+      "title": "手のひら温感ケアと腹式呼吸",
+      "instruction": "こすり合わせて温めた手のひらを目に当てます。輪の伸縮リズムに合わせて深呼吸します。"
+    },
+    {
+      "visual_type": "TrackingVertical",
+      "badge": "垂直サッカード運動",
+      "title": "縦方向の視線スキャン",
+      "instruction": "頭を完全に静止させ、上下に往復する光の点をなめらかに視線だけで追います。"
+    },
+    {
+      "visual_type": "TrackingHorizontal",
+      "badge": "水平サッカード運動",
+      "title": "横方向の視線ストレッチ",
+      "instruction": "頭を動かさず、左右に往復する光の点を視線で追い、外眼筋を心地よくストレッチします。"
+    },
+    {
+      "visual_type": "DistanceFocus",
+      "badge": "意識的なまばたき",
+      "title": "うるおい補給とリフレッシュ",
+      "instruction": "完全にまぶたを閉じる丁寧なまばたきを数回繰り返し、乾燥した角膜を涙で潤します。"
+    }
+  ],
+  "long_exercises": [
+    {
+      "visual_type": "None",
+      "badge": "全身運動と血行促進",
+      "title": "立ち上がって歩く",
+      "instruction": "デスクから離れましょう！1〜2分間歩き回って、脚の筋肉を動かし血行を促します。"
+    },
+    {
+      "visual_type": "None",
+      "badge": "ストレートネック改善",
+      "title": "あご引き姿勢リセット (Chin Tuck)",
+      "instruction": "指先であごを軽く水平に押し込みます。耳が肩の真上に来るように首の位置を整えます。"
+    },
+    {
+      "visual_type": "None",
+      "badge": "首と肩のストレッチ",
+      "title": "首周りの緊張緩和",
+      "instruction": "肩を後ろに回します。頭を左右にやさしく傾けて、首筋の張りやこわばりをほぐします。"
+    },
+    {
+      "visual_type": "None",
+      "badge": "背骨・体幹の柔軟性向上",
+      "title": "体幹の心地よいねじり運動",
+      "instruction": "背筋を伸ばし、上半身をゆっくり右へ、次に左へひねります。深呼吸を3回行いましょう。"
+    },
+    {
+      "visual_type": "None",
+      "badge": "水分補給と深呼吸",
+      "title": "コップ1杯の水と新鮮な空気",
+      "instruction": "お水をしっかり飲みましょう。窓を開けて外の空気を吸い、脳に新鮮な酸素を届けます。"
+    },
+    {
+      "visual_type": "None",
+      "badge": "股関節・腸腰筋ストレッチ",
+      "title": "腸腰筋と股関節の伸び",
+      "instruction": "立ち上がって片足を前に一歩踏み出し、軽く腰を落とします。座り仕事で縮んだ股関節前部を伸ばします。"
+    },
+    {
+      "visual_type": "None",
+      "badge": "姿勢改善・胸の開放",
+      "title": "胸を開く背中のストレッチ",
+      "instruction": "背中の後ろで指を組み、肩甲骨を中央に引き寄せながら、深く気持ちよく呼吸します。"
+    },
+    {
+      "visual_type": "None",
+      "badge": "手首と指の疲労回復",
+      "title": "手首回しと指のストレッチ",
+      "instruction": "手首をゆっくり回し、指を後ろにやさしく反らせて、マウスやキーボードによる疲労を抜きます。"
+    }
+  ]
+}

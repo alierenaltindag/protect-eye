@@ -1,0 +1,217 @@
+{
+  "code": "en",
+  "name": "English",
+  "strings": {
+    "app_name": "ProtectEye",
+    "tray_tooltip": "ProtectEye - Eye Health Assistant",
+    "status_active": "Status: Active",
+    "status_paused": "Status: Paused",
+    "status_in_break": "Status: In Break...",
+    "status_snoozed": "Status: Snoozed",
+    "short_break_label": "Short Break: %1",
+    "long_break_label": "Long Break: %1",
+    "action_pause": "⏸️ Pause",
+    "action_resume": "▶️ Resume",
+    "action_take_short_now": "⚡ Take Short Break Now",
+    "action_take_long_now": "☕ Take Long Break Now",
+    "action_settings": "⚙️ Settings...",
+    "action_quit": "❌ Quit",
+    "startup_notification_title": "ProtectEye",
+    "startup_notification_message": "ProtectEye is running in the system tray.\nYour eye health is being monitored.",
+    "already_running_title": "ProtectEye",
+    "already_running_message": "ProtectEye is already active and running in the system tray.",
+    "pre_break_title_short": "👁️ Eye Break Approaching (30s)",
+    "pre_break_title_long": "🌟 Long Break Approaching (30s)",
+    "pre_break_message": "Eye break starts in %1 seconds. Please wrap up your current tasks.",
+    "badge_short_break": "👁️ SHORT EYE BREAK",
+    "badge_long_break": "🌟 LONG BREAK",
+    "button_snooze": "⏳ Snooze %1 Min",
+    "button_skip": "Skip Break (Esc)",
+    "settings_title": "ProtectEye - Settings",
+    "settings_header": "ProtectEye Preferences",
+    "group_break_schedules": "Break Schedules",
+    "group_smart_features": "Smart Detection & Notifications",
+    "group_language": "Language & Appearance",
+    "label_language": "Interface Language:",
+    "lang_auto": "Automatic (System Language)",
+    "lang_english": "English",
+    "lang_turkish": "Türkçe",
+    "label_short_interval": "Short break interval:",
+    "label_short_duration": "Short break duration:",
+    "label_long_interval": "Long break interval:",
+    "label_long_duration": "Long break duration:",
+    "label_snooze_duration": "Snooze duration:",
+    "label_pre_warn": "Pre-break notification:",
+    "unit_minutes": "minutes",
+    "unit_seconds": "seconds",
+    "check_sound": "Play gentle chime at start and end of break",
+    "check_dnd": "Silently skip break when Do Not Disturb (DND) is active",
+    "check_lock": "Pause timer on screen lock, reset short break on unlock",
+    "check_autostart": "Start automatically on system boot",
+    "check_interactive_exercises": "Interactive eye exercise animations (eye tracking, breathing guide)",
+    "button_defaults": "Defaults",
+    "button_cancel": "Cancel",
+    "button_save": "Save",
+    "breath_inhale": "Inhale",
+    "breath_hold": "Hold",
+    "breath_exhale": "Exhale",
+    "squeeze_phase_close": "Close Eyes",
+    "squeeze_phase_squeeze": "Gently Squeeze",
+    "squeeze_phase_open": "Open & Relax",
+    "focus_near_label": "Focus Near (6 in)",
+    "focus_far_label": "Focus Far (>20 ft)",
+    "default_tip": "Rest your eyes and take a calm breath.",
+    "cli_description": "Cross-platform eye health and break assistant.\n\nCommands:\n  uninstall           Completely uninstalls ProtectEye from your system",
+    "cli_cmd_uninstall": "Optional command: 'uninstall' to remove ProtectEye",
+    "cli_opt_test_break": "Triggers a test break overlay immediately on startup",
+    "cli_opt_test_warning": "Triggers a test pre-break warning notification immediately on startup",
+    "uninstall_running": "Running ProtectEye uninstaller...",
+    "uninstall_win_hint": "On Windows, uninstall via Settings > Installed Apps or Start Menu shortcut."
+  },
+  "short_tips": [
+    "20-20-20 Rule: Look at an object at least 20 feet (6 meters) away for 20 seconds.",
+    "Blink your eyes slowly and repeatedly to refresh and moisturize them.",
+    "Roll your shoulders back, sit up tall, and take a deep, slow breath.",
+    "Palming Technique: Warm your hands by rubbing them together, then gently cup over closed eyes.",
+    "Slowly roll your eyes in a circle clockwise, then gently counter-clockwise.",
+    "Inhale deeply through your nose, hold briefly, and exhale slowly through your mouth.",
+    "Gently stretch your wrists, palms, and fingers to relieve keyboard strain.",
+    "Shift your focus to the furthest corner of the room to relax your eye ciliary muscles.",
+    "Gently turn your head left to right to release subtle tension in your neck.",
+    "Close your eyes completely for a few moments and let your visual cortex reset.",
+    "Massage your temples with gentle circular fingertip motions to relieve pressure.",
+    "Tilt your chin down toward your chest slowly and feel the stretch along your cervical spine.",
+    "Focus alternating between your thumb held near your nose and a distant object.",
+    "Raise and release your eyebrows to relax the facial muscles around your forehead.",
+    "Take a sip of fresh water to keep your body and eye tissues hydrated.",
+    "Let your gaze soften into the distance and release all conscious visual focusing."
+  ],
+  "long_tips": [
+    "Stand up! Walk around for a full minute to boost circulation throughout your body.",
+    "Drink a full glass of fresh water to hydrate your cells and sharpen your focus.",
+    "Neck Stretch: Gently tilt your head side to side, forward, and backward.",
+    "Look out the window and let your vision relax on the furthest horizon point.",
+    "Reach your arms high overhead and stretch your entire spine and torso.",
+    "Roll your shoulders backward in wide circles to relieve upper back and trap tension.",
+    "Open a window or step outside to breathe in fresh air and oxygenate your brain.",
+    "Clasp your hands behind your back, gently squeeze your shoulder blades and expand your chest.",
+    "Take a brief tea or coffee break and step completely away from digital screens.",
+    "Do light march-in-place leg lifts to stimulate lymphatic drainage and blood flow.",
+    "Splash cool water on your face to instantly refresh your senses and reduce eyelid fatigue.",
+    "Rotate your ankles in circles and stretch your calves to relieve sitting stiffness.",
+    "Practice 5 deep diaphragmatic breaths while keeping your spine straight and eyes closed.",
+    "Step away from your workstation entirely and allow your mental bandwidth to recharge."
+  ],
+  "short_exercises": [
+    {
+      "visual_type": "TrackingInfinity",
+      "badge": "INTERACTIVE EYE TRACKING",
+      "title": "Figure-8 Smooth Tracking",
+      "instruction": "Keep your head steady. Follow the glowing blue light smoothly using only your eyes."
+    },
+    {
+      "visual_type": "NearFarShift",
+      "badge": "ACCOMMODATION & FOCUS FLEX",
+      "title": "Near-Far Focus Shift",
+      "instruction": "Hold your thumb 15 cm (6 in) from your nose. Alternate focusing 3s on your thumb, then 3s on a distant object to flex ciliary muscles."
+    },
+    {
+      "visual_type": "DistanceFocus",
+      "badge": "20-20-20 DISTANCE FOCUS",
+      "title": "Look Away from Screen",
+      "instruction": "Look at an object at least 20 feet (6 meters) away. Completely release your eye focusing muscles."
+    },
+    {
+      "visual_type": "SqueezeBlink",
+      "badge": "DRY EYE RELIEF (LIPID RELEASE)",
+      "title": "Deep Squeeze Blinking",
+      "instruction": "Stimulate Meibomian glands: Close eyes for 2s, gently squeeze for 2s, then open and relax to restore the tear lipid film."
+    },
+    {
+      "visual_type": "TrackingCircle",
+      "badge": "CIRCULAR EYE TRACKING",
+      "title": "Smooth Circular Orbit",
+      "instruction": "Without straining, smoothly trace the moving dot around the circle in a continuous rhythm."
+    },
+    {
+      "visual_type": "PeripheralExpansion",
+      "badge": "VISUAL CORTEX RESET",
+      "title": "Peripheral Vision Expansion",
+      "instruction": "Gaze gently at the center without moving your eyes, consciously noticing the room's far left and right edges. Break tunnel-vision."
+    },
+    {
+      "visual_type": "BreathingCircle",
+      "badge": "PALMING & BREATH GUIDE",
+      "title": "Warm Palms & Diaphragmatic Breath",
+      "instruction": "Warm your palms by rubbing them, gently cup over your eyes. Inhale and exhale with the pulsing ring."
+    },
+    {
+      "visual_type": "TrackingVertical",
+      "badge": "VERTICAL OCULAR SWEEP",
+      "title": "Vertical Saccadic Tracking",
+      "instruction": "Keep your head completely still. Smoothly follow the vertical oscillation of the glowing dot up and down."
+    },
+    {
+      "visual_type": "TrackingHorizontal",
+      "badge": "HORIZONTAL SACCADIC TRACKING",
+      "title": "Horizontal Eye Sweep",
+      "instruction": "Without moving your head, smoothly track the dot moving side to side to flex ocular muscles."
+    },
+    {
+      "visual_type": "DistanceFocus",
+      "badge": "CONSCIOUS BLINKING",
+      "title": "Hydration & Eye Reset",
+      "instruction": "Blink slowly and fully several times to replenish the tear film and rest from monitor glare."
+    }
+  ],
+  "long_exercises": [
+    {
+      "visual_type": "None",
+      "badge": "PHYSICAL MOVEMENT & CIRCULATION",
+      "title": "Stand Up & Walk Around",
+      "instruction": "Step completely away from your desk! Walk around for 1-2 minutes to stimulate blood circulation and stretch your legs."
+    },
+    {
+      "visual_type": "None",
+      "badge": "TECH-NECK DECOMPRESSION",
+      "title": "Chin Tuck & Neck Alignment",
+      "instruction": "Gently push your chin straight back with two fingers. Align your ears directly over your shoulders to decompress suboccipital nerves."
+    },
+    {
+      "visual_type": "None",
+      "badge": "NECK & SPINE STRETCH",
+      "title": "Cervical Tension Release",
+      "instruction": "Roll your shoulders backward. Gently tilt your head side to side and forward to release neck and spine stiffness."
+    },
+    {
+      "visual_type": "None",
+      "badge": "SPINAL DISC DECOMPRESSION",
+      "title": "Torso & Spinal Twist",
+      "instruction": "Sit or stand tall. Gently twist your torso to the right, then to the left, taking 3 deep breaths to mobilize thoracic vertebrae."
+    },
+    {
+      "visual_type": "None",
+      "badge": "HYDRATION & FRESH AIR",
+      "title": "Tall Glass of Water & Fresh Air",
+      "instruction": "Drink a full glass of water. Open a window or step outside to replenish your body and brain with fresh oxygen."
+    },
+    {
+      "visual_type": "None",
+      "badge": "HIP & LOWER BODY MOBILITY",
+      "title": "Psoas & Hip Flexor Stretch",
+      "instruction": "Stand up and take a step forward into a gentle lunge. Stretch the front hip flexors (psoas) that shorten during prolonged sitting."
+    },
+    {
+      "visual_type": "None",
+      "badge": "POSTURE & CHEST EXPANSION",
+      "title": "Spine Alignment & Chest Stretch",
+      "instruction": "Clasp your hands behind your back, squeeze your shoulder blades gently together, and take deep restorative breaths."
+    },
+    {
+      "visual_type": "None",
+      "badge": "WRIST & JOINT RELIEF",
+      "title": "Wrist and Finger Stretches",
+      "instruction": "Rotate your wrists and gently stretch your fingers back to relieve strain from keyboard and mouse work."
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+# ==============================================================================
+#  ProtectEye - Comprehensive Git Ignore
+# ==============================================================================
+
+# Build Output Directories
+build/
+build*/
+cmake-build-*/
+out/
+dist/
+bin/
+
+# CMake Generated Files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+*.cmake.in
+
+# Qt & MOC / RCC / UIC Artefacts
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+.qmake.stash
+*.user
+*.user.*
+CMakeLists.txt.user*
+
+# Compiled Binaries & Object Files
+*.o
+*.obj
+*.so
+*.so.*
+*.dylib
+*.dll
+*.a
+*.lib
+*.exe
+*.out
+*.app
+
+# Packaging & Distro Intermediate Artefacts
+packaging/**/src/
+packaging/**/pkg/
+packaging/**/*.pkg.tar.*
+packaging/**/*.deb
+packaging/**/*.rpm
+packaging/windows/dist/
+_CPack_Packages/
+CPackConfig.cmake
+CPackSourceConfig.cmake
+
+# Keep release archives out of repository commits
+releases/*.deb
+releases/*.pkg.tar.zst
+releases/*.rpm
+releases/*.exe
+releases/*.zip
+releases/*.tar.gz
+
+# IDE & Editor Files
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.vs/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+.#*
+
+# OS-Specific Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.bak
+
+# Python
+__pycache__/
+*.py[cod]
+*.class

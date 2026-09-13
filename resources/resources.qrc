@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>app_icon.svg</file>
+        <file>tray_active.svg</file>
+        <file>tray_paused.svg</file>
+        <file>tray_break.svg</file>
+        <file>checkbox_checked.svg</file>
+        <file>checkbox_unchecked.svg</file>
+        <file>checkbox_unchecked_hover.svg</file>
+        <file>chime_start.wav</file>
+        <file>chime_end.wav</file>
+        <file>spin_up.svg</file>
+        <file>spin_down.svg</file>
+        <file>i18n/en.json</file>
+        <file>i18n/tr.json</file>
+        <file>i18n/es.json</file>
+        <file>i18n/de.json</file>
+        <file>i18n/fr.json</file>
+        <file>i18n/pt.json</file>
+        <file>i18n/ru.json</file>
+        <file>i18n/zh.json</file>
+        <file>i18n/ja.json</file>
+        <file>i18n/ar.json</file>
+        <file>i18n/hi.json</file>
+    </qresource>
+</RCC>

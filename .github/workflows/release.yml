@@ -1,0 +1,250 @@
+name: Release ProtectEye
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux-deb:
+    name: Build Linux Package (.deb)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Extract Version from Tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Install Qt6 & Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            cmake ninja-build build-essential \
+            qt6-base-dev qt6-multimedia-dev libqt6svg6-dev
+
+      - name: Configure and Build
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_PROJECT_VERSION=${{ steps.version.outputs.version }} \
+            -DCPACK_DEBIAN_PACKAGE_ARCHITECTURE=amd64
+          cmake --build build
+
+      - name: Run Tests
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Package .deb
+        run: |
+          cd build
+          cpack -G DEB
+          mkdir -p ../artifacts
+          cp protecteye-*.deb ../artifacts/protecteye_${{ steps.version.outputs.version }}_amd64.deb
+
+      - name: Upload Linux deb Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: protecteye-linux-deb
+          path: artifacts/protecteye_${{ steps.version.outputs.version }}_amd64.deb
+
+  build-linux-pkg:
+    name: Build Arch Linux Package (.pkg.tar.zst)
+    runs-on: ubuntu-24.04
+    container:
+      image: archlinux:base-devel
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Extract Version from Tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Install Dependencies
+        run: |
+          pacman -Sy --noconfirm
+          pacman -S --needed --noconfirm cmake ninja qt6-base qt6-multimedia qt6-svg sudo
+
+      - name: Create non-root build user
+        run: |
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+          chown -R builder:builder "$GITHUB_WORKSPACE"
+
+      - name: Build Arch package with makepkg
+        env:
+          PKGVER: ${{ steps.version.outputs.version }}
+        run: |
+          cd packaging/cachyos
+          sed -i "s/^pkgver=.*/pkgver=${PKGVER}/" PKGBUILD
+          # Disable debug package generation to avoid ambiguous cp with wildcard
+          sudo -u builder bash -c "cd $(pwd) && QT_QPA_PLATFORM=offscreen makepkg -f --noconfirm"
+
+          mkdir -p ../../artifacts
+          cp "protecteye-${PKGVER}-1-x86_64.pkg.tar.zst" "../../artifacts/"
+
+      - name: Upload Arch Package Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: protecteye-arch-pkg
+          path: artifacts/protecteye-${{ steps.version.outputs.version }}-1-x86_64.pkg.tar.zst
+
+
+  build-linux-rpm:
+    name: Build Fedora / RHEL Package (.rpm)
+    runs-on: ubuntu-24.04
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Extract Version from Tag
+        id: version
+        shell: bash
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Install Dependencies
+        run: |
+          dnf install -y cmake ninja-build gcc-c++ rpm-build \
+            qt6-qtbase-devel qt6-qtmultimedia-devel qt6-qtsvg-devel
+
+      - name: Configure and Build
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_PROJECT_VERSION=${{ steps.version.outputs.version }}
+          cmake --build build
+
+      - name: Package .rpm
+        run: |
+          cd build
+          cpack -G RPM
+          mkdir -p ../artifacts
+          cp protecteye-*.rpm ../artifacts/protecteye-${{ steps.version.outputs.version }}-1.x86_64.rpm
+
+      - name: Upload Fedora RPM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: protecteye-fedora-rpm
+          path: artifacts/protecteye-${{ steps.version.outputs.version }}-1.x86_64.rpm
+
+  build-windows:
+    name: Build Windows Installer (.exe)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Extract Version from Tag
+        id: version
+        shell: bash
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Setup Ninja
+        uses: ashutoshvarma/setup-ninja@master
+        with:
+          version: 1.11.1
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Install Qt 6
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.6.*'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          modules: 'qtmultimedia'
+
+      - name: Build ProtectEye with MSVC
+        env:
+          CMAKE_PREFIX_PATH: ${{ env.QT_ROOT_DIR }}
+          Qt6_ROOT: ${{ env.QT_ROOT_DIR }}
+        run: |
+          cmake -B build_win -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_VERSION=${{ steps.version.outputs.version }}
+          cmake --build build_win --config Release
+
+      - name: Deploy Qt DLLs and Build Inno Setup Installer
+        shell: cmd
+        run: |
+          if not exist build\dist mkdir build\dist
+          copy build_win\protecteye.exe build\dist\
+          copy LICENSE build\dist\
+          "%QT_ROOT_DIR%\bin\windeployqt.exe" --release --no-translations --compiler-runtime --dir build\dist build\dist\protecteye.exe
+          if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" (
+            "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=${{ steps.version.outputs.version }} packaging\windows\protecteye_setup.iss
+          ) else (
+            iscc /DMyAppVersion=${{ steps.version.outputs.version }} packaging\windows\protecteye_setup.iss
+          )
+          if not exist artifacts mkdir artifacts
+          copy build\windows_installer\ProtectEye_Setup.exe artifacts\
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: protecteye-windows-setup
+          path: artifacts/ProtectEye_Setup.exe
+
+  publish-release:
+    name: Publish GitHub Release
+    needs: [build-linux-deb, build-linux-pkg, build-linux-rpm, build-windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Linux deb Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: protecteye-linux-deb
+          path: release_files
+
+      - name: Download Arch Package Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: protecteye-arch-pkg
+          path: release_files
+
+      - name: Download Fedora RPM Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: protecteye-fedora-rpm
+          path: release_files
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: protecteye-windows-setup
+          path: release_files
+
+      - name: Generate Checksums
+        run: |
+          cd release_files
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ProtectEye ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            release_files/*

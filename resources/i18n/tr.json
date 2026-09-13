@@ -1,0 +1,217 @@
+{
+  "code": "tr",
+  "name": "Türkçe",
+  "strings": {
+    "app_name": "ProtectEye",
+    "tray_tooltip": "ProtectEye - Göz Sağlığı Asistanı",
+    "status_active": "Durum: Aktif",
+    "status_paused": "Durum: Duraklatıldı",
+    "status_in_break": "Durum: Molada...",
+    "status_snoozed": "Durum: Ertelendi",
+    "short_break_label": "Kısa Mola: %1",
+    "long_break_label": "Uzun Mola: %1",
+    "action_pause": "⏸️ Duraklat",
+    "action_resume": "▶️ Devam Et",
+    "action_take_short_now": "⚡ Şimdi Kısa Mola Ver",
+    "action_take_long_now": "☕ Şimdi Uzun Mola Ver",
+    "action_settings": "⚙️ Ayarlar...",
+    "action_quit": "❌ Çıkış",
+    "startup_notification_title": "ProtectEye",
+    "startup_notification_message": "ProtectEye sistem tepsisinde çalışıyor.\nGöz sağlığınız korunuyor.",
+    "already_running_title": "ProtectEye",
+    "already_running_message": "ProtectEye zaten arka planda sistem tepsisinde aktif olarak çalışıyor.",
+    "pre_break_title_short": "👁️ Göz Molası Yaklaşıyor (30 Sn)",
+    "pre_break_title_long": "🌟 Uzun Mola Yaklaşıyor (30 Sn)",
+    "pre_break_message": "%1 saniye sonra mola başlayacak. Lütfen açık işlerinizi toparlayın.",
+    "badge_short_break": "👁️ KISA GÖZ MOLASI",
+    "badge_long_break": "🌟 UZUN MOLA",
+    "button_snooze": "⏳ %1 Dk Ertele",
+    "button_skip": "Molayı Atla (Esc)",
+    "settings_title": "ProtectEye - Ayarlar",
+    "settings_header": "ProtectEye Tercihleri",
+    "group_break_schedules": "Mola Zamanlamaları",
+    "group_smart_features": "Akıllı Algılama ve Bildirimler",
+    "group_language": "Dil ve Görünüm",
+    "label_language": "Arayüz Dili:",
+    "lang_auto": "Otomatik (Sistem Dili)",
+    "lang_english": "English",
+    "lang_turkish": "Türkçe",
+    "label_short_interval": "Kısa mola aralığı:",
+    "label_short_duration": "Kısa mola süresi:",
+    "label_long_interval": "Uzun mola aralığı:",
+    "label_long_duration": "Uzun mola süresi:",
+    "label_snooze_duration": "Erteleme süresi:",
+    "label_pre_warn": "Mola öncesi uyarı:",
+    "unit_minutes": "dakika",
+    "unit_seconds": "saniye",
+    "check_sound": "Mola başlangıcında ve bitişinde hafif ses çal",
+    "check_dnd": "Rahatsız Etmeyin (DND) aktifken molayı sessizce atla",
+    "check_lock": "Ekran kilitlendiğinde sayacı duraklat, kilit açılınca kısa molayı sıfırla",
+    "check_autostart": "Sistem başladığında otomatik olarak çalıştır",
+    "check_interactive_exercises": "İnteraktif göz egzersizi animasyonları (göz takibi, nefes rehberi)",
+    "button_defaults": "Varsayılanlar",
+    "button_cancel": "İptal",
+    "button_save": "Kaydet",
+    "breath_inhale": "Nefes Al",
+    "breath_hold": "Nefesi Tut",
+    "breath_exhale": "Nefes Ver",
+    "squeeze_phase_close": "Kapat",
+    "squeeze_phase_squeeze": "Hafifçe Sık",
+    "squeeze_phase_open": "Aç & Gevşet",
+    "focus_near_label": "Yakına Odaklan (15 cm)",
+    "focus_far_label": "Uzağa Odaklan (>6 m)",
+    "default_tip": "Gözlerinizi dinlendirin ve derin bir nefes alın.",
+    "cli_description": "Çapraz platform göz sağlığı ve mola asistanı.\n\nKomutlar:\n  uninstall           ProtectEye'ı sisteminizden tamamen kaldırır",
+    "cli_cmd_uninstall": "İsteğe bağlı komut: ProtectEye'ı kaldırmak için 'uninstall'",
+    "cli_opt_test_break": "Başlangıçta hemen bir test mola penceresi tetikler",
+    "cli_opt_test_warning": "Başlangıçta hemen bir test mola öncesi uyarı bildirimi tetikler",
+    "uninstall_running": "ProtectEye kaldırma sihirbazı çalıştırılıyor...",
+    "uninstall_win_hint": "Windows üzerinde Ayarlar > Yüklü Uygulamalar veya Başlat Menüsü üzerinden kaldırabilirsiniz."
+  },
+  "short_tips": [
+    "20-20-20 Kuralı: En az 6 metre (20 feet) uzaktaki bir noktaya 20 saniye boyunca bakın.",
+    "Gözlerinizi yavaşça ve birkaç kez üst üste kırpıştırarak nemlenmesini sağlayın.",
+    "Omuzlarınızı geriye doğru yuvarlayın, dik oturun ve derin, yavaş bir nefes alın.",
+    "Palming Tekniği: Avuçlarınızı birbirine sürterek ısıtın ve gözlerinizi kapatıp hafifçe örtün.",
+    "Gözlerinizi önce saat yönünde, ardından ters yönde yavaşça dairesel olarak hareket ettirin.",
+    "Burnunuzdan derin bir diyafram nefesi alın, kısa bir süre tutun ve ağzınızdan sakince verin.",
+    "Bileklerinizi, avuçlarınızı ve parmaklarınızı hafifçe esneterek eklem gerginliğini azaltın.",
+    "Bakışlarınızı ekrandan ayırıp odadaki en uzak köşeye odaklayın ve göz kaslarınızı serbest bırakın.",
+    "Başınızı yavaşça önce sağa, sonra sola çevirerek boyun kaslarınızı gevşetin.",
+    "Gözlerinizi kapatın ve zihninizde sakinleştirici bir manzara hayal edin.",
+    "Parmak uçlarınızla şakaklarınıza dairesel hareketlerle çok hafif masaj yapın.",
+    "Çenenizi göğsünüze doğru yavaşça eğin, ensenizdeki gerginliğin dağılmasını hissedin.",
+    "Gözlerinizi bir yakındaki parmağınıza, bir de uzaktaki bir nesneye sırayla odaklayarak odak kaslarını çalıştırın.",
+    "Kaşlarınızı yukarı kaldırıp bırakın, yüz ve alın kaslarınızdaki gerilimi serbest bırakın.",
+    "Bir yudum su için ve vücudunuzun sıvı dengesini tazeleyin.",
+    "Göz kapaklarınızı hafifçe kapatıp dinlenmeye bırakın, ekran parlaklığından uzaklaşın."
+  ],
+  "long_tips": [
+    "Ayağa kalkın! Kan dolaşımınızı hızlandırmak için en az bir dakika boyunca etrafta yürüyün.",
+    "Büyük bir bardak taze su için; vücudunuzu nemlendirin ve zihninizi tazeleyin.",
+    "Boyun Esnetme: Başınızı nazikçe sağa, sola, öne ve arkaya doğru esnetin.",
+    "Pencereden dışarı bakın ve görüşünüzü ufkun en uzak noktasına sabitleyin.",
+    "Kollarınızı yukarı kaldırıp uzanın; tüm omurganızı ve gövdenizi yukarı doğru esnetin.",
+    "Omuzlarınızı geniş dairesel hareketlerle geriye doğru çevirerek sırt gerginliğini hafifletin.",
+    "Pencereyi açın ve birkaç derin temiz hava nefesi alarak ciğerlerinizi tazeleyin.",
+    "Ellerinizi arkanızda kenetleyin, göğsünüzü öne doğru açın ve derin nefes alın.",
+    "Kısa bir çay veya kahve molası verin, ekrandan tamamen uzaklaşın.",
+    "Ayakta dururken dizlerinizi hafifçe karnınıza doğru çekerek bacak kaslarınızı hareket ettirin.",
+    "Yüzünüzü soğuk suyla yıkayarak anında canlanın ve göz yorgunluğunu hafifletin.",
+    "Ayak bileklerinizi dairesel hareketlerle döndürün ve baldır kaslarınızı esnetin.",
+    "Gözlerinizi dinlendirirken sırtınızı dik tutarak 5 derin diyafram nefesi tamamlayın.",
+    "Çalışma masanızdan tamamen uzaklaşın ve birkaç dakika zihninizi boşaltın."
+  ],
+  "short_exercises": [
+    {
+      "visual_type": "TrackingInfinity",
+      "badge": "İNTERAKTİF GÖZ TAKİBİ",
+      "title": "Sonsuzluk Yörüngesi (∞)",
+      "instruction": "Başınızı sabit tutun. Ekrandaki parlayan mavi ışığı yalnızca gözlerinizle pürüzsüzce takip edin."
+    },
+    {
+      "visual_type": "NearFarShift",
+      "badge": "AKOMODASYON & ODAK KASI",
+      "title": "Yakın-Uzak Odak Değişimi",
+      "instruction": "Başparmağınızı burnunuzdan 15 cm uzakta tutun. 3 sn parmağınıza, ardından 3 sn en uzaktaki bir nesneye odaklanarak odak kaslarınızı esnetin."
+    },
+    {
+      "visual_type": "DistanceFocus",
+      "badge": "20-20-20 KURALI",
+      "title": "Ekrandan Uzaklaşın",
+      "instruction": "En az 6 metre (20 feet) uzaktaki bir nesneye bakın. Gözünüzün odak kaslarını tamamen serbest bırakın."
+    },
+    {
+      "visual_type": "SqueezeBlink",
+      "badge": "KURU GÖZ KORUMASI (LİPİD SALINIMI)",
+      "title": "Kuvvetli Kırpma Egzersizi",
+      "instruction": "Meibomian bezlerini uyarın: 2 sn normal kapatın, 2 sn hafifçe sıkın, ardından açıp gevşeyin. Korneayı nemlendirin."
+    },
+    {
+      "visual_type": "TrackingCircle",
+      "badge": "DAİRESEL GÖZ HAREKETİ",
+      "title": "Yumuşak Dairesel Takip",
+      "instruction": "Gözlerinizi zorlamadan, mavi ışığın dairesel hareketini kesintisiz ve ritmik bir şekilde izleyin."
+    },
+    {
+      "visual_type": "PeripheralExpansion",
+      "badge": "GÖRSEL KORTEKS SIFIRLAMA",
+      "title": "Periferal Görüşü Genişletme",
+      "instruction": "Bakışınızı merkezde tutarken başınızı ve gözlerinizi oynatmadan odanın en sağ ve en solundaki nesneleri fark edin; tünel görüşünü kırın."
+    },
+    {
+      "visual_type": "BreathingCircle",
+      "badge": "PALMİNG & NEFES REHBERİ",
+      "title": "Avuç İçi Isısı & Diyafram Nefesi",
+      "instruction": "Avuçlarınızı birbirine sürtüp gözlerinizi örtün. Genişleyip daralan halkayla sakin ve derin nefes alıp verin."
+    },
+    {
+      "visual_type": "TrackingVertical",
+      "badge": "DİKEY GÖZ KASI HAREKETİ",
+      "title": "Dikey Sakkadik Takip",
+      "instruction": "Başınızı sabit tutun. Mavi ışığın yukarıdan aşağıya dikey salınımını gözlerinizle ritmik olarak izleyin."
+    },
+    {
+      "visual_type": "TrackingHorizontal",
+      "badge": "YATAY SAKKADİK TAKİP",
+      "title": "Yatay Göz Esnetme",
+      "instruction": "Başınızı çevirmeden bakışlarınızı soldan sağa ritmik olarak kaydırın ve göz kaslarınızı esnetin."
+    },
+    {
+      "visual_type": "DistanceFocus",
+      "badge": "BİLİNÇLİ GÖZ KIRPMA",
+      "title": "Nemlendirme & Göz Dinlendirme",
+      "instruction": "Gözlerinizi birkaç kez yavaşça ve tam kapatıp açarak korneanızı nemlendirin, parlaklıktan uzaklaşın."
+    }
+  ],
+  "long_exercises": [
+    {
+      "visual_type": "None",
+      "badge": "FİZİKSEL HAREKET & DOLAŞIM",
+      "title": "Ayağa Kalkın ve Yürüyün",
+      "instruction": "Masanızdan tamamen uzaklaşın! Bacak kaslarınızı çalıştırmak ve genel kan dolaşımını canlandırmak için 1-2 dakika yürüyün."
+    },
+    {
+      "visual_type": "None",
+      "badge": "TEKNOLOJİ BOYNU DÜZELTME",
+      "title": "Çene İtme (Chin Tuck)",
+      "instruction": "İki parmağınızla çenenizi geriye ve içeriye doğru nazikçe itin. Kulaklarınızı omuz hizasına getirip ense kökünüzdeki gerginliği boşaltın."
+    },
+    {
+      "visual_type": "None",
+      "badge": "BOYUN & OMURGA ESNETME",
+      "title": "Servikal Rahatlama",
+      "instruction": "Omuzlarınızı geriye yuvarlayın. Başınızı nazikçe sağa, sola, öne ve arkaya eğerek boyun gerginliğini serbest bırakın."
+    },
+    {
+      "visual_type": "None",
+      "badge": "OMURGA & DİSK BASINCI TAHLİYESİ",
+      "title": "Gövde ve Omurga Rotasyonu",
+      "instruction": "Sırtınızı dikleştirin. Gövdenizi yavaşça önce sağa, sonra sola döndürerek 3 derin nefes alın; omurganızı rahatlatın."
+    },
+    {
+      "visual_type": "None",
+      "badge": "HİDRASYON & TEMİZ HAVA",
+      "title": "Bir Bardak Su & Derin Nefes",
+      "instruction": "Büyük bir bardak taze su için. Pencereyi açarak veya balkona çıkarak ciğerlerinizi taze oksijenle doldurun."
+    },
+    {
+      "visual_type": "None",
+      "badge": "ALT GÖVDE & KALÇA ESNETME",
+      "title": "Psoas ve Kalça Açma",
+      "instruction": "Ayağa kalkın, bir adım öne atarak hafif lunge pozisyonu alın. Oturmanın kısalttığı kalça fleksör kaslarınızı esnetin."
+    },
+    {
+      "visual_type": "None",
+      "badge": "DURUŞ VE GÖĞÜS AÇMA",
+      "title": "Omurga Hizalama & Göğüs Esnetme",
+      "instruction": "Ellerinizi arkanızda kenetleyin, kürek kemiklerinizi birbirine yaklaştırarak derin diyafram nefesi alın."
+    },
+    {
+      "visual_type": "None",
+      "badge": "BİLEK VE EKLEM DİNLENDİRME",
+      "title": "Bilek ve Parmak Esnetme",
+      "instruction": "Klavye ve fare kullanımının yarattığı tendon baskısını hafifletmek için el bileklerinizi ve parmaklarınızı dairesel esnetin."
+    }
+  ]
+}

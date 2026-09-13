@@ -1,0 +1,82 @@
+name: ProtectEye CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-linux:
+    name: Linux (Ubuntu 24.04 - Qt6 & Wayland)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Qt6 and Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            cmake ninja-build build-essential \
+            qt6-base-dev qt6-multimedia-dev libqt6svg6-dev
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr
+
+      - name: Build Project
+        run: cmake --build build
+
+      - name: Run Unit Tests
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Generate Debian Package (.deb)
+        run: |
+          cd build
+          cpack -G DEB
+          ls -lh *.deb
+
+  build-windows:
+    name: Windows (Windows Latest - Qt6)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Ninja
+        uses: ashutoshvarma/setup-ninja@master
+        with:
+          version: 1.11.1
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install Qt 6
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.6.*'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          modules: 'qtmultimedia'
+
+      - name: Configure and Build
+        env:
+          CMAKE_PREFIX_PATH: ${{ env.QT_ROOT_DIR }}
+          Qt6_ROOT: ${{ env.QT_ROOT_DIR }}
+        run: |
+          cmake -B build_win -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build_win --config Release
+
+      - name: Run Unit Tests
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: ctest --test-dir build_win --output-on-failure
+

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e2f"/>
+      <stop offset="100%" stop-color="#0f0f17"/>
+    </linearGradient>
+    <linearGradient id="irisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bgGrad)" stroke="#334155" stroke-width="2"/>
+  <ellipse cx="64" cy="64" rx="44" ry="28" fill="url(#glowGrad)"/>
+  <path d="M 20 64 C 36 34, 92 34, 108 64 C 92 94, 36 94, 20 64 Z" 
+        fill="#0f172a" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="64" r="20" fill="url(#irisGrad)"/>
+  <circle cx="64" cy="64" r="10" fill="#090d16"/>
+  <circle cx="58" cy="58" r="4.5" fill="#ffffff" opacity="0.9"/>
+  <circle cx="70" cy="68" r="2" fill="#ffffff" opacity="0.6"/>
+</svg>
