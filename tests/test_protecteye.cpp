@@ -107,11 +107,21 @@ private slots:
         controller.triggerBreakNow(false);
         QCOMPARE(controller.isInBreak(), true);
 
-        // Test Snooze
+        // Test Short Break Snooze
         controller.snoozeBreak(5);
         QCOMPARE(controller.isInBreak(), false);
         QCOMPARE(controller.state(), BreakState::Snoozed);
         QCOMPARE(controller.secondsUntilShortBreak(), 5);
+
+        // Test Long Break Snooze: must snooze long break and NOT pull short break forward
+        controller.triggerBreakNow(true);
+        QCOMPARE(controller.isInBreak(), true);
+        QCOMPARE(controller.isCurrentBreakLong(), true);
+        controller.snoozeBreak(120);
+        QCOMPARE(controller.isInBreak(), false);
+        QCOMPARE(controller.state(), BreakState::Snoozed);
+        QCOMPARE(controller.secondsUntilLongBreak(), 120);
+        QVERIFY(controller.secondsUntilShortBreak() >= 120);
 
         controller.pause();
         QCOMPARE(controller.isPaused(), true);
@@ -300,8 +310,8 @@ private slots:
 
         QCOMPARE(controller.isInBreak(), false);
         QCOMPARE(controller.state(), BreakState::Snoozed);
-        QCOMPARE(controller.secondsUntilShortBreak(), 120);
         QCOMPARE(controller.secondsUntilLongBreak(), 120);
+        QCOMPARE(controller.secondsUntilShortBreak(), 120 + Settings::instance().shortBreakIntervalSec());
     }
 
     void testDndAndScreenLockInteractions() {

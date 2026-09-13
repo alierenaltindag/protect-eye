@@ -34,6 +34,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.0.3" date="2026-09-13">
+      <description>
+        <p>Fixed long break snooze behavior to prevent unintentional override of short break timers, improved build tool detection across distributions.</p>
+      </description>
+    </release>
     <release version="1.0.0" date="2026-09-13">
       <description>
         <p>Comprehensive release with 11 top spoken languages (including Arabic RTL layout), robust Wayland and Windows 10/11 compatibility, smart DND integration, and clinical eye exercise routines.</p>

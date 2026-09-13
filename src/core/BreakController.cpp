@@ -101,12 +101,11 @@ void BreakController::snoozeBreak(int seconds) {
 
         if (wasLong) {
             m_secToLongBreak = seconds;
-            m_secToShortBreak = seconds;
+            m_secToShortBreak = std::max(m_secToShortBreak, seconds + Settings::instance().shortBreakIntervalSec());
             m_preWarningSentLong = false;
-            m_preWarningSentShort = false;
         } else {
             m_secToShortBreak = seconds;
-            m_secToLongBreak = std::max(m_secToLongBreak, seconds);
+            m_secToLongBreak = std::max(m_secToLongBreak, seconds + 60);
             m_preWarningSentShort = false;
         }
 
