@@ -71,7 +71,7 @@ chmod +x installer.sh
 
 ### 🪟 Windows (10 & 11)
 
-1. [**GitHub Releases**](https://github.com/alierenaltindag/protect-eye/releases) sayfasından en güncel **`ProtectEye_Setup.exe`** yükleyicisini indirin.
+1. [**GitHub Releases**](https://github.com/alierenaltindag/protect-eye/releases) sayfasından en güncel **`ProtectEye_<versiyon>_Setup.exe`** (örn. `ProtectEye_1.0.4_Setup.exe`) yükleyicisini indirin.
 2. Kurulum sihirbazını çalıştırın.
 3. *"Windows açılışında otomatik başlat"* seçeneğini işaretli bırakın (önerilir).
 4. ProtectEye sistem tepsisinde (system tray) sessizce çalışmaya başlayarak göz sağlığınızı koruyacaktır!
@@ -88,7 +88,7 @@ Derlenmiş ikili paketleri doğrudan [**GitHub Releases**](https://github.com/al
 | **Fedora / RHEL** | `.rpm` | `sudo dnf install ./protecteye-1.0.0-1.x86_64.rpm` |
 | **openSUSE (Tumbleweed / Leap)** | `.rpm` | `sudo zypper install ./protecteye-1.0.0-1.x86_64.rpm` |
 | **CachyOS / Arch Linux** | `.pkg.tar.zst` | `sudo pacman -U protecteye-1.0.0-1-x86_64.pkg.tar.zst` |
-| **Windows 10 / 11** | `.exe` Yükleyici | `ProtectEye_Setup.exe` dosyasını çalıştırın |
+| **Windows 10 / 11** | `.exe` Yükleyici | `ProtectEye_<versiyon>_Setup.exe` dosyasını çalıştırın |
 
 ---
 

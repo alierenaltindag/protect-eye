@@ -71,7 +71,7 @@ chmod +x installer.sh
 
 ### 🪟 Windows (10 & 11)
 
-1. Download the latest **`ProtectEye_Setup.exe`** from [**GitHub Releases**](https://github.com/alierenaltindag/protect-eye/releases).
+1. Download the latest **`ProtectEye_<version>_Setup.exe`** (e.g. `ProtectEye_1.0.4_Setup.exe`) from [**GitHub Releases**](https://github.com/alierenaltindag/protect-eye/releases).
 2. Run the installation wizard.
 3. Keep *"Start automatically on Windows boot"* checked (recommended).
 4. ProtectEye will quietly launch in your system tray and protect your eyesight!
@@ -88,7 +88,7 @@ Directly install pre-built binaries from our [**GitHub Releases**](https://githu
 | **Ubuntu / Debian / Pardus** | `.deb` | `sudo apt install ./protecteye_1.0.0_amd64.deb` |
 | **Fedora / RHEL** | `.rpm` | `sudo dnf install ./protecteye-1.0.0-1.x86_64.rpm` |
 | **openSUSE** | `.rpm` | `sudo zypper install ./protecteye-1.0.0-1.x86_64.rpm` |
-| **Windows 10 / 11** | `.exe` Installer | Double-click `ProtectEye_Setup.exe` |
+| **Windows 10 / 11** | `.exe` Installer | Double-click `ProtectEye_<version>_Setup.exe` |
 
 ---
 

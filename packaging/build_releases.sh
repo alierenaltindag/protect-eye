@@ -49,4 +49,4 @@ cd "$RELEASE_DIR"
 sha256sum * 2>/dev/null || true
 
 echo -e "\n[INFO] For Windows: run 'packaging\\windows\\build_windows.bat' on a Windows machine"
-echo "       to produce 'ProtectEye_Setup.exe' and place it in the 'releases/' folder."
+echo "       to produce 'ProtectEye_<version>_Setup.exe' and place it in the 'releases/' folder."

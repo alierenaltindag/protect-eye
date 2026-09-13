@@ -47,7 +47,7 @@ where iscc >nul 2>nul
 if %errorlevel% equ 0 (
     iscc "packaging\windows\protecteye_setup.iss"
     echo.
-    echo [BASARILI] Installer olusturuldu: build\windows_installer\ProtectEye_Setup.exe
+    echo [BASARILI] Installer olusturuldu: build\windows_installer\ProtectEye_*_Setup.exe
 ) else (
     echo [BILGI] Inno Setup (iscc.exe) sistemde bulunamadi.
     echo "build\dist" dizini tasinabilir (portable) olarak kullanilabilir.

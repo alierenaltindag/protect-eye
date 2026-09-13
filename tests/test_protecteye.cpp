@@ -592,6 +592,7 @@ private slots:
 
         // Current version check
         QVERIFY(!UpdateChecker::currentVersion().isEmpty());
+        QCOMPARE(UpdateChecker::currentVersion(), QStringLiteral(PROTECTEYE_VERSION));
     }
 
     void testUpdateSettingsAndLocalization() {
@@ -624,6 +625,43 @@ private slots:
         }
 
         loc.setLanguageByCode(QStringLiteral("auto"));
+    }
+
+    void testMultiScreenOverlayPlacement() {
+        OverlayManager overlayManager;
+        const auto screens = QGuiApplication::screens();
+        QVERIFY(!screens.isEmpty());
+
+        overlayManager.showBreak(false, 15);
+        qApp->processEvents();
+
+        int overlayCount = 0;
+        const auto topWidgets = QApplication::topLevelWidgets();
+        for (auto* w : topWidgets) {
+            auto* overlay = qobject_cast<OverlayWindow*>(w);
+            if (overlay && overlay->isVisible()) {
+                overlayCount++;
+                if (overlay->screen()) {
+                    QVERIFY(screens.contains(overlay->screen()));
+                }
+            }
+        }
+        QCOMPARE(overlayCount, screens.size());
+
+        overlayManager.updateCountdown(10, 15);
+        qApp->processEvents();
+
+        overlayManager.closeBreak();
+        qApp->processEvents();
+
+        int remainingVisible = 0;
+        for (auto* w : QApplication::topLevelWidgets()) {
+            auto* overlay = qobject_cast<OverlayWindow*>(w);
+            if (overlay && overlay->isVisible()) {
+                remainingVisible++;
+            }
+        }
+        QCOMPARE(remainingVisible, 0);
     }
 };
 

@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.20)
 
+# Single Source of Truth: read version from root VERSION file
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROTECTEYE_RAW_VERSION)
+string(STRIP "${PROTECTEYE_RAW_VERSION}" PROTECTEYE_RAW_VERSION)
+
 project(ProtectEye
-    VERSION 1.0.3
+    VERSION ${PROTECTEYE_RAW_VERSION}
     DESCRIPTION "Cross-Platform Eye Health & Break Assistant"
-
-
     HOMEPAGE_URL "https://github.com/alierenaltindag/protect-eye"
     LANGUAGES CXX
 )
+
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -78,7 +82,12 @@ set(HEADERS
 )
 
 if (WIN32)
-    add_executable(protecteye WIN32 ${SOURCES} ${HEADERS})
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/protecteye.rc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/resources/protecteye.rc
+        @ONLY
+    )
+    add_executable(protecteye WIN32 ${SOURCES} ${HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/resources/protecteye.rc)
 else()
     add_executable(protecteye ${SOURCES} ${HEADERS})
 endif()

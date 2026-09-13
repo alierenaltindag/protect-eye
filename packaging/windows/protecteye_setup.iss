@@ -1,11 +1,17 @@
 ; ProtectEye Inno Setup Installer Script
-; Produces: ProtectEye_Setup.exe
+; Produces: ProtectEye_{#MyAppVersion}_Setup.exe
 ; Version is passed at compile time via: ISCC.exe /DMyAppVersion=X.Y.Z
-; Falls back to 1.0.0 for local manual builds.
+; Or automatically read from the repository root VERSION file (Single Source of Truth).
 
 #define MyAppName "ProtectEye"
 #ifndef MyAppVersion
-  #define MyAppVersion "1.0.3"
+  #if FileExists("..\..\VERSION")
+    #define FileHandle FileOpen("..\..\VERSION")
+    #define MyAppVersion Trim(FileRead(FileHandle))
+    #expr FileClose(FileHandle)
+  #else
+    #define MyAppVersion "1.0.4"
+  #endif
 #endif
 
 
@@ -27,7 +33,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=..\..\LICENSE
 OutputDir=..\..\build\windows_installer
-OutputBaseFilename=ProtectEye_Setup
+OutputBaseFilename=ProtectEye_{#MyAppVersion}_Setup
 SetupIconFile=..\..\resources\app_icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2/ultra64

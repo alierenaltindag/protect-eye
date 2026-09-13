@@ -194,13 +194,13 @@ jobs:
             iscc /DMyAppVersion=${{ steps.version.outputs.version }} packaging\windows\protecteye_setup.iss
           )
           if not exist artifacts mkdir artifacts
-          copy build\windows_installer\ProtectEye_Setup.exe artifacts\
+          copy build\windows_installer\ProtectEye_${{ steps.version.outputs.version }}_Setup.exe artifacts\
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
           name: protecteye-windows-setup
-          path: artifacts/ProtectEye_Setup.exe
+          path: artifacts/ProtectEye_${{ steps.version.outputs.version }}_Setup.exe
 
   publish-release:
     name: Publish GitHub Release

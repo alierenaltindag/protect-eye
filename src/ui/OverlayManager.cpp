@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QTimer>
+#include <QCursor>
 
 OverlayManager::OverlayManager(QObject* parent)
     : QObject(parent) {
@@ -37,15 +38,20 @@ void OverlayManager::showBreak(bool isLong, int durationSec) {
     m_isBreakActive = true;
 
     const auto screens = QGuiApplication::screens();
+    QScreen* focusedScreen = QGuiApplication::screenAt(QCursor::pos());
+    if (!focusedScreen) {
+        focusedScreen = QGuiApplication::primaryScreen();
+    }
+
     for (QScreen* screen : screens) {
+        if (!screen) continue;
         auto* overlay = new OverlayWindow(screen);
         connect(overlay, &OverlayWindow::skipRequested, this, &OverlayManager::skipRequested);
         connect(overlay, &OverlayWindow::snoozeRequested, this, &OverlayManager::snoozeRequested);
         
         overlay->prepareBreak(isLong, durationSec, m_currentExercise);
-        overlay->showFullScreen();
-        overlay->raise();
-        overlay->activateWindow();
+        const bool shouldActivate = (screen == focusedScreen);
+        overlay->present(shouldActivate);
         m_overlays.append(overlay);
     }
 }
@@ -80,21 +86,24 @@ void OverlayManager::closeBreak() {
 
 void OverlayManager::onScreenAdded(QScreen* screen) {
     if (m_isBreakActive && screen) {
+        for (auto* o : m_overlays) {
+            if (o && o->screen() == screen) {
+                return;
+            }
+        }
         auto* overlay = new OverlayWindow(screen);
         connect(overlay, &OverlayWindow::skipRequested, this, &OverlayManager::skipRequested);
         connect(overlay, &OverlayWindow::snoozeRequested, this, &OverlayManager::snoozeRequested);
         overlay->prepareBreak(m_currentIsLong, m_currentDuration, m_currentExercise);
         overlay->updateCountdown(m_currentRemainingSec, m_currentDuration);
-        overlay->showFullScreen();
-        overlay->raise();
-        overlay->activateWindow();
+        overlay->present(false);
         m_overlays.append(overlay);
     }
 }
 
 void OverlayManager::onScreenRemoved(QScreen* screen) {
     for (int i = m_overlays.size() - 1; i >= 0; --i) {
-        if (m_overlays[i]->screen() == screen) {
+        if (m_overlays[i] && m_overlays[i]->screen() == screen) {
             auto* overlay = m_overlays.takeAt(i);
             overlay->setEnabled(false);
             QTimer::singleShot(0, overlay, [overlay]() {

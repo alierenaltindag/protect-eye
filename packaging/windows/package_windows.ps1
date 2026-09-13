@@ -53,7 +53,7 @@ if (-not $Iscc -and (Test-Path "$InnoSetupDir\ISCC.exe")) {
 
 if ($Iscc) {
     & $Iscc "$ScriptDir\protecteye_setup.iss"
-    Write-Host "==> SUCCESS: Installer created in build\windows_installer\ProtectEye_Setup.exe" -ForegroundColor Green
+    Write-Host "==> SUCCESS: Installer created in build\windows_installer\ProtectEye_*_Setup.exe" -ForegroundColor Green
 } else {
     Write-Warning "Inno Setup (iscc) not found. Portable files are ready in build\dist."
 }

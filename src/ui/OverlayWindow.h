@@ -20,6 +20,8 @@ public:
 
     void prepareBreak(bool isLong, int totalDurationSec, const ExerciseGuide& guide);
     void updateCountdown(int remainingSec, int totalSec);
+    void present(bool shouldActivate);
+    void setupScreenGeometry();
 
 signals:
     void skipRequested();

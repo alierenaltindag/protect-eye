@@ -13,7 +13,7 @@
 OverlayWindow::OverlayWindow(QScreen* targetScreen, QWidget* parent)
     : QWidget(parent)
     , m_screen(targetScreen) {
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_TranslucentBackground, true);
     setAttribute(Qt::WA_ShowWithoutActivating, false);
 
@@ -21,11 +21,40 @@ OverlayWindow::OverlayWindow(QScreen* targetScreen, QWidget* parent)
     applyStyles();
 
     if (m_screen) {
-        winId(); // Ensure underlying QWindow is instantiated
-        if (windowHandle()) {
-            windowHandle()->setScreen(m_screen);
-        }
+        setScreen(m_screen);
+        setupScreenGeometry();
+        connect(m_screen, &QScreen::geometryChanged, this, [this](const QRect& geom) {
+            setGeometry(geom);
+            if (windowHandle()) {
+                windowHandle()->setGeometry(geom);
+            }
+        });
+    }
+}
+
+void OverlayWindow::setupScreenGeometry() {
+    if (!m_screen) return;
+    setScreen(m_screen);
+    setGeometry(m_screen->geometry());
+    winId();
+    if (windowHandle()) {
+        windowHandle()->setScreen(m_screen);
+        windowHandle()->setGeometry(m_screen->geometry());
+    }
+}
+
+void OverlayWindow::present(bool shouldActivate) {
+    setupScreenGeometry();
+    showFullScreen();
+    if (m_screen) {
         setGeometry(m_screen->geometry());
+        if (windowHandle()) {
+            windowHandle()->setGeometry(m_screen->geometry());
+        }
+    }
+    raise();
+    if (shouldActivate) {
+        activateWindow();
     }
 }
 
@@ -300,12 +329,15 @@ void OverlayWindow::hideEvent(QHideEvent* event) {
 
 void OverlayWindow::showEvent(QShowEvent* event) {
     QWidget::showEvent(event);
-    if (m_screen && windowHandle() && windowHandle()->screen() != m_screen) {
-        windowHandle()->setScreen(m_screen);
+    if (m_screen) {
+        if (windowHandle() && windowHandle()->screen() != m_screen) {
+            windowHandle()->setScreen(m_screen);
+            windowHandle()->setGeometry(m_screen->geometry());
+        }
+        setGeometry(m_screen->geometry());
     }
     if (m_exerciseWidget && m_exerciseWidget->isVisible()) {
         m_exerciseWidget->startAnimation();
     }
     raise();
-    activateWindow();
 }

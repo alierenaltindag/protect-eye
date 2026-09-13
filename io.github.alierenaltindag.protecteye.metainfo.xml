@@ -34,6 +34,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.0.5" date="2026-09-13">
+      <description>
+        <p>Full multi-monitor eye break overlay coverage across Wayland, X11, and Windows, versioned Windows setup installer (ProtectEye_&lt;version&gt;_Setup.exe), and automated single source of truth version management.</p>
+      </description>
+    </release>
     <release version="1.0.3" date="2026-09-13">
       <description>
         <p>Fixed long break snooze behavior to prevent unintentional override of short break timers, improved build tool detection across distributions.</p>
