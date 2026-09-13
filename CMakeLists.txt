@@ -140,7 +140,7 @@ set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libqt6core6 | libqt6core6t64, libqt6gui
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/alierenaltindag/protect-eye")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS OFF)
 set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
-set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu/postinst;${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu/prerm")
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu/postinst;${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu/prerm;${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu/postrm")
 
 # RPM Package (.rpm) Configuration (Fedora, openSUSE, RHEL, AlmaLinux)
 set(CPACK_RPM_PACKAGE_NAME "protecteye")

@@ -46,6 +46,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [CustomMessages]
 turkish.PreviousInstallPrompt=Sistemde mevcut bir ProtectEye kurulumu tespit edildi.%n%nTemiz bir kurulum için eski sürüm tamamen kaldırılsın mı?
 english.PreviousInstallPrompt=An existing ProtectEye installation was detected.%n%nWould you like to completely remove the previous version before continuing?
+turkish.RemoveSettingsPrompt=ProtectEye kullanıcı ayarlarını ve yapılandırma verilerini de silmek istiyor musunuz?
+english.RemoveSettingsPrompt=Do you want to remove ProtectEye settings and configuration data as well?
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -63,6 +65,8 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 [Registry]
 ; Automatic startup on Windows boot via HKCU Run
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "{#MyAppName}"; ValueData: """{app}\{#MyAppExeName}"" --autostart"; Flags: uninsdeletevalue; Tasks: autostart
+; Unconditionally delete Run value on uninstall even if enabled later via in-app settings
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueName: "{#MyAppName}"; Flags: dontcreatekey uninsdeletevalue
 
 [Run]
 ; Launch ProtectEye automatically after install (no checkbox, runs silently in tray)
@@ -72,6 +76,12 @@ Filename: "{app}\{#MyAppExeName}"; Flags: nowait runasoriginaluser
 ; Terminate running ProtectEye instance silently before file removal
 Filename: "taskkill.exe"; Parameters: "/F /IM {#MyAppExeName}"; Flags: runhidden; RunOnceId: "KillApp"
 
+[UninstallDelete]
+; Clean up entire application directory and shortcuts even if runtime files were created
+Type: filesandordirs; Name: "{app}"
+Type: files; Name: "{autodesktop}\{#MyAppName}.lnk"
+Type: filesandordirs; Name: "{autoprograms}\{#MyAppName}"
+
 [Code]
 // Close running instance at the very beginning of uninstallation
 function InitializeUninstall(): Boolean;
@@ -79,7 +89,27 @@ var
   ErrorCode: Integer;
 begin
   Exec('taskkill.exe', '/F /IM {#MyAppExeName}', '', SW_HIDE, ewWaitUntilTerminated, ErrorCode);
+  Sleep(500);
   Result := True;
+end;
+
+// Post-uninstallation cleanup: remove autostart entry and prompt for settings wipe
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usPostUninstall then
+  begin
+    // Unconditionally remove autostart registry entry
+    RegDeleteValue(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Run', '{#MyAppName}');
+
+    // Clean any temporary lock files
+    DeleteFile(ExpandConstant('{tmp}\protecteye_*.lock'));
+
+    // Prompt user to delete user settings / configuration from registry
+    if SuppressibleMsgBox(CustomMessage('RemoveSettingsPrompt'), mbConfirmation, MB_YESNO, IDYES) = IDYES then
+    begin
+      RegDeleteKeyIncludingSubkeys(HKCU, 'Software\{#MyAppName}');
+    end;
+  end;
 end;
 
 // Check for existing installation

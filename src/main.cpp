@@ -34,6 +34,14 @@ int main(int argc, char* argv[]) {
     // Handle "protecteye uninstall" before Qt argument parsing
     if (argc >= 2 && QString::fromUtf8(argv[1]) == QStringLiteral("uninstall")) {
 #ifdef Q_OS_WIN
+        QString uninstPath = QCoreApplication::applicationDirPath() + QStringLiteral("/unins000.exe");
+        if (QFile::exists(uninstPath)) {
+            qInfo().noquote() << loc.get(
+                QStringLiteral("uninstall_running"),
+                QStringLiteral("Running ProtectEye uninstaller...")
+            );
+            return std::system(qPrintable(QStringLiteral("\"\"%1\"\"").arg(uninstPath)));
+        }
         qWarning().noquote() << loc.get(
             QStringLiteral("uninstall_win_hint"),
             QStringLiteral("On Windows, uninstall via Settings > Installed Apps or Start Menu shortcut.")

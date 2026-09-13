@@ -39,6 +39,14 @@ else
     echo -e "${BOLD}Universal Linux Uninstaller${NC}\n"
 fi
 
+# Parse arguments
+AUTO_YES=false
+for arg in "$@"; do
+    if [ "$arg" = "-y" ] || [ "$arg" = "--yes" ]; then
+        AUTO_YES=true
+    fi
+done
+
 # Determine sudo requirement (optional, only used for system-wide paths)
 SUDO=""
 if [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1; then
@@ -72,6 +80,7 @@ fi
 rm -f "$HOME/.local/bin/$BIN_NAME"
 rm -f "$HOME/.local/share/applications/$BIN_NAME.desktop"
 rm -f "$HOME/.local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+rm -f "$HOME/.local/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml"
 rm -f "$HOME/.config/autostart/$BIN_NAME.desktop"
 
 # 2. Remove system-wide files if present and permissions allow
@@ -80,6 +89,9 @@ if [ -n "$SUDO" ] || [ "$(id -u)" -eq 0 ]; then
     $SUDO rm -f "/usr/local/share/applications/$BIN_NAME.desktop" "/usr/share/applications/$BIN_NAME.desktop"
     $SUDO rm -f "/etc/xdg/autostart/$BIN_NAME.desktop"
     $SUDO rm -f "/usr/local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg" "/usr/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+    $SUDO rm -f "/usr/local/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml" "/usr/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml"
+    $SUDO rm -f "/usr/local/share/protecteye/uninstall.sh" "/usr/share/protecteye/uninstall.sh"
+    $SUDO rm -rf "/usr/local/share/protecteye" "/usr/share/protecteye"
 elif [ -f "/usr/local/bin/$BIN_NAME" ] || [ -f "/usr/bin/$BIN_NAME" ]; then
     if [ "$IS_TR" = true ]; then
         echo -e "${YELLOW}[UYARI] Sistem geneli dosyaları (/usr/local/bin) silmek için sudo gereklidir.${NC}"
@@ -104,16 +116,28 @@ if [ "$(id -u)" -eq 0 ] && [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; th
 fi
 
 if [ -d "$USER_CONFIG_DIR" ]; then
-    if [ "$IS_TR" = true ]; then
-        read -p "Kullanıcı ayarlarını ve verilerini de silmek istiyor musunuz? (e/H): " -r CONFIRM_CLEAN < /dev/tty || CONFIRM_CLEAN="n"
-        if [[ "$CONFIRM_CLEAN" =~ ^[EeYy]$ ]]; then
-            rm -rf "$USER_CONFIG_DIR"
-            echo -e "${GREEN}✓ Kullanıcı ayarları temizlendi.${NC}"
+    CLEAN_CONFIG=false
+    if [ "$AUTO_YES" = true ]; then
+        CLEAN_CONFIG=true
+    elif [ -t 0 ] || [ -e /dev/tty ]; then
+        if [ "$IS_TR" = true ]; then
+            read -p "Kullanıcı ayarlarını ve verilerini de silmek istiyor musunuz? (e/H): " -r CONFIRM_CLEAN < /dev/tty || CONFIRM_CLEAN="n"
+            if [[ "$CONFIRM_CLEAN" =~ ^[EeYy]$ ]]; then
+                CLEAN_CONFIG=true
+            fi
+        else
+            read -p "Do you want to remove user configuration and settings as well? (y/N): " -r CONFIRM_CLEAN < /dev/tty || CONFIRM_CLEAN="n"
+            if [[ "$CONFIRM_CLEAN" =~ ^[Yy]$ ]]; then
+                CLEAN_CONFIG=true
+            fi
         fi
-    else
-        read -p "Do you want to remove user configuration and settings as well? (y/N): " -r CONFIRM_CLEAN < /dev/tty || CONFIRM_CLEAN="n"
-        if [[ "$CONFIRM_CLEAN" =~ ^[Yy]$ ]]; then
-            rm -rf "$USER_CONFIG_DIR"
+    fi
+
+    if [ "$CLEAN_CONFIG" = true ]; then
+        rm -rf "$USER_CONFIG_DIR"
+        if [ "$IS_TR" = true ]; then
+            echo -e "${GREEN}✓ Kullanıcı ayarları temizlendi.${NC}"
+        else
             echo -e "${GREEN}✓ User configuration removed.${NC}"
         fi
     fi

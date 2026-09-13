@@ -88,20 +88,71 @@ if [ "$1" = "--uninstall" ] || [ "$1" = "-u" ]; then
     done
 
 
-    $SUDO rm -f "/usr/local/bin/$BIN_NAME"
-    $SUDO rm -f "/usr/bin/$BIN_NAME"
-    $SUDO rm -f "/usr/local/share/applications/$BIN_NAME.desktop"
-    $SUDO rm -f "/usr/share/applications/$BIN_NAME.desktop"
-    $SUDO rm -f "/etc/xdg/autostart/$BIN_NAME.desktop"
-    $SUDO rm -f "$HOME/.config/autostart/$BIN_NAME.desktop"
-    $SUDO rm -f "/usr/local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
-    $SUDO rm -f "/usr/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+    # 1. Remove user-local installation (never requires root or sudo)
+    rm -f "$HOME/.local/bin/$BIN_NAME"
+    rm -f "$HOME/.local/share/applications/$BIN_NAME.desktop"
+    rm -f "$HOME/.local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+    rm -f "$HOME/.local/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml"
+    rm -f "$HOME/.config/autostart/$BIN_NAME.desktop"
+
+    # 2. Remove system-wide files if present and permissions allow
+    if [ -n "$SUDO" ] || [ "$(id -u)" -eq 0 ]; then
+        $SUDO rm -f "/usr/local/bin/$BIN_NAME" "/usr/bin/$BIN_NAME"
+        $SUDO rm -f "/usr/local/share/applications/$BIN_NAME.desktop" "/usr/share/applications/$BIN_NAME.desktop"
+        $SUDO rm -f "/etc/xdg/autostart/$BIN_NAME.desktop"
+        $SUDO rm -f "/usr/local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg" "/usr/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+        $SUDO rm -f "/usr/local/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml" "/usr/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml"
+        $SUDO rm -f "/usr/local/share/protecteye/uninstall.sh" "/usr/share/protecteye/uninstall.sh"
+        $SUDO rm -rf "/usr/local/share/protecteye" "/usr/share/protecteye"
+    elif [ -f "/usr/local/bin/$BIN_NAME" ] || [ -f "/usr/bin/$BIN_NAME" ]; then
+        if [ "$IS_TR" = true ]; then
+            echo -e "${YELLOW}[UYARI] Sistem geneli dosyaları (/usr/local/bin) silmek için sudo gereklidir.${NC}"
+        else
+            echo -e "${YELLOW}[WARNING] Removing system-wide files (/usr/local/bin) requires sudo privileges.${NC}"
+        fi
+    fi
 
     if command -v gtk-update-icon-cache >/dev/null 2>&1; then
-        $SUDO gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+        $SUDO gtk-update-icon-cache -q -t -f /usr/local/share/icons/hicolor 2>/dev/null || true
+        $SUDO gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor 2>/dev/null || true
     fi
     if command -v update-desktop-database >/dev/null 2>&1; then
-        $SUDO update-desktop-database -q /usr/share/applications || true
+        $SUDO update-desktop-database -q /usr/local/share/applications 2>/dev/null || true
+        $SUDO update-desktop-database -q /usr/share/applications 2>/dev/null || true
+    fi
+
+    # 3. Optional user configuration cleanup
+    USER_CONFIG_DIR="$HOME/.config/ProtectEye"
+    if [ "$(id -u)" -eq 0 ] && [ -n "$SUDO_USER" ] && [ "$SUDO_USER" != "root" ]; then
+        USER_CONFIG_DIR="$(getent passwd "$SUDO_USER" | cut -d: -f6)/.config/ProtectEye"
+    fi
+
+    if [ -d "$USER_CONFIG_DIR" ]; then
+        CLEAN_CONFIG=false
+        if [ "$AUTO_YES" = true ]; then
+            CLEAN_CONFIG=true
+        elif [ -t 0 ] || [ -e /dev/tty ]; then
+            if [ "$IS_TR" = true ]; then
+                read -p "Kullanıcı ayarlarını ve verilerini de silmek istiyor musunuz? (e/H): " -r CONFIRM_CLEAN < /dev/tty || CONFIRM_CLEAN="n"
+                if [[ "$CONFIRM_CLEAN" =~ ^[EeYy]$ ]]; then
+                    CLEAN_CONFIG=true
+                fi
+            else
+                read -p "Do you want to remove user configuration and settings as well? (y/N): " -r CONFIRM_CLEAN < /dev/tty || CONFIRM_CLEAN="n"
+                if [[ "$CONFIRM_CLEAN" =~ ^[Yy]$ ]]; then
+                    CLEAN_CONFIG=true
+                fi
+            fi
+        fi
+
+        if [ "$CLEAN_CONFIG" = true ]; then
+            rm -rf "$USER_CONFIG_DIR"
+            if [ "$IS_TR" = true ]; then
+                echo -e "${GREEN}✓ Kullanıcı ayarları temizlendi.${NC}"
+            else
+                echo -e "${GREEN}✓ User configuration removed.${NC}"
+            fi
+        fi
     fi
 
     if [ "$IS_TR" = true ]; then
@@ -171,6 +222,7 @@ if [ "$PREV_INSTALLED" = true ]; then
         rm -f "$HOME/.local/share/applications/$BIN_NAME.desktop"
         rm -f "$HOME/.config/autostart/$BIN_NAME.desktop"
         rm -f "$HOME/.local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+        rm -f "$HOME/.local/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml"
         if [ -n "$SUDO" ] || [ "$(id -u)" -eq 0 ]; then
             $SUDO rm -f "/usr/local/bin/$BIN_NAME"
             $SUDO rm -f "/usr/bin/$BIN_NAME"
@@ -179,10 +231,17 @@ if [ "$PREV_INSTALLED" = true ]; then
             $SUDO rm -f "/etc/xdg/autostart/$BIN_NAME.desktop"
             $SUDO rm -f "/usr/local/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
             $SUDO rm -f "/usr/share/icons/hicolor/scalable/apps/$BIN_NAME.svg"
+            $SUDO rm -f "/usr/local/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml"
+            $SUDO rm -f "/usr/share/metainfo/io.github.alierenaltindag.protecteye.metainfo.xml"
+            $SUDO rm -f "/usr/local/share/protecteye/uninstall.sh"
+            $SUDO rm -f "/usr/share/protecteye/uninstall.sh"
+            $SUDO rm -rf "/usr/local/share/protecteye" "/usr/share/protecteye"
             if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+                $SUDO gtk-update-icon-cache -q -t -f /usr/local/share/icons/hicolor 2>/dev/null || true
                 $SUDO gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor 2>/dev/null || true
             fi
             if command -v update-desktop-database >/dev/null 2>&1; then
+                $SUDO update-desktop-database -q /usr/local/share/applications 2>/dev/null || true
                 $SUDO update-desktop-database -q /usr/share/applications 2>/dev/null || true
             fi
         fi
