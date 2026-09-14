@@ -71,9 +71,37 @@ for arg in "$@"; do
     esac
 done
 
-# 1. Detect current version
+# SemVer comparison helper: returns 0 (true) if $1 > $2
+is_newer() {
+    python3 -c "
+import sys
+v1 = [int(x) for x in sys.argv[1].split('.') if x.isdigit()]
+v2 = [int(x) for x in sys.argv[2].split('.') if x.isdigit()]
+while len(v1) < 3: v1.append(0)
+while len(v2) < 3: v2.append(0)
+sys.exit(0 if v1 > v2 else 1)
+" "$1" "$2"
+}
+
+# 1. Detect current version and resolve stale binary shadowing between /usr/local/bin and /usr/bin
 CURRENT_VER=""
-if command -v "$BIN_NAME" >/dev/null 2>&1; then
+
+# If both /usr/bin and /usr/local/bin binaries exist, determine which is newer
+if [ -f "/usr/bin/$BIN_NAME" ] && [ -f "/usr/local/bin/$BIN_NAME" ]; then
+    V_USR=$("/usr/bin/$BIN_NAME" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || echo "0.0.0")
+    V_LOCAL=$("/usr/local/bin/$BIN_NAME" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || echo "0.0.0")
+    if ! is_newer "$V_LOCAL" "$V_USR"; then
+        # /usr/bin is newer or equal, so /usr/local/bin is a stale shadow
+        CURRENT_VER="$V_USR"
+        if [ -w "/usr/local/bin/$BIN_NAME" ]; then
+            rm -f "/usr/local/bin/$BIN_NAME" 2>/dev/null || true
+        fi
+    else
+        CURRENT_VER="$V_LOCAL"
+    fi
+fi
+
+if [ -z "$CURRENT_VER" ] && command -v "$BIN_NAME" >/dev/null 2>&1; then
     CURRENT_VER=$("$BIN_NAME" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || true)
 fi
 
@@ -163,19 +191,6 @@ if [ "$LATEST_VER" = "ERROR" ] || [ -z "$LATEST_VER" ]; then
     exit 1
 fi
 
-# 5. Compare SemVer versions
-is_newer() {
-    # Returns 0 (true) if $1 > $2
-    python3 -c "
-import sys
-v1 = [int(x) for x in sys.argv[1].split('.') if x.isdigit()]
-v2 = [int(x) for x in sys.argv[2].split('.') if x.isdigit()]
-while len(v1) < 3: v1.append(0)
-while len(v2) < 3: v2.append(0)
-sys.exit(0 if v1 > v2 else 1)
-" "$1" "$2"
-}
-
 if ! is_newer "$LATEST_VER" "$CURRENT_VER"; then
     if [ "$IS_TR" = true ]; then
         echo -e "${GREEN}[✓] ProtectEye zaten en güncel sürümde! (${BOLD}v${CURRENT_VER}${NC})"
@@ -250,6 +265,10 @@ if [ -n "$PKG_URL" ] && [ -n "$PKG_NAME" ]; then
         *.pkg.tar.zst)
             if [ -n "$SUDO" ] || [ "$(id -u)" -eq 0 ]; then
                 $SUDO pacman -U --noconfirm "$DOWNLOAD_PATH"
+                # Clean up any stale shadowed binary in /usr/local/bin
+                if [ -f "/usr/local/bin/$BIN_NAME" ]; then
+                    $SUDO rm -f "/usr/local/bin/$BIN_NAME" 2>/dev/null || true
+                fi
             else
                 tar -I zstd -xf "$DOWNLOAD_PATH" -C "$HOME/.local/" --strip-components=1 usr/
             fi
@@ -257,6 +276,9 @@ if [ -n "$PKG_URL" ] && [ -n "$PKG_NAME" ]; then
         *.deb)
             if [ -n "$SUDO" ] || [ "$(id -u)" -eq 0 ]; then
                 $SUDO dpkg -i "$DOWNLOAD_PATH" || $SUDO apt-get install -f -y
+                if [ -f "/usr/local/bin/$BIN_NAME" ]; then
+                    $SUDO rm -f "/usr/local/bin/$BIN_NAME" 2>/dev/null || true
+                fi
             else
                 dpkg-deb -x "$DOWNLOAD_PATH" "$TEMP_DIR/extracted"
                 cp -rf "$TEMP_DIR/extracted/usr/"* "$HOME/.local/"
@@ -267,6 +289,9 @@ if [ -n "$PKG_URL" ] && [ -n "$PKG_NAME" ]; then
                 $SUDO dnf install -y "$DOWNLOAD_PATH"
             else
                 $SUDO rpm -Uvh "$DOWNLOAD_PATH"
+            fi
+            if [ -f "/usr/local/bin/$BIN_NAME" ]; then
+                $SUDO rm -f "/usr/local/bin/$BIN_NAME" 2>/dev/null || true
             fi
             ;;
         *)
@@ -284,6 +309,13 @@ else
     curl -fsSL https://raw.githubusercontent.com/${REPO}/main/installer.sh | bash -s -- -y
 fi
 
+# Clean up stale shadow binaries if /usr/bin is now present
+if [ -f "/usr/bin/$BIN_NAME" ] && [ -f "/usr/local/bin/$BIN_NAME" ]; then
+    if [ -n "$SUDO" ] || [ "$(id -u)" -eq 0 ]; then
+        $SUDO rm -f "/usr/local/bin/$BIN_NAME" 2>/dev/null || true
+    fi
+fi
+
 # 7. Restart application if it was previously running
 if [ "$WAS_RUNNING" = true ]; then
     if [ "$IS_TR" = true ]; then
@@ -291,7 +323,14 @@ if [ "$WAS_RUNNING" = true ]; then
     else
         echo -e "${CYAN}==>${NC} Restarting ProtectEye with updated version..."
     fi
-    killall "$BIN_NAME" 2>/dev/null || true
+    CURRENT_PID=$$
+    PARENT_PID=$PPID
+    GRANDPARENT_PID=$(ps -o ppid= -p "$PARENT_PID" 2>/dev/null | tr -d ' ' || true)
+    for pid in $(pgrep -x "$BIN_NAME" 2>/dev/null || true); do
+        if [ "$pid" -ne "$CURRENT_PID" ] && [ "$pid" -ne "$PARENT_PID" ] && [ "$pid" -ne "$GRANDPARENT_PID" ]; then
+            kill "$pid" 2>/dev/null || true
+        fi
+    done
     sleep 0.5
     nohup "$BIN_NAME" >/dev/null 2>&1 &
 fi

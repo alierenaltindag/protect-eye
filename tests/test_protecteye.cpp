@@ -11,6 +11,7 @@
 #include "utils/AutostartHelper.h"
 #include "ui/OverlayWindow.h"
 #include "ui/OverlayManager.h"
+#include "ui/EyeExerciseWidget.h"
 #include "ui/SettingsDialog.h"
 #include <QAbstractItemView>
 #include <QLabel>
@@ -347,16 +348,76 @@ private slots:
 
         // 4. Natural break skipped silently when DND is active
         QSignalSpy dndSkipSpy(&controller, &BreakController::breakSilentlySkippedDnd);
-        Settings::instance().setShortBreakIntervalSec(1);
+        QSignalSpy warningSpy(&controller, &BreakController::preBreakWarning);
+        Settings::instance().setShortBreakIntervalSec(2);
+        Settings::instance().setPreBreakNotificationSec(1);
         Settings::instance().setLongBreakIntervalSec(100);
         Settings::instance().save();
         dndMock.mockDndActive = true;
         controller.start();
-        QTRY_VERIFY_WITH_TIMEOUT(dndSkipSpy.count() >= 1, 2500);
+        QTRY_VERIFY_WITH_TIMEOUT(dndSkipSpy.count() >= 1, 3500);
         QCOMPARE(controller.isInBreak(), false);
+        // Pre-break warning must be suppressed while DND is active
+        QCOMPARE(warningSpy.count(), 0);
 
         // Reset settings back to defaults
         Settings::instance().resetToDefaults();
+    }
+
+    void testAutostartCrossPlatform() {
+#ifndef Q_OS_WIN
+        QString desktopPath = AutostartHelper::getAutostartFilePath();
+        QVERIFY(!desktopPath.isEmpty());
+        QVERIFY(desktopPath.endsWith(QStringLiteral("protecteye.desktop")));
+
+        // Test Enable
+        AutostartHelper::setAutostartEnabled(true);
+        QVERIFY(QFile::exists(desktopPath));
+        QVERIFY(AutostartHelper::isAutostartEnabled());
+
+        QFile file(desktopPath);
+        QVERIFY(file.open(QIODevice::ReadOnly | QIODevice::Text));
+        QString content = QString::fromUtf8(file.readAll());
+        file.close();
+
+        QVERIFY(content.contains(QStringLiteral("Type=Application")));
+        QVERIFY(content.contains(QStringLiteral("Exec=")));
+        QVERIFY(content.contains(QStringLiteral("--autostart")));
+        QVERIFY(content.contains(QStringLiteral("TryExec=")));
+        QVERIFY(content.contains(QStringLiteral("X-GNOME-Autostart-enabled=true")));
+        QVERIFY(content.contains(QStringLiteral("X-KDE-autostart-after=panel")));
+        QVERIFY(content.contains(QStringLiteral("X-MATE-Autostart-enabled=true")));
+        QVERIFY(content.contains(QStringLiteral("X-XFCE-Autostart-enabled=true")));
+        QVERIFY(!content.contains(QStringLiteral("Hidden=true")));
+
+        // Test Disable
+        AutostartHelper::setAutostartEnabled(false);
+        QVERIFY(!AutostartHelper::isAutostartEnabled());
+
+        QVERIFY(file.open(QIODevice::ReadOnly | QIODevice::Text));
+        QString disabledContent = QString::fromUtf8(file.readAll());
+        file.close();
+
+        QVERIFY(disabledContent.contains(QStringLiteral("Hidden=true")));
+        QVERIFY(disabledContent.contains(QStringLiteral("X-GNOME-Autostart-enabled=false")));
+        QVERIFY(disabledContent.contains(QStringLiteral("X-MATE-Autostart-enabled=false")));
+        QVERIFY(disabledContent.contains(QStringLiteral("X-XFCE-Autostart-enabled=false")));
+
+        // Clean up test file
+        QFile::remove(desktopPath);
+#else
+        AutostartHelper::setAutostartEnabled(true);
+        QVERIFY(AutostartHelper::isAutostartEnabled());
+        AutostartHelper::setAutostartEnabled(false);
+        QVERIFY(!AutostartHelper::isAutostartEnabled());
+#endif
+    }
+
+    void testDndMonitorRealSystem() {
+        DndMonitor monitor;
+        // Verify call executes cleanly without crash or infinite hang on current desktop
+        bool active = monitor.isDndActive();
+        Q_UNUSED(active);
     }
 
     void testLocalization() {
@@ -690,6 +751,100 @@ private slots:
             }
         }
         QCOMPARE(remainingVisible, 0);
+    }
+
+    void testInteractiveExercisesToggleOnOverlay() {
+        auto& s = Settings::instance();
+        s.resetToDefaults();
+        s.setLanguage("tr");
+        Localization::instance().setLanguageByCode("tr");
+
+        // 1. With interactive exercises ENABLED (default):
+        s.setInteractiveExercisesEnabled(true);
+        OverlayManager manager1;
+        manager1.showBreak(false, 20);
+        qApp->processEvents();
+
+        OverlayWindow* activeOverlay1 = nullptr;
+        for (auto* w : QApplication::topLevelWidgets()) {
+            auto* overlay = qobject_cast<OverlayWindow*>(w);
+            if (overlay && overlay->isVisible()) {
+                activeOverlay1 = overlay;
+                break;
+            }
+        }
+        QVERIFY(activeOverlay1 != nullptr);
+
+        auto* titleLabel1 = activeOverlay1->findChild<QLabel*>("exerciseTitleLabel");
+        auto* exerciseWidget1 = activeOverlay1->findChild<EyeExerciseWidget*>("exerciseWidget");
+        auto* tipLabel1 = activeOverlay1->findChild<QLabel*>("tipLabel");
+        auto* badgeLabel1 = activeOverlay1->findChild<QLabel*>("badgeLabel");
+
+        QVERIFY(titleLabel1 != nullptr);
+        QVERIFY(exerciseWidget1 != nullptr);
+        QVERIFY(tipLabel1 != nullptr);
+        QVERIFY(badgeLabel1 != nullptr);
+
+        QVERIFY(titleLabel1->isVisible());
+        QVERIFY(!titleLabel1->text().isEmpty());
+        QVERIFY(exerciseWidget1->isVisible());
+
+        manager1.closeBreak();
+        qApp->processEvents();
+
+        // 2. With interactive exercises DISABLED:
+        s.setInteractiveExercisesEnabled(false);
+        OverlayManager manager2;
+        manager2.showBreak(false, 20);
+        qApp->processEvents();
+
+        OverlayWindow* activeOverlay2 = nullptr;
+        for (auto* w : QApplication::topLevelWidgets()) {
+            auto* overlay = qobject_cast<OverlayWindow*>(w);
+            if (overlay && overlay->isVisible()) {
+                activeOverlay2 = overlay;
+                break;
+            }
+        }
+        QVERIFY(activeOverlay2 != nullptr);
+
+        auto* titleLabel2 = activeOverlay2->findChild<QLabel*>("exerciseTitleLabel");
+        auto* exerciseWidget2 = activeOverlay2->findChild<EyeExerciseWidget*>("exerciseWidget");
+        auto* tipLabel2 = activeOverlay2->findChild<QLabel*>("tipLabel");
+        auto* badgeLabel2 = activeOverlay2->findChild<QLabel*>("badgeLabel");
+
+        QVERIFY(titleLabel2 != nullptr);
+        QVERIFY(exerciseWidget2 != nullptr);
+        QVERIFY(tipLabel2 != nullptr);
+        QVERIFY(badgeLabel2 != nullptr);
+
+        // Verification of disabled state:
+        // - Badge must be standard short break badge ("👁️ KISA GÖZ MOLASI"), not "İNTERAKTİF GÖZ TAKİBİ"
+        QCOMPARE(badgeLabel2->text(), Localization::instance().badgeShortBreak());
+        QVERIFY(!badgeLabel2->text().contains("İNTERAKTİF"));
+        QVERIFY(!badgeLabel2->text().contains("INTERACTIVE"));
+
+        // - Title must be hidden
+        QVERIFY(!titleLabel2->isVisible());
+
+        // - Exercise widget animation must be hidden
+        QVERIFY(!exerciseWidget2->isVisible());
+
+        // - Tip must NOT tell user to follow glowing blue lights that don't exist
+        QVERIFY(!tipLabel2->text().contains("parlayan mavi ışığı"));
+        QVERIFY(!tipLabel2->text().contains("mavi ışık"));
+        // - Tip must be a valid tip from shortBreakTips
+        const auto validTips = Localization::instance().shortBreakTips();
+        QVERIFY(validTips.contains(tipLabel2->text()));
+
+        // Capture screenshot of clean disabled state
+        QPixmap pix = activeOverlay2->grab();
+        pix.save(QStringLiteral("/home/aa-linux/.gemini/antigravity/brain/0c4ec0a9-540e-45d4-9649-6f38da9ba228/overlay_break_exercises_disabled.png"));
+
+        manager2.closeBreak();
+        qApp->processEvents();
+
+        s.resetToDefaults();
     }
 
     void testSettingsDialogTabbedLayout() {

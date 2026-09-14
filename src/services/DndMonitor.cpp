@@ -16,21 +16,68 @@ DndMonitor::DndMonitor(QObject* parent)
 }
 
 bool DndMonitor::isDndActive() const {
-    return checkWindowsDnd();
+    if (checkWindowsDnd()) {
+        return true;
+    }
+    if (checkWindowsFullscreen()) {
+        return true;
+    }
+    return false;
 }
 
 bool DndMonitor::checkWindowsDnd() const {
     QUERY_USER_NOTIFICATION_STATE state;
     if (SHQueryUserNotificationState(&state) == S_OK) {
         int val = static_cast<int>(state);
-        // 2: QUNS_BUSY
-        // 3: QUNS_RUNNING_D3D_FULL_SCREEN
-        // 4: QUNS_PRESENTATION_MODE
+        // 2: QUNS_BUSY (PowerPoint presentation, full screen application)
+        // 3: QUNS_RUNNING_D3D_FULL_SCREEN (Direct3D exclusive game)
+        // 4: QUNS_PRESENTATION_MODE (Windows Presentation Mode)
         // 6: QUNS_QUIET_HOURS (Windows 10/11 Focus Assist / DND)
-        // 7: QUNS_APP (Focus Assist Alarms / Priority Only)
+        // 7: QUNS_APP (Focus Assist Priority / Alarms Only)
         if (val == 2 || val == 3 || val == 4 || val == 6 || val == 7) {
             return true;
         }
+    }
+    return false;
+}
+
+bool DndMonitor::checkWindowsFullscreen() const {
+    HWND hwnd = GetForegroundWindow();
+    if (!hwnd || hwnd == GetDesktopWindow() || hwnd == GetShellWindow()) {
+        return false;
+    }
+
+    LONG style = GetWindowLongW(hwnd, GWL_STYLE);
+    if (!(style & WS_VISIBLE)) {
+        return false;
+    }
+
+    wchar_t className[64] = {0};
+    if (GetClassNameW(hwnd, className, 64) > 0) {
+        if (wcscmp(className, L"Shell_TrayWnd") == 0 ||
+            wcscmp(className, L"Progman") == 0 ||
+            wcscmp(className, L"WorkerW") == 0) {
+            return false;
+        }
+    }
+
+    RECT appRect;
+    if (!GetWindowRect(hwnd, &appRect)) {
+        return false;
+    }
+
+    HMONITOR hMon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTOPRIMARY);
+    if (!hMon) return false;
+
+    MONITORINFO mi;
+    mi.cbSize = sizeof(MONITORINFO);
+    if (!GetMonitorInfoW(hMon, &mi)) return false;
+
+    if (appRect.left <= mi.rcMonitor.left &&
+        appRect.top <= mi.rcMonitor.top &&
+        appRect.right >= mi.rcMonitor.right &&
+        appRect.bottom >= mi.rcMonitor.bottom) {
+        return true;
     }
     return false;
 }
@@ -50,7 +97,7 @@ bool queryDbusPropertyBool(const QString& service, const QString& path, const QS
         service, path, QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("Get")
     );
     msg << interface << property;
-    QDBusMessage reply = QDBusConnection::sessionBus().call(msg, QDBus::Block, 200);
+    QDBusMessage reply = QDBusConnection::sessionBus().call(msg, QDBus::Block, 150);
     if (reply.type() == QDBusMessage::ReplyMessage && !reply.arguments().isEmpty()) {
         QVariant v = reply.arguments().at(0);
         if (v.canConvert<QDBusVariant>()) {
@@ -63,7 +110,7 @@ bool queryDbusPropertyBool(const QString& service, const QString& path, const QS
 
 bool queryDbusMethodBool(const QString& service, const QString& path, const QString& interface, const QString& method) {
     QDBusMessage msg = QDBusMessage::createMethodCall(service, path, interface, method);
-    QDBusMessage reply = QDBusConnection::sessionBus().call(msg, QDBus::Block, 200);
+    QDBusMessage reply = QDBusConnection::sessionBus().call(msg, QDBus::Block, 150);
     if (reply.type() == QDBusMessage::ReplyMessage && !reply.arguments().isEmpty()) {
         return reply.arguments().at(0).toBool();
     }
@@ -82,63 +129,39 @@ DndMonitor::DndMonitor(QObject* parent)
 
 bool DndMonitor::isDndActive() const {
     // 1. Check if an active foreground window is currently Fullscreen (gaming, video, presentation)
-    if (checkX11Fullscreen()) {
+    if (checkX11Fullscreen() || checkWaylandFullscreen()) {
         return true;
     }
 
+    // 2. Desktop Environment specific checks
     if (m_desktopEnvironment.contains("GNOME") || m_desktopEnvironment.contains("UBUNTU")) {
-        return checkGnomeDnd();
+        if (checkGnomeDnd()) return true;
     } else if (m_desktopEnvironment.contains("KDE")) {
-        return checkKdeDnd();
+        if (checkKdeDnd()) return true;
     } else if (m_desktopEnvironment.contains("XFCE")) {
-        return checkXfceDnd();
+        if (checkXfceDnd()) return true;
     } else if (m_desktopEnvironment.contains("CINNAMON") || m_desktopEnvironment.contains("X-CINNAMON")) {
-        return checkCinnamonDnd();
+        if (checkCinnamonDnd()) return true;
     } else if (m_desktopEnvironment.contains("MATE")) {
-        return checkMateDnd();
+        if (checkMateDnd()) return true;
     } else if (m_desktopEnvironment.contains("COSMIC")) {
-        // System76 COSMIC desktop implements standard FreeDesktop Notifications Inhibited
-        return checkFreedesktopInhibited();
+        if (checkFreedesktopInhibited()) return true;
     } else if (m_desktopEnvironment.contains("SWAY") || m_desktopEnvironment.contains("HYPRLAND")) {
-        if (checkSwayNcDnd() || checkDunstDnd() || checkFreedesktopInhibited()) {
+        if (checkSwayNcDnd() || checkDunstDnd() || checkMakoDnd() || checkFreedesktopInhibited()) {
             return true;
         }
     }
 
-    // Generic fallback across all environments: FreeDesktop standard -> standalone tools -> DEs
-    enum FallbackMethod {
-        FdoInhibited = 0,
-        SwayNc = 1,
-        Dunst = 2,
-        Kde = 3,
-        Gnome = 4,
-        Xfce = 5,
-        Cinnamon = 6,
-        Mate = 7
-    };
-
-    if (m_cachedFallbackMethod >= 0) {
-        switch (m_cachedFallbackMethod) {
-        case FdoInhibited: return checkFreedesktopInhibited();
-        case SwayNc: return checkSwayNcDnd();
-        case Dunst: return checkDunstDnd();
-        case Kde: return checkKdeDnd();
-        case Gnome: return checkGnomeDnd();
-        case Xfce: return checkXfceDnd();
-        case Cinnamon: return checkCinnamonDnd();
-        case Mate: return checkMateDnd();
-        default: break;
-        }
-    }
-
-    if (checkFreedesktopInhibited()) { m_cachedFallbackMethod = FdoInhibited; return true; }
-    if (checkSwayNcDnd()) { m_cachedFallbackMethod = SwayNc; return true; }
-    if (checkDunstDnd()) { m_cachedFallbackMethod = Dunst; return true; }
-    if (checkKdeDnd()) { m_cachedFallbackMethod = Kde; return true; }
-    if (checkGnomeDnd()) { m_cachedFallbackMethod = Gnome; return true; }
-    if (checkXfceDnd()) { m_cachedFallbackMethod = Xfce; return true; }
-    if (checkCinnamonDnd()) { m_cachedFallbackMethod = Cinnamon; return true; }
-    if (checkMateDnd()) { m_cachedFallbackMethod = Mate; return true; }
+    // 3. Generic fallback across all environments: FreeDesktop standard -> standalone tools -> DEs
+    if (checkFreedesktopInhibited()) return true;
+    if (checkSwayNcDnd()) return true;
+    if (checkDunstDnd()) return true;
+    if (checkMakoDnd()) return true;
+    if (checkKdeDnd()) return true;
+    if (checkGnomeDnd()) return true;
+    if (checkXfceDnd()) return true;
+    if (checkCinnamonDnd()) return true;
+    if (checkMateDnd()) return true;
 
     return false;
 }
@@ -149,7 +172,7 @@ bool DndMonitor::checkXfceDnd() const {
     }
     QProcess proc;
     proc.start("xfconf-query", QStringList() << "-c" << "xfce4-notifyd" << "-p" << "/do-not-disturb");
-    if (proc.waitForFinished(100)) {
+    if (proc.waitForFinished(200)) {
         QString output = QString::fromUtf8(proc.readAllStandardOutput()).trimmed().toLower();
         if (output == "true") {
             return true;
@@ -164,8 +187,17 @@ bool DndMonitor::checkGnomeDnd() const {
     }
     QProcess proc;
     proc.start("gsettings", QStringList() << "get" << "org.gnome.desktop.notifications" << "show-banners");
-    if (proc.waitForFinished(100)) {
+    if (proc.waitForFinished(200)) {
         QString output = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
+        if (output == "false") {
+            return true;
+        }
+    }
+    // Fallback to dconf command if gsettings is unavailable or timed out
+    QProcess dconfProc;
+    dconfProc.start("dconf", QStringList() << "read" << "/org/gnome/desktop/notifications/show-banners");
+    if (dconfProc.waitForFinished(200)) {
+        QString output = QString::fromUtf8(dconfProc.readAllStandardOutput()).trimmed();
         if (output == "false") {
             return true;
         }
@@ -179,7 +211,7 @@ bool DndMonitor::checkCinnamonDnd() const {
     }
     QProcess proc;
     proc.start("gsettings", QStringList() << "get" << "org.cinnamon.desktop.notifications" << "display-notifications");
-    if (proc.waitForFinished(100)) {
+    if (proc.waitForFinished(200)) {
         QString output = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
         if (output == "false") {
             return true;
@@ -194,7 +226,7 @@ bool DndMonitor::checkMateDnd() const {
     }
     QProcess proc;
     proc.start("gsettings", QStringList() << "get" << "org.mate.NotificationDaemon" << "do-not-disturb");
-    if (proc.waitForFinished(100)) {
+    if (proc.waitForFinished(200)) {
         QString output = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
         if (output == "true") {
             return true;
@@ -210,17 +242,51 @@ bool DndMonitor::checkSwayNcDnd() const {
                             QStringLiteral("GetDnd"))) {
         return true;
     }
-    return queryDbusPropertyBool(QStringLiteral("org.erikreider.swaync"),
-                                 QStringLiteral("/org/erikreider/swaync"),
-                                 QStringLiteral("org.erikreider.swaync"),
-                                 QStringLiteral("dnd"));
+    if (queryDbusPropertyBool(QStringLiteral("org.erikreider.swaync"),
+                              QStringLiteral("/org/erikreider/swaync"),
+                              QStringLiteral("org.erikreider.swaync"),
+                              QStringLiteral("dnd"))) {
+        return true;
+    }
+    QProcess proc;
+    proc.start("swaync-client", QStringList() << "-D");
+    if (proc.waitForFinished(150)) {
+        QString out = QString::fromUtf8(proc.readAllStandardOutput()).trimmed().toLower();
+        if (out == "true") {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool DndMonitor::checkDunstDnd() const {
-    return queryDbusMethodBool(QStringLiteral("org.freedesktop.Notifications"),
-                               QStringLiteral("/org/freedesktop/Notifications"),
-                               QStringLiteral("org.dunstproject.cmd0"),
-                               QStringLiteral("isPaused"));
+    if (queryDbusMethodBool(QStringLiteral("org.freedesktop.Notifications"),
+                            QStringLiteral("/org/freedesktop/Notifications"),
+                            QStringLiteral("org.dunstproject.cmd0"),
+                            QStringLiteral("isPaused"))) {
+        return true;
+    }
+    QProcess proc;
+    proc.start("dunstctl", QStringList() << "is-paused");
+    if (proc.waitForFinished(150)) {
+        QString out = QString::fromUtf8(proc.readAllStandardOutput()).trimmed().toLower();
+        if (out == "true") {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool DndMonitor::checkMakoDnd() const {
+    QProcess proc;
+    proc.start("makoctl", QStringList() << "mode");
+    if (proc.waitForFinished(150)) {
+        QString out = QString::fromUtf8(proc.readAllStandardOutput()).trimmed().toLower();
+        if (out.contains("dnd")) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool DndMonitor::checkKdeDnd() const {
@@ -246,17 +312,29 @@ bool DndMonitor::checkFreedesktopInhibited() const {
                               QStringLiteral("Inhibited"))) {
         return true;
     }
-    return queryDbusPropertyBool(QStringLiteral("org.freedesktop.Notifications"),
-                                 QStringLiteral("/org/freedesktop/Notifications"),
-                                 QStringLiteral("org.freedesktop.Notifications"),
-                                 QStringLiteral("inhibited"));
+    if (queryDbusPropertyBool(QStringLiteral("org.freedesktop.Notifications"),
+                              QStringLiteral("/org/freedesktop/Notifications"),
+                              QStringLiteral("org.freedesktop.Notifications"),
+                              QStringLiteral("inhibited"))) {
+        return true;
+    }
+    if (queryDbusMethodBool(QStringLiteral("org.freedesktop.Notifications"),
+                            QStringLiteral("/org/freedesktop/Notifications"),
+                            QStringLiteral("org.freedesktop.Notifications"),
+                            QStringLiteral("IsInhibited"))) {
+        return true;
+    }
+    return false;
 }
 
 bool DndMonitor::checkX11Fullscreen() const {
+    if (qEnvironmentVariableIsEmpty("DISPLAY")) {
+        return false;
+    }
     // Check if the foreground active window is in Fullscreen mode on X11 / XWayland
     QProcess proc;
     proc.start("xprop", QStringList() << "-root" << "_NET_ACTIVE_WINDOW");
-    if (proc.waitForFinished(80)) {
+    if (proc.waitForFinished(120)) {
         QString out = QString::fromUtf8(proc.readAllStandardOutput());
         int hashIdx = out.indexOf('#');
         if (hashIdx >= 0) {
@@ -264,7 +342,7 @@ bool DndMonitor::checkX11Fullscreen() const {
             if (!winId.isEmpty() && winId != QStringLiteral("0x0")) {
                 QProcess stateProc;
                 stateProc.start("xprop", QStringList() << "-id" << winId << "_NET_WM_STATE");
-                if (stateProc.waitForFinished(80)) {
+                if (stateProc.waitForFinished(120)) {
                     QString stateOut = QString::fromUtf8(stateProc.readAllStandardOutput());
                     if (stateOut.contains(QStringLiteral("_NET_WM_STATE_FULLSCREEN"))) {
                         return true;
@@ -273,6 +351,37 @@ bool DndMonitor::checkX11Fullscreen() const {
             }
         }
     }
+    return false;
+}
+
+bool DndMonitor::checkWaylandFullscreen() const {
+    // 1. Check Hyprland
+    if (!qEnvironmentVariableIsEmpty("HYPRLAND_INSTANCE_SIGNATURE")) {
+        QProcess proc;
+        proc.start("hyprctl", QStringList() << "activewindow" << "-j");
+        if (proc.waitForFinished(150)) {
+            QByteArray out = proc.readAllStandardOutput();
+            if (out.contains("\"fullscreen\": true") ||
+                out.contains("\"fullscreen\":true") ||
+                out.contains("\"fullscreenMode\": 1") ||
+                out.contains("\"fullscreenMode\": 2")) {
+                return true;
+            }
+        }
+    }
+
+    // 2. Check Sway
+    if (!qEnvironmentVariableIsEmpty("SWAYSOCK")) {
+        QProcess proc;
+        proc.start("swaymsg", QStringList() << "-t" << "get_focused");
+        if (proc.waitForFinished(150)) {
+            QByteArray out = proc.readAllStandardOutput();
+            if (out.contains("\"fullscreen_mode\": 1") || out.contains("\"fullscreen_mode\":1")) {
+                return true;
+            }
+        }
+    }
+
     return false;
 }
 #endif

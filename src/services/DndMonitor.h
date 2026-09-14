@@ -16,6 +16,7 @@ public:
 private:
 #ifdef Q_OS_WIN
     bool checkWindowsDnd() const;
+    bool checkWindowsFullscreen() const;
 #else
     bool checkGnomeDnd() const;
     bool checkKdeDnd() const;
@@ -24,9 +25,10 @@ private:
     bool checkMateDnd() const;
     bool checkSwayNcDnd() const;
     bool checkDunstDnd() const;
+    bool checkMakoDnd() const;
     bool checkFreedesktopInhibited() const;
     bool checkX11Fullscreen() const;
+    bool checkWaylandFullscreen() const;
     QString m_desktopEnvironment;
-    mutable int m_cachedFallbackMethod{-1};
 #endif
 };

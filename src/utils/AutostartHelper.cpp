@@ -6,7 +6,11 @@
 #ifdef Q_OS_WIN
 bool AutostartHelper::isAutostartEnabled() {
     QSettings runSettings(QStringLiteral("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
-    return runSettings.contains(QStringLiteral("ProtectEye"));
+    if (!runSettings.contains(QStringLiteral("ProtectEye"))) {
+        return false;
+    }
+    QString val = runSettings.value(QStringLiteral("ProtectEye")).toString().trimmed();
+    return !val.isEmpty();
 }
 
 void AutostartHelper::setAutostartEnabled(bool enable) {
@@ -30,7 +34,23 @@ void AutostartHelper::setAutostartEnabled(bool enable) {
 
 QString AutostartHelper::getAutostartFilePath() {
     QString configDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
-    return configDir + "/autostart/protecteye.desktop";
+    if (configDir.isEmpty()) {
+        configDir = QDir::homePath() + QStringLiteral("/.config");
+    }
+    return configDir + QStringLiteral("/autostart/protecteye.desktop");
+}
+
+QString AutostartHelper::getExecutablePath() {
+    // If running inside an AppImage, applicationFilePath points to a temporary mount directory in /tmp
+    // The AppImage runtime sets the APPIMAGE environment variable to the persistent AppImage file on disk.
+    QByteArray appImageEnv = qgetenv("APPIMAGE");
+    if (!appImageEnv.isEmpty()) {
+        QString appImagePath = QString::fromUtf8(appImageEnv);
+        if (QFile::exists(appImagePath)) {
+            return appImagePath;
+        }
+    }
+    return QCoreApplication::applicationFilePath();
 }
 
 bool AutostartHelper::isAutostartEnabled() {
@@ -41,8 +61,22 @@ bool AutostartHelper::isAutostartEnabled() {
             QTextStream in(&file);
             while (!in.atEnd()) {
                 QString line = in.readLine().trimmed();
-                if (line.compare(QStringLiteral("Hidden=true"), Qt::CaseInsensitive) == 0 ||
-                    line.compare(QStringLiteral("X-GNOME-Autostart-enabled=false"), Qt::CaseInsensitive) == 0) {
+                if (line.isEmpty() || line.startsWith('#') || line.startsWith('[')) {
+                    continue;
+                }
+                QString key = line.section('=', 0, 0).trimmed();
+                QString val = line.section('=', 1).trimmed();
+
+                if (key.compare(QStringLiteral("Hidden"), Qt::CaseInsensitive) == 0 &&
+                    val.compare(QStringLiteral("true"), Qt::CaseInsensitive) == 0) {
+                    return false;
+                }
+                if (key.endsWith(QStringLiteral("Autostart-enabled"), Qt::CaseInsensitive) &&
+                    val.compare(QStringLiteral("false"), Qt::CaseInsensitive) == 0) {
+                    return false;
+                }
+                if (key.compare(QStringLiteral("X-KDE-autostart-condition"), Qt::CaseInsensitive) == 0 &&
+                    val.contains(QStringLiteral("false"), Qt::CaseInsensitive)) {
                     return false;
                 }
             }
@@ -67,6 +101,8 @@ void AutostartHelper::setAutostartEnabled(bool enable) {
         dir.mkpath(".");
     }
 
+    QString execPath = getExecutablePath();
+
     if (!enable) {
         // In accordance with XDG Desktop Application Autostart Specification:
         // Mask both user and system-wide autostart (/etc/xdg/autostart/protecteye.desktop)
@@ -77,9 +113,10 @@ void AutostartHelper::setAutostartEnabled(bool enable) {
             out << "[Desktop Entry]\n";
             out << "Type=Application\n";
             out << "Name=ProtectEye\n";
-            out << "Exec=\"" << QCoreApplication::applicationFilePath() << "\" --autostart\n";
+            out << "Exec=\"" << execPath << "\" --autostart\n";
             out << "Hidden=true\n";
             out << "X-GNOME-Autostart-enabled=false\n";
+            out << "X-KDE-autostart-condition=\n";
             out << "X-MATE-Autostart-enabled=false\n";
             out << "X-XFCE-Autostart-enabled=false\n";
             file.close();
@@ -95,12 +132,14 @@ void AutostartHelper::setAutostartEnabled(bool enable) {
         out << "Name=ProtectEye\n";
         out << "GenericName=" << Localization::instance().trayTooltip() << "\n";
         out << "Comment=" << Localization::instance().trayTooltip() << "\n";
-        out << "Exec=\"" << QCoreApplication::applicationFilePath() << "\" --autostart\n";
+        out << "TryExec=" << execPath << "\n";
+        out << "Exec=\"" << execPath << "\" --autostart\n";
         out << "Icon=protecteye\n";
         out << "Terminal=false\n";
         out << "Categories=Utility;Qt;\n";
         out << "StartupNotify=false\n";
         out << "X-GNOME-Autostart-enabled=true\n";
+        out << "X-GNOME-Autostart-Delay=2\n";
         out << "X-KDE-autostart-after=panel\n";
         out << "X-MATE-Autostart-enabled=true\n";
         out << "X-XFCE-Autostart-enabled=true\n";

@@ -180,12 +180,15 @@ void BreakController::onSecondTimer() {
     // Pre-break warning check (sends notification exactly at 30 seconds before break)
     int warnSec = Settings::instance().preBreakNotificationSec();
     if (warnSec > 0) {
-        if (!m_preWarningSentLong && m_secToLongBreak <= warnSec && m_secToLongBreak > 0) {
-            emit preBreakWarning(true, m_secToLongBreak);
-            m_preWarningSentLong = true;
-        } else if (!m_preWarningSentShort && m_secToShortBreak <= warnSec && m_secToShortBreak > 0) {
-            emit preBreakWarning(false, m_secToShortBreak);
-            m_preWarningSentShort = true;
+        const bool dndSuppressed = Settings::instance().dndCheckEnabled() && m_dndMonitor && m_dndMonitor->isDndActive();
+        if (!dndSuppressed) {
+            if (!m_preWarningSentLong && m_secToLongBreak <= warnSec && m_secToLongBreak > 0) {
+                emit preBreakWarning(true, m_secToLongBreak);
+                m_preWarningSentLong = true;
+            } else if (!m_preWarningSentShort && m_secToShortBreak <= warnSec && m_secToShortBreak > 0) {
+                emit preBreakWarning(false, m_secToShortBreak);
+                m_preWarningSentShort = true;
+            }
         }
     }
 

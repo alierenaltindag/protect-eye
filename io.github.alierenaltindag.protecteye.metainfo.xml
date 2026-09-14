@@ -34,6 +34,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.0.9" date="2026-09-13">
+      <description>
+        <p>Fixed break overlay text behavior when interactive eye exercise animations are disabled to display clean break badges and clinical rest tips instead of animation instructions. Enhanced Do Not Disturb (DND) silent break skipping across Windows and all Linux desktop environments (GNOME, KDE Plasma 5/6, XFCE, Cinnamon, MATE, COSMIC, Sway, Hyprland) with fullscreen window detection and pre-break warning suppression. Improved cross-platform autostart with AppImage persistence support, robust desktop flags, and system-wide masking.</p>
+      </description>
+    </release>
     <release version="1.0.8" date="2026-09-13">
       <description>
         <p>Robust multi-tier update checking with CDN fallback to resolve rate limit and connection issues, automatic update checks on every application startup, native desktop manager notifications (FreeDesktop DBus on Linux, Action Center Toast on Windows) with clickable action buttons, and bundled Windows TLS plugins.</p>

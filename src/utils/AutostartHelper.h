@@ -8,5 +8,6 @@ public:
     static void setAutostartEnabled(bool enable);
 #ifndef Q_OS_WIN
     static QString getAutostartFilePath();
+    static QString getExecutablePath();
 #endif
 };

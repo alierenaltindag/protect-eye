@@ -1,5 +1,6 @@
 #include "OverlayManager.h"
 #include "core/Localization.h"
+#include "core/Settings.h"
 #include <QGuiApplication>
 #include <QScreen>
 #include <QTimer>
@@ -27,10 +28,20 @@ void OverlayManager::showBreak(bool isLong, int durationSec) {
     m_currentDuration = durationSec;
     m_currentRemainingSec = durationSec;
 
+    const bool exercisesEnabled = Settings::instance().interactiveExercisesEnabled();
     if (isLong) {
         m_currentExercise = Localization::instance().getLongBreakExercise(m_longCycleIndex++);
     } else {
-        m_currentExercise = Localization::instance().getShortBreakExercise(m_shortCycleIndex++);
+        if (exercisesEnabled) {
+            m_currentExercise = Localization::instance().getShortBreakExercise(m_shortCycleIndex++);
+        } else {
+            ExerciseGuide guide;
+            guide.visualType = ExerciseVisualType::None;
+            guide.badge = Localization::instance().badgeShortBreak();
+            guide.title = QString();
+            guide.instruction = Localization::instance().getRandomTip(false);
+            m_currentExercise = guide;
+        }
     }
 
     // Recreate or refresh overlays for each screen

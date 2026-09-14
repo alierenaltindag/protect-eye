@@ -247,13 +247,15 @@ void OverlayWindow::prepareBreak(bool isLong, int totalDurationSec, const Exerci
     m_totalDuration = totalDurationSec;
     m_remainingSec = totalDurationSec;
 
-    m_badgeLabel->setText(!guide.badge.isEmpty() ? guide.badge : (isLong ? Localization::instance().badgeLongBreak() : Localization::instance().badgeShortBreak()));
-    m_titleLabel->setText(guide.title);
-    m_titleLabel->setVisible(!guide.title.isEmpty());
-    m_tipLabel->setText(guide.instruction);
+    const bool exercisesEnabled = Settings::instance().interactiveExercisesEnabled();
+    const bool enableVisual = exercisesEnabled && !isLong && (guide.visualType != ExerciseVisualType::None);
 
-    const bool enableVisual = Settings::instance().interactiveExercisesEnabled() && !isLong && (guide.visualType != ExerciseVisualType::None);
     if (enableVisual) {
+        m_badgeLabel->setText(!guide.badge.isEmpty() ? guide.badge : Localization::instance().badgeShortBreak());
+        m_titleLabel->setText(guide.title);
+        m_titleLabel->setVisible(!guide.title.isEmpty());
+        m_tipLabel->setText(guide.instruction);
+
         m_exerciseWidget->setVisualType(guide.visualType);
         m_exerciseWidget->setVisible(true);
         m_exerciseWidget->startAnimation();
@@ -261,6 +263,23 @@ void OverlayWindow::prepareBreak(bool isLong, int totalDurationSec, const Exerci
         m_exerciseWidget->setVisualType(ExerciseVisualType::None);
         m_exerciseWidget->stopAnimation();
         m_exerciseWidget->setVisible(false);
+
+        if (!isLong) {
+            m_badgeLabel->setText(Localization::instance().badgeShortBreak());
+            m_titleLabel->clear();
+            m_titleLabel->setVisible(false);
+
+            if (guide.visualType == ExerciseVisualType::None && !guide.instruction.isEmpty()) {
+                m_tipLabel->setText(guide.instruction);
+            } else {
+                m_tipLabel->setText(Localization::instance().getRandomTip(false));
+            }
+        } else {
+            m_badgeLabel->setText(!guide.badge.isEmpty() ? guide.badge : Localization::instance().badgeLongBreak());
+            m_titleLabel->setText(guide.title);
+            m_titleLabel->setVisible(!guide.title.isEmpty());
+            m_tipLabel->setText(!guide.instruction.isEmpty() ? guide.instruction : Localization::instance().getRandomTip(true));
+        }
     }
 
     int snoozeMin = std::max(1, Settings::instance().snoozeDurationSec() / 60);

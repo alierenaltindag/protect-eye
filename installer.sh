@@ -370,7 +370,7 @@ if [ "$USER_MODE" = true ]; then
     mkdir -p "$INSTALL_PREFIX/share/metainfo"
     mkdir -p "$HOME/.config/autostart"
 else
-    INSTALL_PREFIX="/usr/local"
+    INSTALL_PREFIX="/usr"
 fi
 
 cmake -B "$SRC_DIR/build" -S "$SRC_DIR" \
@@ -403,12 +403,15 @@ if [ "$USER_MODE" = true ]; then
     PROTECTEYE_BIN="$HOME/.local/bin/protecteye"
 else
     if [ "$IS_TR" = true ]; then
-        echo -e "${BLUE}==> ${APP_NAME} sistem dizinlerine (/usr/local) kuruluyor...${NC}"
+        echo -e "${BLUE}==> ${APP_NAME} sistem dizinlerine (/usr) kuruluyor...${NC}"
     else
-        echo -e "${BLUE}==> Installing ${APP_NAME} to system directories (/usr/local)...${NC}"
+        echo -e "${BLUE}==> Installing ${APP_NAME} to system directories (/usr)...${NC}"
     fi
 
     $SUDO cmake --install "$SRC_DIR/build"
+
+    # Remove stale binaries from /usr/local if previously installed there
+    $SUDO rm -f "/usr/local/bin/$BIN_NAME" 2>/dev/null || true
 
     # Ensure autostart in /etc/xdg/autostart
     $SUDO mkdir -p /etc/xdg/autostart
@@ -416,19 +419,16 @@ else
 
     # Update system icon and desktop caches
     if command -v gtk-update-icon-cache >/dev/null 2>&1; then
-        $SUDO gtk-update-icon-cache -q -t -f /usr/local/share/icons/hicolor 2>/dev/null || true
         $SUDO gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor 2>/dev/null || true
+        $SUDO gtk-update-icon-cache -q -t -f /usr/local/share/icons/hicolor 2>/dev/null || true
     fi
 
     if command -v update-desktop-database >/dev/null 2>&1; then
-        $SUDO update-desktop-database -q /usr/local/share/applications 2>/dev/null || true
         $SUDO update-desktop-database -q /usr/share/applications 2>/dev/null || true
+        $SUDO update-desktop-database -q /usr/local/share/applications 2>/dev/null || true
     fi
 
-    PROTECTEYE_BIN="/usr/local/bin/protecteye"
-    if ! command -v protecteye >/dev/null 2>&1; then
-        PROTECTEYE_BIN="/usr/bin/protecteye"
-    fi
+    PROTECTEYE_BIN="/usr/bin/protecteye"
 fi
 
 # Launch ProtectEye immediately in the background as the regular user
