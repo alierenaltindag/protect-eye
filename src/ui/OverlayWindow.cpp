@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QKeyEvent>
 #include <QWindow>
+#include <QTimer>
 #include <QGraphicsDropShadowEffect>
 
 
@@ -16,6 +17,7 @@ OverlayWindow::OverlayWindow(QScreen* targetScreen, QWidget* parent)
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_TranslucentBackground, true);
     setAttribute(Qt::WA_ShowWithoutActivating, false);
+    setAttribute(Qt::WA_AlwaysStackOnTop, true);
 
     setupUi();
     applyStyles();
@@ -24,9 +26,11 @@ OverlayWindow::OverlayWindow(QScreen* targetScreen, QWidget* parent)
         setScreen(m_screen);
         setupScreenGeometry();
         connect(m_screen, &QScreen::geometryChanged, this, [this](const QRect& geom) {
-            setGeometry(geom);
-            if (windowHandle()) {
-                windowHandle()->setGeometry(geom);
+            if (!isFullScreen()) {
+                setGeometry(geom);
+                if (windowHandle()) {
+                    windowHandle()->setGeometry(geom);
+                }
             }
         });
     }
@@ -35,27 +39,48 @@ OverlayWindow::OverlayWindow(QScreen* targetScreen, QWidget* parent)
 void OverlayWindow::setupScreenGeometry() {
     if (!m_screen) return;
     setScreen(m_screen);
-    setGeometry(m_screen->geometry());
+    if (!isFullScreen()) {
+        setGeometry(m_screen->geometry());
+    }
     winId();
     if (windowHandle()) {
         windowHandle()->setScreen(m_screen);
-        windowHandle()->setGeometry(m_screen->geometry());
+        if (!isFullScreen()) {
+            windowHandle()->setGeometry(m_screen->geometry());
+        }
     }
 }
 
 void OverlayWindow::present(bool shouldActivate) {
     setupScreenGeometry();
     showFullScreen();
-    if (m_screen) {
-        setGeometry(m_screen->geometry());
-        if (windowHandle()) {
-            windowHandle()->setGeometry(m_screen->geometry());
-        }
-    }
     raise();
     if (shouldActivate) {
         activateWindow();
+        if (windowHandle()) {
+            windowHandle()->requestActivate();
+        }
     }
+
+    // Guard against focus theft or click race conditions while the window is mapping
+    QTimer::singleShot(50, this, [this, shouldActivate]() {
+        raise();
+        if (shouldActivate) {
+            activateWindow();
+            if (windowHandle()) {
+                windowHandle()->requestActivate();
+            }
+        }
+    });
+    QTimer::singleShot(150, this, [this, shouldActivate]() {
+        raise();
+        if (shouldActivate) {
+            activateWindow();
+            if (windowHandle()) {
+                windowHandle()->requestActivate();
+            }
+        }
+    });
 }
 
 OverlayWindow::~OverlayWindow() {
@@ -351,9 +376,13 @@ void OverlayWindow::showEvent(QShowEvent* event) {
     if (m_screen) {
         if (windowHandle() && windowHandle()->screen() != m_screen) {
             windowHandle()->setScreen(m_screen);
-            windowHandle()->setGeometry(m_screen->geometry());
         }
-        setGeometry(m_screen->geometry());
+        if (!isFullScreen()) {
+            setGeometry(m_screen->geometry());
+            if (windowHandle()) {
+                windowHandle()->setGeometry(m_screen->geometry());
+            }
+        }
     }
     if (m_exerciseWidget && m_exerciseWidget->isVisible()) {
         m_exerciseWidget->startAnimation();

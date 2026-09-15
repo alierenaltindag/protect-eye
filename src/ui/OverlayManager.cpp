@@ -54,7 +54,17 @@ void OverlayManager::showBreak(bool isLong, int durationSec) {
         focusedScreen = QGuiApplication::primaryScreen();
     }
 
-    for (QScreen* screen : screens) {
+    QList<QScreen*> orderedScreens;
+    for (QScreen* s : screens) {
+        if (s && s != focusedScreen) {
+            orderedScreens.append(s);
+        }
+    }
+    if (focusedScreen) {
+        orderedScreens.append(focusedScreen);
+    }
+
+    for (QScreen* screen : orderedScreens) {
         if (!screen) continue;
         auto* overlay = new OverlayWindow(screen);
         connect(overlay, &OverlayWindow::skipRequested, this, &OverlayManager::skipRequested);

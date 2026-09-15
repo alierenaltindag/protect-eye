@@ -888,6 +888,25 @@ private slots:
         }
         langCombo->hidePopup();
     }
+
+    void testOverlayFullScreenRetention() {
+        QScreen* primary = QGuiApplication::primaryScreen();
+        OverlayWindow overlay(primary);
+        overlay.prepareBreak(false, 20, Localization::instance().getShortBreakExercise(0));
+        overlay.present(true);
+        qApp->processEvents();
+
+        QVERIFY(overlay.isFullScreen());
+        QVERIFY(overlay.windowState() & Qt::WindowFullScreen);
+
+        // Simulate a showEvent or window update to ensure it does not revert to WindowNoState
+        QShowEvent showEv;
+        QApplication::sendEvent(&overlay, &showEv);
+        qApp->processEvents();
+
+        QVERIFY(overlay.isFullScreen());
+        QVERIFY(overlay.windowState() & Qt::WindowFullScreen);
+    }
 };
 
 
