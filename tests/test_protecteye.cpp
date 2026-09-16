@@ -6,6 +6,7 @@
 
 #include "services/DndMonitor.h"
 #include "services/ScreenLockMonitor.h"
+#include "services/IdleMonitor.h"
 #include "services/UpdateChecker.h"
 #include "services/NotificationService.h"
 #include "utils/AutostartHelper.h"
@@ -32,6 +33,15 @@ public:
     }
 };
 
+class MockIdleMonitor : public IdleMonitor {
+public:
+    int mockIdleSeconds{0};
+    bool mockMediaPlaying{false};
+
+    int getIdleSeconds() const override { return mockIdleSeconds; }
+    bool isMediaPlaying() const override { return mockMediaPlaying; }
+};
+
 class TestProtectEye : public QObject {
     Q_OBJECT
 
@@ -56,6 +66,9 @@ private slots:
         QCOMPARE(s.dndCheckEnabled(), true);
         QCOMPARE(s.screenLockCheckEnabled(), true);
         QCOMPARE(s.autostartEnabled(), true);
+        QCOMPARE(s.idleCheckEnabled(), true);
+        QCOMPARE(s.idleThresholdSec(), 180);
+        QCOMPARE(s.idleResetThresholdSec(), 300);
     }
 
     void testSettingsMutation() {
@@ -906,6 +919,133 @@ private slots:
 
         QVERIFY(overlay.isFullScreen());
         QVERIFY(overlay.windowState() & Qt::WindowFullScreen);
+    }
+
+    void testIdleDetectionPausesTimers() {
+        Settings::instance().resetToDefaults();
+        Settings::instance().setIdleCheckEnabled(true);
+        Settings::instance().setIdleThresholdSec(2);
+        Settings::instance().setShortBreakIntervalSec(60);
+        Settings::instance().setLongBreakIntervalSec(120);
+
+        DndMonitor dnd;
+        ScreenLockMonitor lock;
+        MockIdleMonitor idle;
+        BreakController controller(&dnd, &lock, &idle);
+
+        controller.start();
+        QCOMPARE(controller.state(), BreakState::Running);
+
+        idle.mockIdleSeconds = 0;
+        idle.mockMediaPlaying = false;
+        QTest::qWait(1100);
+        int secAfterActive = controller.secondsUntilShortBreak();
+        QVERIFY(secAfterActive < 60);
+
+        // Now become idle (> 2s)
+        idle.mockIdleSeconds = 5;
+        QTest::qWait(1100);
+        QVERIFY(controller.isUserIdle());
+        int secWhenIdle = controller.secondsUntilShortBreak();
+
+        // Wait another second while idle - timer should NOT decrement
+        QTest::qWait(1100);
+        QCOMPARE(controller.secondsUntilShortBreak(), secWhenIdle);
+    }
+
+    void testIdleWithMediaPlayingDoesNotPause() {
+        Settings::instance().resetToDefaults();
+        Settings::instance().setIdleCheckEnabled(true);
+        Settings::instance().setIdleThresholdSec(2);
+        Settings::instance().setShortBreakIntervalSec(60);
+
+        DndMonitor dnd;
+        ScreenLockMonitor lock;
+        MockIdleMonitor idle;
+        BreakController controller(&dnd, &lock, &idle);
+
+        controller.start();
+
+        // Inactive for 10s, BUT media is playing (video/audio)
+        idle.mockIdleSeconds = 10;
+        idle.mockMediaPlaying = true;
+
+        QTest::qWait(1100);
+        QCOMPARE(controller.isUserIdle(), false);
+        int sec1 = controller.secondsUntilShortBreak();
+
+        QTest::qWait(1100);
+        int sec2 = controller.secondsUntilShortBreak();
+        QVERIFY(sec2 < sec1);
+    }
+
+    void testUserReturnShortIdleResumes() {
+        Settings::instance().resetToDefaults();
+        Settings::instance().setIdleCheckEnabled(true);
+        Settings::instance().setIdleThresholdSec(2);
+        Settings::instance().setIdleResetThresholdSec(30);
+        Settings::instance().setShortBreakIntervalSec(60);
+
+        DndMonitor dnd;
+        ScreenLockMonitor lock;
+        MockIdleMonitor idle;
+        BreakController controller(&dnd, &lock, &idle);
+
+        controller.start();
+
+        // Become idle
+        idle.mockIdleSeconds = 5;
+        idle.mockMediaPlaying = false;
+        QTest::qWait(1100);
+        QVERIFY(controller.isUserIdle());
+        int pausedSec = controller.secondsUntilShortBreak();
+
+        // Return quickly (< 30s)
+        idle.mockIdleSeconds = 0;
+        QTest::qWait(1100);
+        QCOMPARE(controller.isUserIdle(), false);
+        QVERIFY(controller.secondsUntilShortBreak() < 60);
+        QVERIFY(controller.secondsUntilShortBreak() <= pausedSec);
+    }
+
+    void testUserReturnLongIdleResets() {
+        Settings::instance().resetToDefaults();
+        Settings::instance().setIdleCheckEnabled(true);
+        Settings::instance().setIdleThresholdSec(1);
+        Settings::instance().setIdleResetThresholdSec(1);
+        Settings::instance().setShortBreakIntervalSec(60);
+        Settings::instance().setLongBreakIntervalSec(120);
+
+        DndMonitor dnd;
+        ScreenLockMonitor lock;
+        MockIdleMonitor idle;
+        BreakController controller(&dnd, &lock, &idle);
+
+        controller.start();
+
+        // Let it count down 2 seconds
+        idle.mockIdleSeconds = 0;
+        QTest::qWait(1100);
+        QTest::qWait(1100);
+        QVERIFY(controller.secondsUntilShortBreak() < 60);
+
+        // Become idle
+        idle.mockIdleSeconds = 5;
+        idle.mockMediaPlaying = false;
+        QTest::qWait(1100);
+        QVERIFY(controller.isUserIdle());
+
+        // Wait 1.5 seconds so idleSec >= 1s reset threshold
+        QTest::qWait(1500);
+
+        // User returns!
+        idle.mockIdleSeconds = 0;
+        QTest::qWait(1100);
+        QCOMPARE(controller.isUserIdle(), false);
+
+        // Should be reset to fresh 60s and 120s!
+        QCOMPARE(controller.secondsUntilShortBreak(), 60);
+        QCOMPARE(controller.secondsUntilLongBreak(), 120);
     }
 };
 

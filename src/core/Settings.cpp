@@ -26,6 +26,9 @@ void Settings::load() {
     m_soundEnabled = m_qsettings.value("features/sound_enabled", true).toBool();
     m_dndCheckEnabled = m_qsettings.value("features/dnd_check_enabled", true).toBool();
     m_screenLockCheckEnabled = m_qsettings.value("features/screen_lock_check_enabled", true).toBool();
+    m_idleCheckEnabled = m_qsettings.value("features/idle_check_enabled", true).toBool();
+    m_idleThresholdSec = std::max(1, m_qsettings.value("features/idle_threshold_sec", 180).toInt());
+    m_idleResetThresholdSec = std::max(1, m_qsettings.value("features/idle_reset_threshold_sec", 300).toInt());
 
     bool hasAutostartKey = m_qsettings.contains("features/autostart_enabled");
     m_autostartEnabled = m_qsettings.value("features/autostart_enabled", true).toBool();
@@ -54,6 +57,9 @@ void Settings::save() {
     m_qsettings.setValue("features/sound_enabled", m_soundEnabled);
     m_qsettings.setValue("features/dnd_check_enabled", m_dndCheckEnabled);
     m_qsettings.setValue("features/screen_lock_check_enabled", m_screenLockCheckEnabled);
+    m_qsettings.setValue("features/idle_check_enabled", m_idleCheckEnabled);
+    m_qsettings.setValue("features/idle_threshold_sec", m_idleThresholdSec);
+    m_qsettings.setValue("features/idle_reset_threshold_sec", m_idleResetThresholdSec);
     m_qsettings.setValue("features/autostart_enabled", m_autostartEnabled);
     m_qsettings.setValue("features/interactive_exercises_enabled", m_interactiveExercisesEnabled);
     m_qsettings.setValue("features/check_updates_enabled", m_checkUpdatesEnabled);
@@ -79,6 +85,9 @@ void Settings::resetToDefaults() {
     m_dndCheckEnabled = true;
     m_screenLockCheckEnabled = true;
     m_autostartEnabled = true;
+    m_idleCheckEnabled = true;
+    m_idleThresholdSec = 180;
+    m_idleResetThresholdSec = 300;
     m_interactiveExercisesEnabled = true;
     m_checkUpdatesEnabled = true;
     m_lastUpdateCheckTime = 0;
@@ -153,6 +162,26 @@ void Settings::setScreenLockCheckEnabled(bool enabled) {
 void Settings::setAutostartEnabled(bool enabled) {
     if (m_autostartEnabled != enabled) {
         m_autostartEnabled = enabled;
+    }
+}
+
+void Settings::setIdleCheckEnabled(bool enabled) {
+    if (m_idleCheckEnabled != enabled) {
+        m_idleCheckEnabled = enabled;
+    }
+}
+
+void Settings::setIdleThresholdSec(int sec) {
+    int valid = std::max(1, sec);
+    if (m_idleThresholdSec != valid) {
+        m_idleThresholdSec = valid;
+    }
+}
+
+void Settings::setIdleResetThresholdSec(int sec) {
+    int valid = std::max(1, sec);
+    if (m_idleResetThresholdSec != valid) {
+        m_idleResetThresholdSec = valid;
     }
 }
 

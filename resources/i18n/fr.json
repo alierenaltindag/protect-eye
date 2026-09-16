@@ -1,235 +1,235 @@
 {
-  "code": "fr",
-  "name": "Français",
-  "strings": {
-    "app_name": "ProtectEye",
-    "tray_tooltip": "ProtectEye - Assistant de santé oculaire",
-    "status_active": "État : Actif",
-    "status_paused": "État : En pause",
-    "status_in_break": "État : En pause...",
-    "status_snoozed": "État : Reporté",
-    "short_break_label": "Pause courte : %1",
-    "long_break_label": "Pause longue : %1",
-    "action_pause": "⏸️ Suspendre",
-    "action_resume": "▶️ Reprendre",
-    "action_take_short_now": "⚡ Prendre une pause courte maintenant",
-    "action_take_long_now": "☕ Prendre une pause longue maintenant",
-    "action_settings": "⚙️ Paramètres...",
-    "action_quit": "❌ Quitter",
-    "startup_notification_title": "ProtectEye",
-    "startup_notification_message": "ProtectEye s'exécute dans la barre d'état système.\nVotre confort visuel est préservé.",
-    "already_running_title": "ProtectEye",
-    "already_running_message": "ProtectEye est déjà actif en arrière-plan dans la barre d'état système.",
-    "pre_break_title_short": "👁️ Pause oculaire dans 30 secondes",
-    "pre_break_title_long": "🌟 Pause longue dans 30 secondes",
-    "pre_break_message": "La pause commence dans %1 secondes. Pensez à finaliser votre travail en cours.",
-    "badge_short_break": "👁️ COURTE PAUSE OCULAIRE",
-    "badge_long_break": "🌟 PAUSE PROLONGÉE",
-    "button_snooze": "⏳ Reporter %1 min",
-    "button_skip": "Passer la pause (Échap)",
-    "settings_title": "ProtectEye - Paramètres",
-    "settings_header": "Préférences de ProtectEye",
-    "group_break_schedules": "Fréquence et durée des pauses",
-    "group_smart_features": "Détection intelligente et notifications",
-    "group_language": "Langue et apparence",
-    "label_language": "Langue de l'interface :",
-    "lang_auto": "Automatique (Langue du système)",
-    "lang_english": "English",
-    "lang_turkish": "Türkçe",
-    "label_short_interval": "Intervalle de pause courte :",
-    "label_short_duration": "Durée de pause courte :",
-    "label_long_interval": "Intervalle de pause longue :",
-    "label_long_duration": "Durée de pause longue :",
-    "label_snooze_duration": "Durée de report :",
-    "label_pre_warn": "Notification préalable :",
-    "unit_minutes": "minutes",
-    "unit_seconds": "secondes",
-    "check_sound": "Émettre un léger carillon au début et à la fin de la pause",
-    "check_dnd": "Ignorer discrètement la pause lorsque le mode Ne pas déranger est actif",
-    "check_lock": "Mettre en pause lors du verrouillage, réinitialiser la pause courte au déverrouillage",
-    "check_autostart": "Lancer automatiquement au démarrage du système",
-    "check_interactive_exercises": "Animations interactives d'exercices oculaires (suivi du regard, respiration guidée)",
-    "button_defaults": "Par défaut",
-    "button_cancel": "Annuler",
-    "button_save": "Enregistrer",
-    "breath_inhale": "Inspirer",
-    "breath_hold": "Maintenir",
-    "breath_exhale": "Expirer",
-    "squeeze_phase_close": "Fermer les yeux",
-    "squeeze_phase_squeeze": "Serrer doucement",
-    "squeeze_phase_open": "Ouvrir et relâcher",
-    "focus_near_label": "Mise au point proche (15 cm)",
-    "focus_far_label": "Mise au point au loin (>6 m)",
-    "default_tip": "Reposez vos yeux et respirez calmement.",
-    "cli_description": "Assistant multiplateforme de pause et de santé oculaire.\n\nCommandes :\n  update              Recherche et met à jour automatiquement ProtectEye vers la dernière version\n  uninstall           Désinstalle complètement ProtectEye de votre système",
-    "cli_cmd_uninstall": "Commande optionnelle : 'uninstall' pour supprimer ProtectEye",
-    "cli_opt_test_break": "Déclenche un écran de pause de test immédiatement au démarrage",
-    "cli_opt_test_warning": "Déclenche une notification d'avertissement préalable de test immédiatement au démarrage",
-    "uninstall_running": "Exécution du programme de désinstallation de ProtectEye...",
-    "uninstall_win_hint": "Sur Windows, désinstallez via Paramètres > Applications installées ou le menu Démarrer.",
-    "setting_check_updates": "Rechercher automatiquement les mises à jour",
-    "btn_check_updates": "Vérifier maintenant",
-    "update_status_checking": "Recherche de mises à jour...",
-    "update_status_uptodate": "ProtectEye est à jour (v%1)",
-    "update_status_available": "Nouvelle version disponible : v%1",
-    "update_status_failed": "Échec de la recherche de mises à jour.",
-    "action_update_available": "✨ Mise à jour disponible : v%1",
-    "update_notif_title": "Mise à jour de ProtectEye disponible",
-    "update_notif_body": "La version %1 est maintenant disponible. Cliquez pour télécharger.",
-    "tab_schedules": "Horaires",
-    "tab_smart_features": "Fonctions",
-    "tab_general": "Général et Mises à jour",
-    "group_updates": "Mises à jour du logiciel",
-    "cli_cmd_update": "Commande optionnelle : 'update' pour mettre à jour ProtectEye vers la dernière version",
-    "update_running": "Vérification et mise à jour de ProtectEye vers la dernière version...",
-    "update_win_hint": "Téléchargement du programme d'installation Windows et lancement de la mise à jour...",
-    "update_success": "ProtectEye a été mis à jour avec succès vers la version v%1 !",
-    "update_no_package": "Aucun paquet approprié trouvé pour l'architecture de votre système."
-  },
-  "short_tips": [
-    "Règle 20-20-20 : Fixez un objet situé à 6 mètres (20 pieds) pendant 20 secondes.",
-    "Clignez des yeux lentement et à plusieurs reprises pour renouveler le film lacrymal.",
-    "Baissez vos épaules vers l'arrière, tenez-vous droit et respirez profondément.",
-    "Technique du Palming : Réchauffez vos mains en les frottant, puis posez-les en coupe sur vos yeux fermés.",
-    "Faites rouler doucement vos yeux dans le sens des aiguilles d'une montre, puis en sens inverse.",
-    "Inspirez profondément par le nez, retenez un instant votre souffle et expirez lentement par la bouche.",
-    "Étirez avec précaution vos poignets et doigts pour évacuer la tension du clavier.",
-    "Portez votre regard vers le coin le plus éloigné de la pièce pour relaxer les muscles ciliaires.",
-    "Tournez lentement la tête de gauche à droite pour libérer les tensions cervicales.",
-    "Fermez complètement les yeux un instant pour laisser reposer votre cortex visuel.",
-    "Massez délicatement vos tempes par petits mouvements circulaires du bout des doigts.",
-    "Baissez lentement le menton vers la poitrine et appréciez l'étirement des vertèbres cervicales.",
-    "Alternez la mise au point entre votre pouce tenu près du nez et un objet distant.",
-    "Montez et relâchez vos sourcils pour détendre les muscles du front.",
-    "Buvez une gorgée d'eau fraîche pour hydrater votre organisme et vos tissus oculaires.",
-    "Quittez l'écran des yeux et laissez votre regard flotter sans concentration forcée."
-  ],
-  "long_tips": [
-    "Levez-vous ! Marchez pendant une minute entière pour réactiver la circulation sanguine.",
-    "Buvez un grand verre d'eau fraîche pour hydrater vos cellules et réveiller votre énergie.",
-    "Étirement de la nuque : Inclinez doucement la tête sur les côtés, vers l'avant et vers l'arrière.",
-    "Regardez par la fenêtre et laissez vos yeux se poser sur la ligne d'horizon lointaine.",
-    "Étirez vos bras vers le ciel et allongez l'ensemble de votre colonne vertébrale.",
-    "Faites de grands cercles avec les épaules vers l'arrière pour soulager le haut du dos.",
-    "Ouvrez une fenêtre ou sortez prendre l'air frais pour oxygéner votre cerveau.",
-    "Croisez les mains dans le dos, rapprochez délicatement les omoplates et ouvrez la cage thoracique.",
-    "Accordez-vous une brève pause café ou tisane, loin de tout écran numérique.",
-    "Marchez sur place en levant légèrement les genoux pour stimuler le retour veineux.",
-    "Passez-vous de l'eau fraîche sur le visage pour revigorer vos paupières fatiguées.",
-    "Faites tourner vos chevilles et étirez les mollets engourdis par la position assise.",
-    "Prenez 5 respirations abdominales profondes le dos bien droit et les yeux fermés.",
-    "Éloignez-vous entièrement de votre poste de travail pour libérer votre charge mentale."
-  ],
-  "short_exercises": [
-    {
-      "visual_type": "TrackingInfinity",
-      "badge": "SUIVI OCULAIRE INTERACTIF",
-      "title": "Suivi fluide en huit (∞)",
-      "instruction": "Gardez la tête immobile. Suivez du regard le point lumineux bleu sans forcer."
+    "code": "fr",
+    "name": "Français",
+    "strings": {
+        "app_name": "ProtectEye",
+        "tray_tooltip": "ProtectEye - Assistant de santé oculaire",
+        "status_active": "État : Actif",
+        "status_paused": "État : En pause",
+        "status_in_break": "État : En pause...",
+        "status_snoozed": "État : Reporté",
+        "short_break_label": "Pause courte : %1",
+        "long_break_label": "Pause longue : %1",
+        "action_pause": "⏸️ Suspendre",
+        "action_resume": "▶️ Reprendre",
+        "action_take_short_now": "⚡ Prendre une pause courte maintenant",
+        "action_take_long_now": "☕ Prendre une pause longue maintenant",
+        "action_settings": "⚙️ Paramètres...",
+        "action_quit": "❌ Quitter",
+        "startup_notification_title": "ProtectEye",
+        "startup_notification_message": "ProtectEye s'exécute dans la barre d'état système.\nVotre confort visuel est préservé.",
+        "already_running_title": "ProtectEye",
+        "already_running_message": "ProtectEye est déjà actif en arrière-plan dans la barre d'état système.",
+        "pre_break_title_short": "👁️ Pause oculaire dans 30 secondes",
+        "pre_break_title_long": "🌟 Pause longue dans 30 secondes",
+        "pre_break_message": "La pause commence dans %1 secondes. Pensez à finaliser votre travail en cours.",
+        "badge_short_break": "👁️ COURTE PAUSE OCULAIRE",
+        "badge_long_break": "🌟 PAUSE PROLONGÉE",
+        "button_snooze": "⏳ Reporter %1 min",
+        "button_skip": "Passer la pause (Échap)",
+        "settings_title": "ProtectEye - Paramètres",
+        "settings_header": "Préférences de ProtectEye",
+        "group_break_schedules": "Fréquence et durée des pauses",
+        "group_smart_features": "Détection intelligente et notifications",
+        "group_language": "Langue et apparence",
+        "label_language": "Langue de l'interface :",
+        "lang_auto": "Automatique (Langue du système)",
+        "lang_english": "English",
+        "lang_turkish": "Türkçe",
+        "label_short_interval": "Intervalle de pause courte :",
+        "label_short_duration": "Durée de pause courte :",
+        "label_long_interval": "Intervalle de pause longue :",
+        "label_long_duration": "Durée de pause longue :",
+        "label_snooze_duration": "Durée de report :",
+        "label_pre_warn": "Notification préalable :",
+        "unit_minutes": "minutes",
+        "unit_seconds": "secondes",
+        "check_sound": "Émettre un léger carillon au début et à la fin de la pause",
+        "check_dnd": "Ignorer discrètement la pause lorsque le mode Ne pas déranger est actif",
+        "check_lock": "Mettre en pause lors du verrouillage, réinitialiser la pause courte au déverrouillage",
+        "check_autostart": "Lancer automatiquement au démarrage du système",
+        "check_interactive_exercises": "Animations interactives d'exercices oculaires (suivi du regard, respiration guidée)",
+        "button_defaults": "Par défaut",
+        "button_cancel": "Annuler",
+        "button_save": "Enregistrer",
+        "breath_inhale": "Inspirer",
+        "breath_hold": "Maintenir",
+        "breath_exhale": "Expirer",
+        "squeeze_phase_close": "Fermer les yeux",
+        "squeeze_phase_squeeze": "Serrer doucement",
+        "squeeze_phase_open": "Ouvrir et relâcher",
+        "focus_near_label": "Mise au point proche (15 cm)",
+        "focus_far_label": "Mise au point au loin (>6 m)",
+        "default_tip": "Reposez vos yeux et respirez calmement.",
+        "cli_description": "Assistant multiplateforme de pause et de santé oculaire.\n\nCommandes :\n  update              Recherche et met à jour automatiquement ProtectEye vers la dernière version\n  uninstall           Désinstalle complètement ProtectEye de votre système",
+        "cli_cmd_uninstall": "Commande optionnelle : 'uninstall' pour supprimer ProtectEye",
+        "cli_opt_test_break": "Déclenche un écran de pause de test immédiatement au démarrage",
+        "cli_opt_test_warning": "Déclenche une notification d'avertissement préalable de test immédiatement au démarrage",
+        "uninstall_running": "Exécution du programme de désinstallation de ProtectEye...",
+        "uninstall_win_hint": "Sur Windows, désinstallez via Paramètres > Applications installées ou le menu Démarrer.",
+        "setting_check_updates": "Rechercher automatiquement les mises à jour",
+        "btn_check_updates": "Vérifier maintenant",
+        "update_status_checking": "Recherche de mises à jour...",
+        "update_status_uptodate": "ProtectEye est à jour (v%1)",
+        "update_status_available": "Nouvelle version disponible : v%1",
+        "update_status_failed": "Échec de la recherche de mises à jour.",
+        "action_update_available": "✨ Mise à jour disponible : v%1",
+        "update_notif_title": "Mise à jour de ProtectEye disponible",
+        "update_notif_body": "La version %1 est maintenant disponible. Cliquez pour télécharger.",
+        "tab_schedules": "Horaires",
+        "tab_smart_features": "Fonctions",
+        "tab_general": "Général et Mises à jour",
+        "group_updates": "Mises à jour du logiciel",
+        "cli_cmd_update": "Commande optionnelle : 'update' pour mettre à jour ProtectEye vers la dernière version",
+        "update_running": "Vérification et mise à jour de ProtectEye vers la dernière version...",
+        "update_win_hint": "Téléchargement du programme d'installation Windows et lancement de la mise à jour...",
+        "update_success": "ProtectEye a été mis à jour avec succès vers la version v%1 !",
+        "update_no_package": "Aucun paquet approprié trouvé pour l'architecture de votre système."
     },
-    {
-      "visual_type": "NearFarShift",
-      "badge": "ACCOMMODATION ET MISE AU POINT",
-      "title": "Mise au point près-loin",
-      "instruction": "Placez le pouce à 15 cm du nez. Fixez 3 s le pouce, puis 3 s un point lointain."
-    },
-    {
-      "visual_type": "DistanceFocus",
-      "badge": "RÈGLE 20-20-20",
-      "title": "Regardez au loin",
-      "instruction": "Regardez un point situé à au moins 6 mètres. Relâchez totalement les muscles oculaires."
-    },
-    {
-      "visual_type": "SqueezeBlink",
-      "badge": "STIMULATION GLANDES DE MEIBOMIUS",
-      "title": "Clignement avec pression douce",
-      "instruction": "Fermez 2 s, serrez délicatement 2 s, ouvrez et relâchez pour réhydrater l'œil."
-    },
-    {
-      "visual_type": "TrackingCircle",
-      "badge": "MOUVEMENT OCULAIRE CIRCULAIRE",
-      "title": "Orbite circulaire fluide",
-      "instruction": "Suivez le point en trajectoire circulaire d'un mouvement régulier et continu."
-    },
-    {
-      "visual_type": "PeripheralExpansion",
-      "badge": "ÉLARGISSEMENT DU CHAMP VISUEL",
-      "title": "Vision périphérique étendue",
-      "instruction": "Fixez le centre sans bouger les yeux et prenez conscience des côtés de la pièce."
-    },
-    {
-      "visual_type": "BreathingCircle",
-      "badge": "PALMING ET RESPIRATION",
-      "title": "Mains chaudes et respiration profonde",
-      "instruction": "Frottez vos paumes, posez-les sur vos yeux fermés et respirez au rythme du cercle."
-    },
-    {
-      "visual_type": "TrackingVertical",
-      "badge": "BALAYAGE VISUEL VERTICAL",
-      "title": "Poursuite oculaire verticale",
-      "instruction": "Tête immobile. Suivez attentivement l'oscillation de haut en bas du point lumineux."
-    },
-    {
-      "visual_type": "TrackingHorizontal",
-      "badge": "BALAYAGE VISUEL HORIZONTAL",
-      "title": "Poursuite oculaire horizontale",
-      "instruction": "Sans bouger la tête, suivez le point qui oscille de gauche à droite."
-    },
-    {
-      "visual_type": "DistanceFocus",
-      "badge": "HYDRATATION NATURELLE",
-      "title": "Clignement conscient et repos",
-      "instruction": "Clignez des yeux lentement et complètement pour restaurer le film lacrymal protecteur."
-    }
-  ],
-  "long_exercises": [
-    {
-      "visual_type": "None",
-      "badge": "ACTIVITÉ PHYSIQUE ET CIRCULATION",
-      "title": "Se lever et marcher",
-      "instruction": "Quittez votre fauteuil ! Marchez 1 à 2 minutes pour réactiver la circulation dans les jambes."
-    },
-    {
-      "visual_type": "None",
-      "badge": "POSTURE COU DE TEXTO",
-      "title": "Rétraction du menton (Chin Tuck)",
-      "instruction": "Poussez doucement le menton vers l'arrière avec deux doigts pour réaligner la nuque."
-    },
-    {
-      "visual_type": "None",
-      "badge": "ÉTIRING CERVICAL",
-      "title": "Détente de la nuque et des trapèzes",
-      "instruction": "Roulez les épaules vers l'arrière. Penchez doucement la tête sur les côtés pour assouplir la nuque."
-    },
-    {
-      "visual_type": "None",
-      "badge": "DÉCOMPRESSION DE LA COLONNE",
-      "title": "Torsion douce du torse",
-      "instruction": "Assis ou debout, tournez lentement le buste vers la droite puis vers la gauche avec 3 respirations."
-    },
-    {
-      "visual_type": "None",
-      "badge": "HYDRATATION ET OXYGÉNATION",
-      "title": "Grand verre d'eau et air pur",
-      "instruction": "Buvez un grand verre d'eau. Ouvrez la fenêtre ou aérez-vous pour recharger le cerveau en oxygène."
-    },
-    {
-      "visual_type": "None",
-      "badge": "MOBILITÉ DES HANCHES",
-      "title": "Étirement du psoas-iliaque",
-      "instruction": "Mettez-vous debout en fente avant légère. Étirez les fléchisseurs de hanche raccourcis par l'assise."
-    },
-    {
-      "visual_type": "None",
-      "badge": "OUVERTURE THORACIQUE",
-      "title": "Redressement postural et respiration",
-      "instruction": "Joignez les mains dans le dos, rapprochez les omoplates et prenez de profondes inspirations."
-    },
-    {
-      "visual_type": "None",
-      "badge": "SOULAGEMENT DES POIGNETS",
-      "title": "Étirement des poignets et doigts",
-      "instruction": "Faites pivoter les poignets et tendez doucement les doigts vers l'arrière pour soulager le travail au clavier."
-    }
-  ]
+    "short_tips": [
+        "Règle 20-20-20 : Fixez un objet situé à 6 mètres (20 pieds) pendant 20 secondes.",
+        "Clignez des yeux lentement et à plusieurs reprises pour renouveler le film lacrymal.",
+        "Baissez vos épaules vers l'arrière, tenez-vous droit et respirez profondément.",
+        "Technique du Palming : Réchauffez vos mains en les frottant, puis posez-les en coupe sur vos yeux fermés.",
+        "Faites rouler doucement vos yeux dans le sens des aiguilles d'une montre, puis en sens inverse.",
+        "Inspirez profondément par le nez, retenez un instant votre souffle et expirez lentement par la bouche.",
+        "Étirez avec précaution vos poignets et doigts pour évacuer la tension du clavier.",
+        "Portez votre regard vers le coin le plus éloigné de la pièce pour relaxer les muscles ciliaires.",
+        "Tournez lentement la tête de gauche à droite pour libérer les tensions cervicales.",
+        "Fermez complètement les yeux un instant pour laisser reposer votre cortex visuel.",
+        "Massez délicatement vos tempes par petits mouvements circulaires du bout des doigts.",
+        "Baissez lentement le menton vers la poitrine et appréciez l'étirement des vertèbres cervicales.",
+        "Alternez la mise au point entre votre pouce tenu près du nez et un objet distant.",
+        "Montez et relâchez vos sourcils pour détendre les muscles du front.",
+        "Buvez une gorgée d'eau fraîche pour hydrater votre organisme et vos tissus oculaires.",
+        "Quittez l'écran des yeux et laissez votre regard flotter sans concentration forcée."
+    ],
+    "long_tips": [
+        "Levez-vous ! Marchez pendant une minute entière pour réactiver la circulation sanguine.",
+        "Buvez un grand verre d'eau fraîche pour hydrater vos cellules et réveiller votre énergie.",
+        "Étirement de la nuque : Inclinez doucement la tête sur les côtés, vers l'avant et vers l'arrière.",
+        "Regardez par la fenêtre et laissez vos yeux se poser sur la ligne d'horizon lointaine.",
+        "Étirez vos bras vers le ciel et allongez l'ensemble de votre colonne vertébrale.",
+        "Faites de grands cercles avec les épaules vers l'arrière pour soulager le haut du dos.",
+        "Ouvrez une fenêtre ou sortez prendre l'air frais pour oxygéner votre cerveau.",
+        "Croisez les mains dans le dos, rapprochez délicatement les omoplates et ouvrez la cage thoracique.",
+        "Accordez-vous une brève pause café ou tisane, loin de tout écran numérique.",
+        "Marchez sur place en levant légèrement les genoux pour stimuler le retour veineux.",
+        "Passez-vous de l'eau fraîche sur le visage pour revigorer vos paupières fatiguées.",
+        "Faites tourner vos chevilles et étirez les mollets engourdis par la position assise.",
+        "Prenez 5 respirations abdominales profondes le dos bien droit et les yeux fermés.",
+        "Éloignez-vous entièrement de votre poste de travail pour libérer votre charge mentale."
+    ],
+    "short_exercises": [
+        {
+            "visual_type": "TrackingInfinity",
+            "badge": "SUIVI OCULAIRE INTERACTIF",
+            "title": "Suivi fluide en huit (∞)",
+            "instruction": "Gardez la tête immobile. Suivez du regard le point lumineux bleu sans forcer."
+        },
+        {
+            "visual_type": "NearFarShift",
+            "badge": "ACCOMMODATION ET MISE AU POINT",
+            "title": "Mise au point près-loin",
+            "instruction": "Placez le pouce à 15 cm du nez. Fixez 3 s le pouce, puis 3 s un point lointain."
+        },
+        {
+            "visual_type": "DistanceFocus",
+            "badge": "RÈGLE 20-20-20",
+            "title": "Regardez au loin",
+            "instruction": "Regardez un point situé à au moins 6 mètres. Relâchez totalement les muscles oculaires."
+        },
+        {
+            "visual_type": "SqueezeBlink",
+            "badge": "STIMULATION GLANDES DE MEIBOMIUS",
+            "title": "Clignement avec pression douce",
+            "instruction": "Fermez 2 s, serrez délicatement 2 s, ouvrez et relâchez pour réhydrater l'œil."
+        },
+        {
+            "visual_type": "TrackingCircle",
+            "badge": "MOUVEMENT OCULAIRE CIRCULAIRE",
+            "title": "Orbite circulaire fluide",
+            "instruction": "Suivez le point en trajectoire circulaire d'un mouvement régulier et continu."
+        },
+        {
+            "visual_type": "PeripheralExpansion",
+            "badge": "ÉLARGISSEMENT DU CHAMP VISUEL",
+            "title": "Vision périphérique étendue",
+            "instruction": "Fixez le centre sans bouger les yeux et prenez conscience des côtés de la pièce."
+        },
+        {
+            "visual_type": "BreathingCircle",
+            "badge": "PALMING ET RESPIRATION",
+            "title": "Mains chaudes et respiration profonde",
+            "instruction": "Frottez vos paumes, posez-les sur vos yeux fermés et respirez au rythme du cercle."
+        },
+        {
+            "visual_type": "TrackingVertical",
+            "badge": "BALAYAGE VISUEL VERTICAL",
+            "title": "Poursuite oculaire verticale",
+            "instruction": "Tête immobile. Suivez attentivement l'oscillation de haut en bas du point lumineux."
+        },
+        {
+            "visual_type": "TrackingHorizontal",
+            "badge": "BALAYAGE VISUEL HORIZONTAL",
+            "title": "Poursuite oculaire horizontale",
+            "instruction": "Sans bouger la tête, suivez le point qui oscille de gauche à droite."
+        },
+        {
+            "visual_type": "DistanceFocus",
+            "badge": "HYDRATATION NATURELLE",
+            "title": "Clignement conscient et repos",
+            "instruction": "Clignez des yeux lentement et complètement pour restaurer le film lacrymal protecteur."
+        }
+    ],
+    "long_exercises": [
+        {
+            "visual_type": "None",
+            "badge": "ACTIVITÉ PHYSIQUE ET CIRCULATION",
+            "title": "Se lever et marcher",
+            "instruction": "Quittez votre fauteuil ! Marchez 1 à 2 minutes pour réactiver la circulation dans les jambes."
+        },
+        {
+            "visual_type": "None",
+            "badge": "POSTURE COU DE TEXTO",
+            "title": "Rétraction du menton (Chin Tuck)",
+            "instruction": "Poussez doucement le menton vers l'arrière avec deux doigts pour réaligner la nuque."
+        },
+        {
+            "visual_type": "None",
+            "badge": "ÉTIRING CERVICAL",
+            "title": "Détente de la nuque et des trapèzes",
+            "instruction": "Roulez les épaules vers l'arrière. Penchez doucement la tête sur les côtés pour assouplir la nuque."
+        },
+        {
+            "visual_type": "None",
+            "badge": "DÉCOMPRESSION DE LA COLONNE",
+            "title": "Torsion douce du torse",
+            "instruction": "Assis ou debout, tournez lentement le buste vers la droite puis vers la gauche avec 3 respirations."
+        },
+        {
+            "visual_type": "None",
+            "badge": "HYDRATATION ET OXYGÉNATION",
+            "title": "Grand verre d'eau et air pur",
+            "instruction": "Buvez un grand verre d'eau. Ouvrez la fenêtre ou aérez-vous pour recharger le cerveau en oxygène."
+        },
+        {
+            "visual_type": "None",
+            "badge": "MOBILITÉ DES HANCHES",
+            "title": "Étirement du psoas-iliaque",
+            "instruction": "Mettez-vous debout en fente avant légère. Étirez les fléchisseurs de hanche raccourcis par l'assise."
+        },
+        {
+            "visual_type": "None",
+            "badge": "OUVERTURE THORACIQUE",
+            "title": "Redressement postural et respiration",
+            "instruction": "Joignez les mains dans le dos, rapprochez les omoplates et prenez de profondes inspirations."
+        },
+        {
+            "visual_type": "None",
+            "badge": "SOULAGEMENT DES POIGNETS",
+            "title": "Étirement des poignets et doigts",
+            "instruction": "Faites pivoter les poignets et tendez doucement les doigts vers l'arrière pour soulager le travail au clavier."
+        }
+    ]
 }

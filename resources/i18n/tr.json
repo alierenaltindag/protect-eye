@@ -52,6 +52,7 @@
     "check_dnd": "Rahatsız Etmeyin (DND) aktifken molayı sessizce atla",
     "check_lock": "Ekran kilitlendiğinde sayacı duraklat, kilit açılınca kısa molayı sıfırla",
     "check_autostart": "Sistem başladığında otomatik olarak çalıştır",
+    "check_idle": "Bilgisayar başında değilken sayacı duraklat (video izleme duyarlı)",
     "check_interactive_exercises": "İnteraktif göz egzersizi animasyonları (göz takibi, nefes rehberi)",
     "setting_check_updates": "Güncellemeleri otomatik denetle",
     "btn_check_updates": "Şimdi Denetle",

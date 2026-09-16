@@ -41,6 +41,15 @@ public:
     bool autostartEnabled() const { return m_autostartEnabled; }
     void setAutostartEnabled(bool enabled);
 
+    bool idleCheckEnabled() const { return m_idleCheckEnabled; }
+    void setIdleCheckEnabled(bool enabled);
+
+    int idleThresholdSec() const { return m_idleThresholdSec; }
+    void setIdleThresholdSec(int sec);
+
+    int idleResetThresholdSec() const { return m_idleResetThresholdSec; }
+    void setIdleResetThresholdSec(int sec);
+
     bool interactiveExercisesEnabled() const { return m_interactiveExercisesEnabled; }
     void setInteractiveExercisesEnabled(bool enabled);
 
@@ -81,6 +90,9 @@ private:
     bool m_dndCheckEnabled{true};
     bool m_screenLockCheckEnabled{true};
     bool m_autostartEnabled{false};
+    bool m_idleCheckEnabled{true};
+    int m_idleThresholdSec{180}; // 3 min
+    int m_idleResetThresholdSec{300}; // 5 min
     bool m_interactiveExercisesEnabled{true};
     bool m_checkUpdatesEnabled{true};
     qint64 m_lastUpdateCheckTime{0};

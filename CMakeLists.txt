@@ -50,6 +50,7 @@ set(SOURCES
     src/core/BreakController.cpp
     src/services/DndMonitor.cpp
     src/services/ScreenLockMonitor.cpp
+    src/services/IdleMonitor.cpp
     src/services/SoundManager.cpp
     src/services/NotificationService.cpp
     src/services/UpdateChecker.cpp
@@ -70,6 +71,7 @@ set(HEADERS
     src/core/BreakController.h
     src/services/DndMonitor.h
     src/services/ScreenLockMonitor.h
+    src/services/IdleMonitor.h
     src/services/SoundManager.h
     src/services/NotificationService.h
     src/services/UpdateChecker.h
@@ -186,6 +188,7 @@ if (Qt6Test_FOUND)
         src/core/BreakController.cpp
         src/services/DndMonitor.cpp
         src/services/ScreenLockMonitor.cpp
+        src/services/IdleMonitor.cpp
         src/services/UpdateChecker.cpp
         src/services/NotificationService.cpp
         src/utils/AutostartHelper.cpp

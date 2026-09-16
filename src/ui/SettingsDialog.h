@@ -76,6 +76,7 @@ private:
     QCheckBox* m_dndCheck{nullptr};
     QCheckBox* m_lockCheck{nullptr};
     QCheckBox* m_autostartCheck{nullptr};
+    QCheckBox* m_idleCheck{nullptr};
     QCheckBox* m_interactiveExercisesCheck{nullptr};
     QCheckBox* m_checkUpdatesCheck{nullptr};
 

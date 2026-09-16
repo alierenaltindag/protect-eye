@@ -1,235 +1,235 @@
 {
-  "code": "zh",
-  "name": "简体中文",
-  "strings": {
-    "app_name": "ProtectEye",
-    "tray_tooltip": "ProtectEye - 视力健康护航助手",
-    "status_active": "状态: 运行中",
-    "status_paused": "状态: 已暂停",
-    "status_in_break": "状态: 休息中...",
-    "status_snoozed": "状态: 已推迟",
-    "short_break_label": "短休息: %1",
-    "long_break_label": "长休息: %1",
-    "action_pause": "⏸️ 暂停",
-    "action_resume": "▶️ 恢复",
-    "action_take_short_now": "⚡ 立即进入短休息",
-    "action_take_long_now": "☕ 立即进入长休息",
-    "action_settings": "⚙️ 设置...",
-    "action_quit": "❌ 退出",
-    "startup_notification_title": "ProtectEye",
-    "startup_notification_message": "ProtectEye 已在系统托盘中静默运行。\n持续守护您的视力健康。",
-    "already_running_title": "ProtectEye",
-    "already_running_message": "ProtectEye 已在系统托盘中处于运行状态。",
-    "pre_break_title_short": "👁️ 护眼休息将在 30 秒后开始",
-    "pre_break_title_long": "🌟 深度放松休息将在 30 秒后开始",
-    "pre_break_message": "休息将在 %1 秒后开始，请保存并收尾当前操作。",
-    "badge_short_break": "👁️ 护眼微休息",
-    "badge_long_break": "🌟 深度全身放松",
-    "button_snooze": "⏳ 推迟 %1 分钟",
-    "button_skip": "跳过本次休息 (Esc)",
-    "settings_title": "ProtectEye - 设置",
-    "settings_header": "ProtectEye 首选项",
-    "group_break_schedules": "休息时间间隔计划",
-    "group_smart_features": "智能检测与提醒",
-    "group_language": "语言与外观",
-    "label_language": "界面语言:",
-    "lang_auto": "自动（跟随系统语言）",
-    "lang_english": "English",
-    "lang_turkish": "Türkçe",
-    "label_short_interval": "短休息间隔:",
-    "label_short_duration": "短休息时长:",
-    "label_long_interval": "长休息间隔:",
-    "label_long_duration": "长休息时长:",
-    "label_snooze_duration": "推迟时长:",
-    "label_pre_warn": "休息前提前预告:",
-    "unit_minutes": "分钟",
-    "unit_seconds": "秒",
-    "check_sound": "休息开始与结束时播放清脆温和的提示音",
-    "check_dnd": "系统开启「请勿打扰」模式时静默跳过休息",
-    "check_lock": "锁屏时自动暂停计时，解锁后重新计算短休息",
-    "check_autostart": "开机时自动启动 ProtectEye",
-    "check_interactive_exercises": "启用交互式护眼动画（视线追踪导引、深呼吸指引）",
-    "button_defaults": "恢复默认",
-    "button_cancel": "取消",
-    "button_save": "保存",
-    "breath_inhale": "吸气",
-    "breath_hold": "屏息",
-    "breath_exhale": "呼气",
-    "squeeze_phase_close": "轻闭双眼",
-    "squeeze_phase_squeeze": "微用力眨挤",
-    "squeeze_phase_open": "张开放松",
-    "focus_near_label": "聚焦近处 (15 厘米)",
-    "focus_far_label": "聚焦远处 (>6 米)",
-    "default_tip": "放松眼部肌肉，平稳均匀呼吸。",
-    "cli_description": "跨平台护眼与休息助手。\n\n命令：\n  update              检查并自动将 ProtectEye 更新到最新版本\n  uninstall           从系统中彻底卸载 ProtectEye",
-    "cli_cmd_uninstall": "可选命令: 'uninstall' 彻底移除 ProtectEye",
-    "cli_opt_test_break": "启动时立即触发测试用全屏休息界面",
-    "cli_opt_test_warning": "启动时立即触发测试用休息预告通知",
-    "uninstall_running": "正在运行 ProtectEye 卸载向导...",
-    "uninstall_win_hint": "在 Windows 上，请通过“设置 > 已安装的应用”或开始菜单快捷方式卸载。",
-    "setting_check_updates": "自动检查更新",
-    "btn_check_updates": "立即检查",
-    "update_status_checking": "正在检查更新...",
-    "update_status_uptodate": "ProtectEye 已是最新版本 (v%1)",
-    "update_status_available": "发现新版本：v%1",
-    "update_status_failed": "检查更新失败。",
-    "action_update_available": "✨ 发现新版本：v%1",
-    "update_notif_title": "ProtectEye 更新可用",
-    "update_notif_body": "版本 %1 现已推出，点击前往下载。",
-    "tab_schedules": "休息计划",
-    "tab_smart_features": "智能功能",
-    "tab_general": "常规与更新",
-    "group_updates": "软件更新",
-    "cli_cmd_update": "可选命令：'update' 自动更新 ProtectEye 至最新版本",
-    "update_running": "正在检查并将 ProtectEye 更新至最新版本...",
-    "update_win_hint": "正在下载 Windows 安装程序并启动更新...",
-    "update_success": "ProtectEye 已成功更新至 v%1！",
-    "update_no_package": "未找到适用于您系统架构的软件包。"
-  },
-  "short_tips": [
-    "20-20-20 法则：眺望至少 6 米（20英尺）外的景物 20 秒钟。",
-    "缓慢而充分地眨眼数次，分泌泪液润滑滋养眼角膜。",
-    "将双肩向后展开并沉下，端正坐姿，做一次缓慢深长的深呼吸。",
-    "手温敷眼法 (Palming)：双手手掌对搓发热，轻轻扣覆在闭合的双眼上。",
-    "缓慢转动眼球顺时针画圆，随后逆时针缓慢回转。",
-    "由鼻腔深吸气，稍作屏息，再由唇间缓慢吐出浊气。",
-    "轻柔反向拉伸双手手腕和手指，舒缓长时间敲击键盘的筋膜压力。",
-    "将视线投向室内最远处的墙角或窗外，放松睫状肌痉挛。",
-    "头部缓慢匀速左右转动，化解颈项部肌肉僵硬。",
-    "彻底闭合双眼片刻，让大脑视皮层进入静止休息状态。",
-    "用指腹以温和打圈手法按摩太阳穴，缓解头部紧绷感。",
-    "下颌缓缓贴近胸口，细致感受颈椎后侧肌群的舒展拉长。",
-    "交替切换视线焦点：近看鼻尖前方的大拇指，远看无限远处的物体。",
-    "挑起眉毛随即彻底放松，抚平前额紧绷的表情肌。",
-    "饮一小口温润的水，为全身机能和眼部组织补充水分。",
-    "将视线从屏幕移开，无需刻意聚焦，任由目光随性游移放松。"
-  ],
-  "long_tips": [
-    "离开工位！站起来走动整整一分钟，唤醒全身血液循环。",
-    "畅饮一大杯温开水，加速身体代谢，驱散脑部疲劳。",
-    "颈部拉伸：缓慢将头部偏向左右两侧，前后轻仰俯低。",
-    "眺望窗外的天际线或远山，让双眼感受无垠的开阔感。",
-    "双臂向头顶上方充分伸展，向上拉长整条脊椎与腰背肌群。",
-    "双肩大幅度由前向后绕环旋转，有效松解斜方肌结节。",
-    "推开窗户或走到户外，畅快呼吸一口新鲜富氧空气。",
-    "双手于身后相扣，轻柔夹紧肩胛骨，充分扩张挺拔胸腔。",
-    "去泡一杯淡茶或咖啡，彻底远离手机与电脑等一切电子屏幕。",
-    "原地轻柔踏步并微抬膝关节，促进下肢静脉血液回流心脏。",
-    "用冷水洗洗脸，瞬间给紧绷的眼睑和大脑带来提神凉爽感。",
-    "旋转脚踝并伸展小腿肌肉，消除久坐带来的下肢水肿沉重感。",
-    "保持脊柱挺拔并闭目，专注进行 5 次深沉平稳的腹式呼吸。",
-    "彻底离开办公电脑桌，给大脑认知带宽一段毫无负担的留白。"
-  ],
-  "short_exercises": [
-    {
-      "visual_type": "TrackingInfinity",
-      "badge": "动态眼球追踪训练",
-      "title": "无穷符号 (∞) 平滑追光",
-      "instruction": "保持头部完全不动。仅用眼球平滑跟随移动的蓝色光点轨迹。"
+    "code": "zh",
+    "name": "简体中文",
+    "strings": {
+        "app_name": "ProtectEye",
+        "tray_tooltip": "ProtectEye - 视力健康护航助手",
+        "status_active": "状态: 运行中",
+        "status_paused": "状态: 已暂停",
+        "status_in_break": "状态: 休息中...",
+        "status_snoozed": "状态: 已推迟",
+        "short_break_label": "短休息: %1",
+        "long_break_label": "长休息: %1",
+        "action_pause": "⏸️ 暂停",
+        "action_resume": "▶️ 恢复",
+        "action_take_short_now": "⚡ 立即进入短休息",
+        "action_take_long_now": "☕ 立即进入长休息",
+        "action_settings": "⚙️ 设置...",
+        "action_quit": "❌ 退出",
+        "startup_notification_title": "ProtectEye",
+        "startup_notification_message": "ProtectEye 已在系统托盘中静默运行。\n持续守护您的视力健康。",
+        "already_running_title": "ProtectEye",
+        "already_running_message": "ProtectEye 已在系统托盘中处于运行状态。",
+        "pre_break_title_short": "👁️ 护眼休息将在 30 秒后开始",
+        "pre_break_title_long": "🌟 深度放松休息将在 30 秒后开始",
+        "pre_break_message": "休息将在 %1 秒后开始，请保存并收尾当前操作。",
+        "badge_short_break": "👁️ 护眼微休息",
+        "badge_long_break": "🌟 深度全身放松",
+        "button_snooze": "⏳ 推迟 %1 分钟",
+        "button_skip": "跳过本次休息 (Esc)",
+        "settings_title": "ProtectEye - 设置",
+        "settings_header": "ProtectEye 首选项",
+        "group_break_schedules": "休息时间间隔计划",
+        "group_smart_features": "智能检测与提醒",
+        "group_language": "语言与外观",
+        "label_language": "界面语言:",
+        "lang_auto": "自动（跟随系统语言）",
+        "lang_english": "English",
+        "lang_turkish": "Türkçe",
+        "label_short_interval": "短休息间隔:",
+        "label_short_duration": "短休息时长:",
+        "label_long_interval": "长休息间隔:",
+        "label_long_duration": "长休息时长:",
+        "label_snooze_duration": "推迟时长:",
+        "label_pre_warn": "休息前提前预告:",
+        "unit_minutes": "分钟",
+        "unit_seconds": "秒",
+        "check_sound": "休息开始与结束时播放清脆温和的提示音",
+        "check_dnd": "系统开启「请勿打扰」模式时静默跳过休息",
+        "check_lock": "锁屏时自动暂停计时，解锁后重新计算短休息",
+        "check_autostart": "开机时自动启动 ProtectEye",
+        "check_interactive_exercises": "启用交互式护眼动画（视线追踪导引、深呼吸指引）",
+        "button_defaults": "恢复默认",
+        "button_cancel": "取消",
+        "button_save": "保存",
+        "breath_inhale": "吸气",
+        "breath_hold": "屏息",
+        "breath_exhale": "呼气",
+        "squeeze_phase_close": "轻闭双眼",
+        "squeeze_phase_squeeze": "微用力眨挤",
+        "squeeze_phase_open": "张开放松",
+        "focus_near_label": "聚焦近处 (15 厘米)",
+        "focus_far_label": "聚焦远处 (>6 米)",
+        "default_tip": "放松眼部肌肉，平稳均匀呼吸。",
+        "cli_description": "跨平台护眼与休息助手。\n\n命令：\n  update              检查并自动将 ProtectEye 更新到最新版本\n  uninstall           从系统中彻底卸载 ProtectEye",
+        "cli_cmd_uninstall": "可选命令: 'uninstall' 彻底移除 ProtectEye",
+        "cli_opt_test_break": "启动时立即触发测试用全屏休息界面",
+        "cli_opt_test_warning": "启动时立即触发测试用休息预告通知",
+        "uninstall_running": "正在运行 ProtectEye 卸载向导...",
+        "uninstall_win_hint": "在 Windows 上，请通过“设置 > 已安装的应用”或开始菜单快捷方式卸载。",
+        "setting_check_updates": "自动检查更新",
+        "btn_check_updates": "立即检查",
+        "update_status_checking": "正在检查更新...",
+        "update_status_uptodate": "ProtectEye 已是最新版本 (v%1)",
+        "update_status_available": "发现新版本：v%1",
+        "update_status_failed": "检查更新失败。",
+        "action_update_available": "✨ 发现新版本：v%1",
+        "update_notif_title": "ProtectEye 更新可用",
+        "update_notif_body": "版本 %1 现已推出，点击前往下载。",
+        "tab_schedules": "休息计划",
+        "tab_smart_features": "智能功能",
+        "tab_general": "常规与更新",
+        "group_updates": "软件更新",
+        "cli_cmd_update": "可选命令：'update' 自动更新 ProtectEye 至最新版本",
+        "update_running": "正在检查并将 ProtectEye 更新至最新版本...",
+        "update_win_hint": "正在下载 Windows 安装程序并启动更新...",
+        "update_success": "ProtectEye 已成功更新至 v%1！",
+        "update_no_package": "未找到适用于您系统架构的软件包。"
     },
-    {
-      "visual_type": "NearFarShift",
-      "badge": "睫状肌调节机能训练",
-      "title": "远近焦点敏捷切换",
-      "instruction": "立起大拇指置于鼻前 15 厘米处。凝视拇指 3 秒，随后眺望远处物体 3 秒。"
-    },
-    {
-      "visual_type": "DistanceFocus",
-      "badge": "20-20-20 视力放松法则",
-      "title": "移目极目远眺",
-      "instruction": "凝视至少 6 米以外的远景。彻底卸下眼球聚焦系统的所有张力。"
-    },
-    {
-      "visual_type": "SqueezeBlink",
-      "badge": "睑板腺脂质分泌促进",
-      "title": "深层眨挤湿润练习",
-      "instruction": "闭眼 2 秒，轻柔用力挤闭 2 秒，随后自然睁开并放松，重建脂质泪膜。"
-    },
-    {
-      "visual_type": "TrackingCircle",
-      "badge": "眼肌环形协调追踪",
-      "title": "平滑圆周轨道追踪",
-      "instruction": "不带任何勉强，目光跟随平滑公转的光点匀速转动画圆。"
-    },
-    {
-      "visual_type": "PeripheralExpansion",
-      "badge": "打破隧道视野限制",
-      "title": "余光与周边视野扩展",
-      "instruction": "平视屏幕中心无需动眼，有意识地用余光感知房间左右两侧的宽阔边缘。"
-    },
-    {
-      "visual_type": "BreathingCircle",
-      "badge": "手温敷眼与腹式呼吸",
-      "title": "暖掌护眼与呼吸光环",
-      "instruction": "双掌摩擦生热并轻覆双眼。跟随脉动光环的节奏深吸深呼。"
-    },
-    {
-      "visual_type": "TrackingVertical",
-      "badge": "眼外肌垂直扫视",
-      "title": "纵向垂直扫视追踪",
-      "instruction": "头部保持固定不动。视线平稳上下追踪匀速跳动的光斑。"
-    },
-    {
-      "visual_type": "TrackingHorizontal",
-      "badge": "眼外肌水平扫视",
-      "title": "横向水平视线拉伸",
-      "instruction": "颈部保持静止。眼球左右平滑跟从移动光标，拉伸眼外直肌。"
-    },
-    {
-      "visual_type": "DistanceFocus",
-      "badge": "泪膜重塑与眼表滋养",
-      "title": "慢节奏护眼眨动",
-      "instruction": "完整而缓慢地完全闭合并眨动数次，消除因长期注视屏幕引起的眼干眼涩。"
-    }
-  ],
-  "long_exercises": [
-    {
-      "visual_type": "None",
-      "badge": "代谢激活与循环促进",
-      "title": "起立走动活动身体",
-      "instruction": "从工位座椅上起身！轻松漫步 1–2 分钟，带动腿部大肌群收缩泵血。"
-    },
-    {
-      "visual_type": "None",
-      "badge": "告别科技探颈体态",
-      "title": "下颌内收复位 (Chin Tuck)",
-      "instruction": "用双指轻推下巴水平后缩，使耳垂对齐肩峰垂直线上，释放枕下神经压迫。"
-    },
-    {
-      "visual_type": "None",
-      "badge": "颈部与上胸肌群放松",
-      "title": "颈部僵硬释放练习",
-      "instruction": "双肩向后下沉旋转。头部柔和左右偏侧俯首，松解颈部僵直肌群。"
-    },
-    {
-      "visual_type": "None",
-      "badge": "胸椎灵活性与椎间盘减压",
-      "title": "脊柱温和旋转扭动",
-      "instruction": "端坐或站立挺拔。上半身温和向右旋转、再向左旋转，配合 3 次深长呼吸。"
-    },
-    {
-      "visual_type": "None",
-      "badge": "细胞补水与富氧重置",
-      "title": "一杯温水与深呼吸空气",
-      "instruction": "饮用一大杯温水。推开窗户或移步开阔处，让清新富氧的空气充盈双肺。"
-    },
-    {
-      "visual_type": "None",
-      "badge": "改善久坐屈髋肌挛缩",
-      "title": "髂腰肌与髋屈肌拉伸",
-      "instruction": "站立向前迈出一小步呈温和弓步，感受并拉伸因久坐而长期缩短的骨盆前侧肌群。"
-    },
-    {
-      "visual_type": "None",
-      "badge": "挺拔体态与胸廓延展",
-      "title": "扩胸开肩与脊柱对齐",
-      "instruction": "双手反扣于身后，轻柔向脊柱中线靠拢肩胛骨，深吸气充分敞开前胸。"
-    },
-    {
-      "visual_type": "None",
-      "badge": "腕管综合征与腱鞘舒缓",
-      "title": "手腕旋转与指关节伸展",
-      "instruction": "转动手腕关节并轻轻向后牵拉手指，全面释放键鼠敲击带来的肌腱疲劳。"
-    }
-  ]
+    "short_tips": [
+        "20-20-20 法则：眺望至少 6 米（20英尺）外的景物 20 秒钟。",
+        "缓慢而充分地眨眼数次，分泌泪液润滑滋养眼角膜。",
+        "将双肩向后展开并沉下，端正坐姿，做一次缓慢深长的深呼吸。",
+        "手温敷眼法 (Palming)：双手手掌对搓发热，轻轻扣覆在闭合的双眼上。",
+        "缓慢转动眼球顺时针画圆，随后逆时针缓慢回转。",
+        "由鼻腔深吸气，稍作屏息，再由唇间缓慢吐出浊气。",
+        "轻柔反向拉伸双手手腕和手指，舒缓长时间敲击键盘的筋膜压力。",
+        "将视线投向室内最远处的墙角或窗外，放松睫状肌痉挛。",
+        "头部缓慢匀速左右转动，化解颈项部肌肉僵硬。",
+        "彻底闭合双眼片刻，让大脑视皮层进入静止休息状态。",
+        "用指腹以温和打圈手法按摩太阳穴，缓解头部紧绷感。",
+        "下颌缓缓贴近胸口，细致感受颈椎后侧肌群的舒展拉长。",
+        "交替切换视线焦点：近看鼻尖前方的大拇指，远看无限远处的物体。",
+        "挑起眉毛随即彻底放松，抚平前额紧绷的表情肌。",
+        "饮一小口温润的水，为全身机能和眼部组织补充水分。",
+        "将视线从屏幕移开，无需刻意聚焦，任由目光随性游移放松。"
+    ],
+    "long_tips": [
+        "离开工位！站起来走动整整一分钟，唤醒全身血液循环。",
+        "畅饮一大杯温开水，加速身体代谢，驱散脑部疲劳。",
+        "颈部拉伸：缓慢将头部偏向左右两侧，前后轻仰俯低。",
+        "眺望窗外的天际线或远山，让双眼感受无垠的开阔感。",
+        "双臂向头顶上方充分伸展，向上拉长整条脊椎与腰背肌群。",
+        "双肩大幅度由前向后绕环旋转，有效松解斜方肌结节。",
+        "推开窗户或走到户外，畅快呼吸一口新鲜富氧空气。",
+        "双手于身后相扣，轻柔夹紧肩胛骨，充分扩张挺拔胸腔。",
+        "去泡一杯淡茶或咖啡，彻底远离手机与电脑等一切电子屏幕。",
+        "原地轻柔踏步并微抬膝关节，促进下肢静脉血液回流心脏。",
+        "用冷水洗洗脸，瞬间给紧绷的眼睑和大脑带来提神凉爽感。",
+        "旋转脚踝并伸展小腿肌肉，消除久坐带来的下肢水肿沉重感。",
+        "保持脊柱挺拔并闭目，专注进行 5 次深沉平稳的腹式呼吸。",
+        "彻底离开办公电脑桌，给大脑认知带宽一段毫无负担的留白。"
+    ],
+    "short_exercises": [
+        {
+            "visual_type": "TrackingInfinity",
+            "badge": "动态眼球追踪训练",
+            "title": "无穷符号 (∞) 平滑追光",
+            "instruction": "保持头部完全不动。仅用眼球平滑跟随移动的蓝色光点轨迹。"
+        },
+        {
+            "visual_type": "NearFarShift",
+            "badge": "睫状肌调节机能训练",
+            "title": "远近焦点敏捷切换",
+            "instruction": "立起大拇指置于鼻前 15 厘米处。凝视拇指 3 秒，随后眺望远处物体 3 秒。"
+        },
+        {
+            "visual_type": "DistanceFocus",
+            "badge": "20-20-20 视力放松法则",
+            "title": "移目极目远眺",
+            "instruction": "凝视至少 6 米以外的远景。彻底卸下眼球聚焦系统的所有张力。"
+        },
+        {
+            "visual_type": "SqueezeBlink",
+            "badge": "睑板腺脂质分泌促进",
+            "title": "深层眨挤湿润练习",
+            "instruction": "闭眼 2 秒，轻柔用力挤闭 2 秒，随后自然睁开并放松，重建脂质泪膜。"
+        },
+        {
+            "visual_type": "TrackingCircle",
+            "badge": "眼肌环形协调追踪",
+            "title": "平滑圆周轨道追踪",
+            "instruction": "不带任何勉强，目光跟随平滑公转的光点匀速转动画圆。"
+        },
+        {
+            "visual_type": "PeripheralExpansion",
+            "badge": "打破隧道视野限制",
+            "title": "余光与周边视野扩展",
+            "instruction": "平视屏幕中心无需动眼，有意识地用余光感知房间左右两侧的宽阔边缘。"
+        },
+        {
+            "visual_type": "BreathingCircle",
+            "badge": "手温敷眼与腹式呼吸",
+            "title": "暖掌护眼与呼吸光环",
+            "instruction": "双掌摩擦生热并轻覆双眼。跟随脉动光环的节奏深吸深呼。"
+        },
+        {
+            "visual_type": "TrackingVertical",
+            "badge": "眼外肌垂直扫视",
+            "title": "纵向垂直扫视追踪",
+            "instruction": "头部保持固定不动。视线平稳上下追踪匀速跳动的光斑。"
+        },
+        {
+            "visual_type": "TrackingHorizontal",
+            "badge": "眼外肌水平扫视",
+            "title": "横向水平视线拉伸",
+            "instruction": "颈部保持静止。眼球左右平滑跟从移动光标，拉伸眼外直肌。"
+        },
+        {
+            "visual_type": "DistanceFocus",
+            "badge": "泪膜重塑与眼表滋养",
+            "title": "慢节奏护眼眨动",
+            "instruction": "完整而缓慢地完全闭合并眨动数次，消除因长期注视屏幕引起的眼干眼涩。"
+        }
+    ],
+    "long_exercises": [
+        {
+            "visual_type": "None",
+            "badge": "代谢激活与循环促进",
+            "title": "起立走动活动身体",
+            "instruction": "从工位座椅上起身！轻松漫步 1–2 分钟，带动腿部大肌群收缩泵血。"
+        },
+        {
+            "visual_type": "None",
+            "badge": "告别科技探颈体态",
+            "title": "下颌内收复位 (Chin Tuck)",
+            "instruction": "用双指轻推下巴水平后缩，使耳垂对齐肩峰垂直线上，释放枕下神经压迫。"
+        },
+        {
+            "visual_type": "None",
+            "badge": "颈部与上胸肌群放松",
+            "title": "颈部僵硬释放练习",
+            "instruction": "双肩向后下沉旋转。头部柔和左右偏侧俯首，松解颈部僵直肌群。"
+        },
+        {
+            "visual_type": "None",
+            "badge": "胸椎灵活性与椎间盘减压",
+            "title": "脊柱温和旋转扭动",
+            "instruction": "端坐或站立挺拔。上半身温和向右旋转、再向左旋转，配合 3 次深长呼吸。"
+        },
+        {
+            "visual_type": "None",
+            "badge": "细胞补水与富氧重置",
+            "title": "一杯温水与深呼吸空气",
+            "instruction": "饮用一大杯温水。推开窗户或移步开阔处，让清新富氧的空气充盈双肺。"
+        },
+        {
+            "visual_type": "None",
+            "badge": "改善久坐屈髋肌挛缩",
+            "title": "髂腰肌与髋屈肌拉伸",
+            "instruction": "站立向前迈出一小步呈温和弓步，感受并拉伸因久坐而长期缩短的骨盆前侧肌群。"
+        },
+        {
+            "visual_type": "None",
+            "badge": "挺拔体态与胸廓延展",
+            "title": "扩胸开肩与脊柱对齐",
+            "instruction": "双手反扣于身后，轻柔向脊柱中线靠拢肩胛骨，深吸气充分敞开前胸。"
+        },
+        {
+            "visual_type": "None",
+            "badge": "腕管综合征与腱鞘舒缓",
+            "title": "手腕旋转与指关节伸展",
+            "instruction": "转动手腕关节并轻轻向后牵拉手指，全面释放键鼠敲击带来的肌腱疲劳。"
+        }
+    ]
 }

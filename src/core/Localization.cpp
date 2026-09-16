@@ -480,6 +480,10 @@ QString Localization::checkAutostart() const {
     return get(QStringLiteral("check_autostart"));
 }
 
+QString Localization::checkIdle() const {
+    return get(QStringLiteral("check_idle"), QStringLiteral("Pause timers when user is away from computer"));
+}
+
 QString Localization::checkInteractiveExercises() const {
     return get(QStringLiteral("check_interactive_exercises"));
 }

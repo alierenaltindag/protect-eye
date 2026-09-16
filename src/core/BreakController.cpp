@@ -1,12 +1,17 @@
 #include "BreakController.h"
 #include "Settings.h"
+#include "services/DndMonitor.h"
+#include "services/ScreenLockMonitor.h"
+#include "services/IdleMonitor.h"
 #include <QDebug>
+#include <QDateTime>
 #include <algorithm>
 
-BreakController::BreakController(DndMonitor* dndMonitor, ScreenLockMonitor* lockMonitor, QObject* parent)
+BreakController::BreakController(DndMonitor* dndMonitor, ScreenLockMonitor* lockMonitor, IdleMonitor* idleMonitor, QObject* parent)
     : QObject(parent)
     , m_dndMonitor(dndMonitor)
-    , m_lockMonitor(lockMonitor) {
+    , m_lockMonitor(lockMonitor)
+    , m_idleMonitor(idleMonitor) {
     connect(&m_ticker, &QTimer::timeout, this, &BreakController::onSecondTimer);
     m_ticker.setInterval(1000);
     m_ticker.setTimerType(Qt::PreciseTimer);
@@ -159,6 +164,46 @@ void BreakController::finishBreak() {
 void BreakController::onSecondTimer() {
     if (m_state == BreakState::Paused) {
         return;
+    }
+
+    // Check user idle / AFK status
+    if (Settings::instance().idleCheckEnabled() && m_idleMonitor) {
+        const int threshold = Settings::instance().idleThresholdSec();
+        const bool userIdleNow = m_idleMonitor->isUserIdle(threshold);
+
+        if (userIdleNow) {
+            if (!m_isUserIdle) {
+                m_isUserIdle = true;
+                m_idleStartTime = QDateTime::currentSecsSinceEpoch();
+                emit userIdleStateChanged(true);
+            }
+
+            // If a break is already in progress while user walked away, allow it to finish
+            if (isInBreak()) {
+                m_breakRemainingSec--;
+                emit breakTick(m_breakRemainingSec, m_breakTotalSec);
+                if (m_breakRemainingSec <= 0) {
+                    finishBreak();
+                }
+            }
+            return; // Pause countdown ticks while user is idle
+        } else {
+            // User is active (active typing/mouse or media playing)
+            if (m_isUserIdle) {
+                m_isUserIdle = false;
+                const qint64 idleSec = QDateTime::currentSecsSinceEpoch() - m_idleStartTime;
+                const int resetThreshold = Settings::instance().idleResetThresholdSec();
+
+                // If user was away long enough to rest eyes, reset the cycle
+                if (idleSec >= resetThreshold) {
+                    resetTimers();
+                    emit tick(m_secToShortBreak, m_secToLongBreak);
+                    emit userIdleStateChanged(false);
+                    return;
+                }
+                emit userIdleStateChanged(false);
+            }
+        }
     }
 
     if (isInBreak()) {

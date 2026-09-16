@@ -52,6 +52,7 @@
     "check_dnd": "Silently skip break when Do Not Disturb (DND) is active",
     "check_lock": "Pause timer on screen lock, reset short break on unlock",
     "check_autostart": "Start automatically on system boot",
+    "check_idle": "Pause timers when user is away from computer (smart AFK detection)",
     "check_interactive_exercises": "Interactive eye exercise animations (eye tracking, breathing guide)",
     "setting_check_updates": "Automatically check for updates",
     "btn_check_updates": "Check Now",

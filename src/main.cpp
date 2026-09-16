@@ -10,6 +10,7 @@
 #include "core/BreakController.h"
 #include "services/DndMonitor.h"
 #include "services/ScreenLockMonitor.h"
+#include "services/IdleMonitor.h"
 #include "services/SoundManager.h"
 #include "services/NotificationService.h"
 #include "services/UpdateChecker.h"
@@ -150,8 +151,9 @@ int main(int argc, char* argv[]) {
     // Core Services
     DndMonitor dndMonitor;
     ScreenLockMonitor lockMonitor;
+    IdleMonitor idleMonitor;
     SoundManager soundManager;
-    BreakController breakController(&dndMonitor, &lockMonitor);
+    BreakController breakController(&dndMonitor, &lockMonitor, &idleMonitor);
     OverlayManager overlayManager;
     TrayManager trayManager(&breakController);
     NotificationService notificationService(trayManager.trayIcon());

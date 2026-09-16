@@ -126,6 +126,7 @@ public:
     QString checkDnd() const;
     QString checkLock() const;
     QString checkAutostart() const;
+    QString checkIdle() const;
     QString checkInteractiveExercises() const;
     QString checkUpdates() const;
     QString btnCheckUpdates() const;

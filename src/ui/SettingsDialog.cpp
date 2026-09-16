@@ -146,18 +146,21 @@ void SettingsDialog::setupUi() {
     m_dndCheck = new QCheckBox(m_featGroup);
     m_lockCheck = new QCheckBox(m_featGroup);
     m_autostartCheck = new QCheckBox(m_featGroup);
+    m_idleCheck = new QCheckBox(m_featGroup);
     m_interactiveExercisesCheck = new QCheckBox(m_featGroup);
 
     m_soundCheck->setCursor(Qt::PointingHandCursor);
     m_dndCheck->setCursor(Qt::PointingHandCursor);
     m_lockCheck->setCursor(Qt::PointingHandCursor);
     m_autostartCheck->setCursor(Qt::PointingHandCursor);
+    m_idleCheck->setCursor(Qt::PointingHandCursor);
     m_interactiveExercisesCheck->setCursor(Qt::PointingHandCursor);
 
     featLayout->addWidget(m_soundCheck);
     featLayout->addWidget(m_dndCheck);
     featLayout->addWidget(m_lockCheck);
     featLayout->addWidget(m_autostartCheck);
+    featLayout->addWidget(m_idleCheck);
     featLayout->addWidget(m_interactiveExercisesCheck);
 
     featContentLayout->addWidget(m_featGroup);
@@ -307,6 +310,7 @@ void SettingsDialog::retranslateUi() {
     m_dndCheck->setText(loc.checkDnd());
     m_lockCheck->setText(loc.checkLock());
     m_autostartCheck->setText(loc.checkAutostart());
+    m_idleCheck->setText(loc.checkIdle());
     m_interactiveExercisesCheck->setText(loc.checkInteractiveExercises());
 
     m_langGroup->setTitle(escapeMnemonic(loc.groupLanguage()));
@@ -646,6 +650,7 @@ void SettingsDialog::loadValues() {
     m_dndCheck->setChecked(s.dndCheckEnabled());
     m_lockCheck->setChecked(s.screenLockCheckEnabled());
     m_autostartCheck->setChecked(AutostartHelper::isAutostartEnabled());
+    m_idleCheck->setChecked(s.idleCheckEnabled());
     m_interactiveExercisesCheck->setChecked(s.interactiveExercisesEnabled());
     m_checkUpdatesCheck->setChecked(s.checkUpdatesEnabled());
 
@@ -678,6 +683,7 @@ void SettingsDialog::onSave() {
     s.setDndCheckEnabled(m_dndCheck->isChecked());
     s.setScreenLockCheckEnabled(m_lockCheck->isChecked());
     s.setAutostartEnabled(m_autostartCheck->isChecked());
+    s.setIdleCheckEnabled(m_idleCheck->isChecked());
     s.setInteractiveExercisesEnabled(m_interactiveExercisesCheck->isChecked());
     s.setCheckUpdatesEnabled(m_checkUpdatesCheck->isChecked());
 
