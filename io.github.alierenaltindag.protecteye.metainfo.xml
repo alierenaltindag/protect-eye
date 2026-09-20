@@ -34,7 +34,7 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="1.0.11" date="2026-09-16">
+    <release version="1.0.12" date="2026-09-20">
       <description>
         <p>Smart user idle (AFK) detection with media playback awareness. Automatically pauses work and break countdowns when away from the computer to prevent disruptions in empty rooms. Detects active video and audio streaming (PipeWire, PulseAudio, Windows Core Audio) and screensaver inhibition to prevent false pauses while watching movies or lectures. Features intelligent rest detection that resets break cycles after prolonged absences.</p>
       </description>
