@@ -174,7 +174,8 @@ void BreakController::onSecondTimer() {
         if (userIdleNow) {
             if (!m_isUserIdle) {
                 m_isUserIdle = true;
-                m_idleStartTime = QDateTime::currentSecsSinceEpoch();
+                const int currentIdle = m_idleMonitor->getIdleSeconds();
+                m_idleStartTime = QDateTime::currentSecsSinceEpoch() - (currentIdle > 0 ? currentIdle : threshold);
                 emit userIdleStateChanged(true);
             }
 

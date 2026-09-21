@@ -1047,6 +1047,77 @@ private slots:
         QCOMPARE(controller.secondsUntilShortBreak(), 60);
         QCOMPARE(controller.secondsUntilLongBreak(), 120);
     }
+
+    void testUserReturnAccountsForInitialThreshold() {
+        Settings::instance().resetToDefaults();
+        Settings::instance().setIdleCheckEnabled(true);
+        Settings::instance().setIdleThresholdSec(4);
+        Settings::instance().setIdleResetThresholdSec(5);
+        Settings::instance().setShortBreakIntervalSec(60);
+        Settings::instance().setLongBreakIntervalSec(120);
+
+        DndMonitor dnd;
+        ScreenLockMonitor lock;
+        MockIdleMonitor idle;
+        BreakController controller(&dnd, &lock, &idle);
+        controller.start();
+
+        // Let work timer tick a bit
+        idle.mockIdleSeconds = 0;
+        QTest::qWait(1100);
+        QVERIFY(controller.secondsUntilShortBreak() < 60);
+
+        // User becomes idle: mock idle shows 4 seconds already passed
+        idle.mockIdleSeconds = 4;
+        idle.mockMediaPlaying = false;
+        QTest::qWait(1100);
+        QVERIFY(controller.isUserIdle());
+
+        // Wait 1.5 seconds. Total idle duration = 4s initial + 1.5s = 5.5s >= 5s reset threshold
+        QTest::qWait(1500);
+
+        // User returns
+        idle.mockIdleSeconds = 0;
+        QTest::qWait(1100);
+        QCOMPARE(controller.isUserIdle(), false);
+
+        // Timer should have reset because total idle (5.5s) >= reset threshold (5s)
+        QCOMPARE(controller.secondsUntilShortBreak(), 60);
+        QCOMPARE(controller.secondsUntilLongBreak(), 120);
+    }
+
+    void testSettingsAndLanguagePersistence() {
+        auto& s = Settings::instance();
+        s.resetToDefaults();
+
+        s.setLanguage(QStringLiteral("tr"));
+        s.setShortBreakIntervalSec(15 * 60);
+        s.setShortBreakDurationSec(25);
+        s.setLongBreakIntervalSec(45 * 60);
+        s.setLongBreakDurationSec(180);
+        s.setIdleCheckEnabled(true);
+        s.setIdleThresholdSec(120);
+        s.setIdleResetThresholdSec(240);
+        s.setAutostartEnabled(false);
+        s.save();
+
+        // Simulate app restart / reload from persistent storage
+        s.load();
+
+        QCOMPARE(s.language(), QStringLiteral("tr"));
+        QCOMPARE(Localization::instance().languageCode(), QStringLiteral("tr"));
+        QCOMPARE(s.shortBreakIntervalSec(), 15 * 60);
+        QCOMPARE(s.shortBreakDurationSec(), 25);
+        QCOMPARE(s.longBreakIntervalSec(), 45 * 60);
+        QCOMPARE(s.longBreakDurationSec(), 180);
+        QCOMPARE(s.idleCheckEnabled(), true);
+        QCOMPARE(s.idleThresholdSec(), 120);
+        QCOMPARE(s.idleResetThresholdSec(), 240);
+        QCOMPARE(s.autostartEnabled(), false);
+
+        // Reset back to defaults for other tests
+        s.resetToDefaults();
+    }
 };
 
 
